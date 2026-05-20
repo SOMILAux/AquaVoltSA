@@ -14,7 +14,8 @@ public class NewMain {
     public static void main(String[] args) {
         JOptionPane.showMessageDialog(null, "Afternoon everyone.");
         System.out.println("");
-        System.out.println("");
+        System.out.println("hello world");
+        System.out.println("hello world part 2");
     }
     
 }
