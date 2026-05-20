@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package za.ac.cput.aquavoltsa;
 
 import javax.swing.JOptionPane;
@@ -17,6 +13,7 @@ public class NewMain {
      */
     public static void main(String[] args) {
         JOptionPane.showMessageDialog(null, "Afternoon everyone.");
+        System.out.println("");
         System.out.println("");
     }
     
