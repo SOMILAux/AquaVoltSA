@@ -4,6 +4,8 @@
  */
 package za.ac.cput.aquavoltsa;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Shuma
@@ -14,7 +16,7 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        JOptionPane.showMessageDialog(null, "Afternoon everyone.");
     }
     
 }
