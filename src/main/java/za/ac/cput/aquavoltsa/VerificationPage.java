@@ -20,6 +20,7 @@ public class VerificationPage extends JFrame {
         setTitle("AquaVolt SA - Verification");
         setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         // Notification area (hidden by default)
