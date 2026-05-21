@@ -16,6 +16,7 @@ public class TermsPage extends JFrame{
         setTitle("AquaVolt SA - Terms and Conditions");
         setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
         JTextArea termsArea = new JTextArea();
         termsArea.setText("AquaVolt SA Terms and Conditions...\n\n1. General Provisions...\n AquaVolt SA (“the App”) provides digital services for monitoring, billing, and payment of water and electricity usage.\n" +
