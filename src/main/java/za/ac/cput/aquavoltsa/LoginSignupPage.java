@@ -1,15 +1,16 @@
 package za.ac.cput.aquavoltsa;
+
 import javax.swing.*;
-    import java.awt.*;
-    import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
- *@Student-Number 241028213
+ * @Student-Number 241028213
  * @author Oyama Sibunzi
  */
+public class LoginSignupPage extends JFrame {
 
-public class LoginSignupPage extends JFrame{
     private JTextField usernameField;
     private JPasswordField passwordField;
     private boolean showPassword = false;
@@ -18,6 +19,7 @@ public class LoginSignupPage extends JFrame{
         setTitle("AquaVolt SA - Login/Sign-up Page");
         setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         JPanel panel = new JPanel(new GridLayout(7, 1, 10, 10));
@@ -72,4 +74,3 @@ public class LoginSignupPage extends JFrame{
         SwingUtilities.invokeLater(() -> new LoginSignupPage().setVisible(true));
     }
 }
-
