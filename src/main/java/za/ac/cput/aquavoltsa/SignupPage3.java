@@ -15,6 +15,7 @@ public class SignupPage3 extends JFrame {
         setTitle("AquaVolt SA - Sign-up Page Part 3");
         setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new GridLayout(12, 1, 10, 10));
 
         JCheckBox terms1 = new JCheckBox("I read and agree to these terms and conditions");
