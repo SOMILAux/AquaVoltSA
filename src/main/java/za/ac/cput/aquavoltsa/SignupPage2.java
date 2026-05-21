@@ -23,6 +23,7 @@ public class SignupPage2 extends JFrame{
         setTitle("AquaVolt SA - Sign-up Page Part 2");
         setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new GridLayout(11, 1, 10, 10));
 
         usernameField = new JTextField("Enter Username");
