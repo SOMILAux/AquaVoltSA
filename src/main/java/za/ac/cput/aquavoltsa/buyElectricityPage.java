@@ -12,7 +12,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -28,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Student Number: 251239853
@@ -36,14 +40,18 @@ import javax.swing.SwingConstants;
  */
 public class buyElectricityPage extends JFrame {
 
-    JLabel logoLabel, curveSpaceLabel;
+    JLabel logoLabel, curveSpaceLabel, continueIconLabel;
     JLabel meterNumberLabel, selectAmountLabel, separator;
     JPanel contentPanel, footerPanel;
     JTextField otherAmount, meterNumber;
     JToggleButton firstAmount, secondAmount, thirdAmount, customAmount;
     ButtonGroup groupToggleButtons;
     JButton continueBtn, backBtn;
-    ImageIcon logo, curveSpace;
+    ImageIcon logo, curveSpace, continueIcon;
+
+    int amount, enteredAmount;
+    long meter;
+    String yourAmount;
 
     public buyElectricityPage() {
 
@@ -103,12 +111,12 @@ public class buyElectricityPage extends JFrame {
 
         //Initialising, editing, and adding the components to panels
         meterNumberLabel = new JLabel("Meter Number");
+        meterNumberLabel.setFont(new Font("Inter", Font.PLAIN, 20));
         meterNumberLabel.setBounds(50, 30, 150, 30);
-        meterNumberLabel.setFont(new Font("serif", 10, 20));
-
+        
         selectAmountLabel = new JLabel("Select Amount");
         selectAmountLabel.setBounds(50, 200, 150, 30);
-        selectAmountLabel.setFont(new Font("serif", 10, 20));
+        selectAmountLabel.setFont(new Font("Inter", Font.PLAIN, 20));
 
         separator = new JLabel("________________________________________________________________________________");
         separator.setBounds(0, 180, 425, 1);
@@ -117,78 +125,85 @@ public class buyElectricityPage extends JFrame {
 
         footerPanel = new JPanel();
 
-        meterNumber = new JTextField("   Enter your meter number");
+        meterNumber = new JTextField("Enter your meter number");
+        meterNumber.setBorder(new EmptyBorder(0, 10, 0, 10));
+        meterNumber.setFont(new Font("Inter", Font.PLAIN, 20));
+        //meterNumber.setMargin(new Insets(0, 10, 0, 10));
         meterNumber.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent gained) {
                 String meter = meterNumber.getText();
-                if (meter.equals("   Enter your meter number")) {
+                if (meter.equals("Enter your meter number")) {
                     meterNumber.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent lost) {
-                String meter = meterNumber.getText();
-                if (meter.isEmpty()) {
-                    meterNumber.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-                    JOptionPane.showMessageDialog(null, "Enter your meter number", "Meter number needed", JOptionPane.OK_OPTION);
-                } else {
-                    meterNumber.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
                 }
             }
         });
         meterNumber.setBounds(40, 80, 330, 50);
 
-        otherAmount = new JTextField("  R | Amount");
+        otherAmount = new JTextField("R | Amount");
+        otherAmount.setFont(new Font("Inter", Font.PLAIN, 20));
+        otherAmount.setMargin(new Insets(0, 15, 0, 10));
         otherAmount.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent gained) {
                 String amount = otherAmount.getText();
-                customAmount.setSelected(true);
 
-                if (amount.equals("  R | Amount")) {
+                if (amount.equals("R | Amount")) {
                     otherAmount.setText("");
                 }
             }
 
             @Override
-            public void focusLost(FocusEvent lost) {
-                String amount = otherAmount.getText();
-                if (amount.isEmpty()) {
-                    otherAmount.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-                    JOptionPane.showMessageDialog(null, "Enter the Amount you want to purchase", "Amount needed", JOptionPane.OK_OPTION);
-                } else {
-                    otherAmount.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+            public void focusLost(FocusEvent F) {
+                yourAmount = otherAmount.getText();
+
+                try {
+                    enteredAmount = Integer.parseInt(yourAmount);
+                } catch (NumberFormatException N) {
+                    JOptionPane.showMessageDialog(null, "Error occured");
                 }
+
             }
+
         });
         otherAmount.setBounds(40, 420, 330, 50);
+        otherAmount.setVisible(false);
 
         //Setting and displaying the ToggleButtons
         firstAmount = new JToggleButton("R50");
-        firstAmount.setContentAreaFilled(true);
+        firstAmount.setFont(new Font("Inter", Font.BOLD, 18));
+        firstAmount.setContentAreaFilled(false);
         firstAmount.setBackground(Color.WHITE);
         firstAmount.setFocusPainted(false);
         firstAmount.setBorderPainted(false);
+        firstAmount.setOpaque(true);
         firstAmount.setBounds(40, 240, 150, 60);
 
         secondAmount = new JToggleButton("R100");
+        secondAmount.setFont(new Font("Inter", Font.BOLD, 18));
+        secondAmount.setContentAreaFilled(false);
         secondAmount.setFocusPainted(false);
         secondAmount.setBorderPainted(false);
         secondAmount.setBackground(Color.WHITE);
+        secondAmount.setOpaque(true);
         secondAmount.setBounds(220, 240, 150, 60);
 
         thirdAmount = new JToggleButton("R150");
+        thirdAmount.setFont(new Font("Inter", Font.BOLD, 18));
+        thirdAmount.setContentAreaFilled(false);
         thirdAmount.setFocusPainted(false);
         thirdAmount.setBorderPainted(false);
         thirdAmount.setBackground(Color.WHITE);
+        thirdAmount.setOpaque(true);
         thirdAmount.setBounds(40, 330, 150, 60);
 
         customAmount = new JToggleButton("OWN AMOUNT");
+        customAmount.setFont(new Font("Inter", Font.BOLD, 15));
+        customAmount.setContentAreaFilled(false);
         customAmount.setFocusPainted(false);
         customAmount.setBorderPainted(false);
         customAmount.setBackground(Color.WHITE);
+        customAmount.setOpaque(true);
         customAmount.setBounds(220, 330, 150, 60);
         //End
 
@@ -197,9 +212,16 @@ public class buyElectricityPage extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent item) {
                 if (firstAmount.isSelected()) {
-                    otherAmount.setText("  R | 50");
-                    //otherAmount.setEditable(false);
-                    otherAmount.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+                    firstAmount.setBackground(Color.ORANGE);
+                    firstAmount.setForeground(Color.WHITE);
+
+                    amount = 50;
+                    otherAmount.setVisible(false);
+
+                } else {
+                    firstAmount.setBackground(Color.WHITE);
+                    firstAmount.setForeground(Color.BLACK);
                 }
             }
         });
@@ -208,9 +230,16 @@ public class buyElectricityPage extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent item) {
                 if (secondAmount.isSelected()) {
-                    otherAmount.setText("  R | 100");
-                    //otherAmount.setEditable(false);
-                    otherAmount.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+                    secondAmount.setBackground(Color.ORANGE);
+                    secondAmount.setForeground(Color.WHITE);
+
+                    amount = 100;
+                    otherAmount.setVisible(false);
+
+                } else {
+                    secondAmount.setBackground(Color.WHITE);
+                    secondAmount.setForeground(Color.BLACK);
                 }
             }
         });
@@ -219,9 +248,16 @@ public class buyElectricityPage extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent item) {
                 if (thirdAmount.isSelected()) {
-                    otherAmount.setText("  R | 150");
-                    //otherAmount.setEditable(false);
-                    otherAmount.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+                    thirdAmount.setBackground(Color.ORANGE);
+                    thirdAmount.setForeground(Color.WHITE);
+
+                    amount = 150;
+                    otherAmount.setVisible(false);
+
+                } else {
+                    thirdAmount.setBackground(Color.WHITE);
+                    thirdAmount.setForeground(Color.BLACK);
                 }
             }
         });
@@ -230,21 +266,68 @@ public class buyElectricityPage extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent item) {
                 if (customAmount.isSelected()) {
-                    otherAmount.setText("  R | Enter Custom amount");
-                    //otherAmount.setEditable(false);
-                    otherAmount.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+                    customAmount.setBackground(Color.ORANGE);
+                    customAmount.setForeground(Color.WHITE);
+
+                    otherAmount.setVisible(true);
+
+                    //amount = enteredAmount;
+                } else {
+                    customAmount.setBackground(Color.WHITE);
+                    customAmount.setForeground(Color.BLACK);
                 }
             }
         });
         //End
 
         //Initialising and setting the display of the continue button
-        continueBtn = new JButton("CONTINUE", new ImageIcon("arrow.png"));
+        continueBtn = new JButton("CONTINUE");
+        continueBtn.setLayout(null);
         continueBtn.setFocusPainted(false);
         continueBtn.setBorderPainted(false);
         continueBtn.setBackground(Color.decode("#FFB300"));
         continueBtn.setBounds(40, 490, 330, 40);
         continueBtn.setForeground(Color.WHITE);
+        continueBtn.setFont(new Font("Inter", Font.BOLD, 18));
+        continueIcon = new ImageIcon("arrow.png");
+        continueIconLabel = new JLabel(continueIcon);
+        continueIconLabel.setBounds(290, 5, 30, 30);
+        continueBtn.add(continueIconLabel);
+
+        continueBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String enteredMeterNumber = meterNumber.getText();
+
+                //Converting the meter number from string to Integer
+                try {
+                    meter = Long.parseLong(enteredMeterNumber);
+                } catch (NumberFormatException E) {
+                    JOptionPane.showMessageDialog(null, "Meter number Cannot contain alphabets. Try again", "Re-enter your meter number", JOptionPane.OK_OPTION);
+                }
+
+                if (enteredMeterNumber.isEmpty() || enteredMeterNumber.equals("Enter your meter number")) {
+                    JOptionPane.showMessageDialog(null, "Please enter your meter number", "Meter number needed", JOptionPane.OK_OPTION);
+                } else if (!firstAmount.isSelected() && !secondAmount.isSelected() && !thirdAmount.isSelected() && !customAmount.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Please select a price or enter your own amount", "Select a price", JOptionPane.OK_OPTION);
+                } else if (customAmount.isSelected()) {
+                    
+                    setVisible(false);
+                    
+                    paymentPageForElectricity pay = new paymentPageForElectricity(meter, "Aphelele Shange", enteredAmount);
+                    pay.setVisible(true);
+                } else {
+                    
+                    setVisible(false);
+                    
+                    paymentPageForElectricity pay = new paymentPageForElectricity(meter, "Aphelele Shange", amount);
+                    pay.setVisible(true);
+
+                }
+
+            }
+        });
         //End
 
         //Initialising and setting the display of the Back button
@@ -254,6 +337,7 @@ public class buyElectricityPage extends JFrame {
         backBtn.setBackground(Color.decode("#FFB300"));
         backBtn.setForeground(Color.WHITE);
         backBtn.setBounds(40, 540, 330, 40);
+        backBtn.setFont(new Font("Inter", Font.BOLD, 18));
         //End
 
         //adding togglebuttons to one group
