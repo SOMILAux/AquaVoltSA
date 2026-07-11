@@ -112,10 +112,10 @@ public class buyElectricityPage extends JFrame {
         //Initialising, editing, and adding the components to panels
         meterNumberLabel = new JLabel("Meter Number");
         meterNumberLabel.setFont(new Font("Inter", Font.PLAIN, 20));
-        meterNumberLabel.setBounds(50, 30, 150, 30);
+        meterNumberLabel.setBounds(40, 30, 150, 30);
         
         selectAmountLabel = new JLabel("Select Amount");
-        selectAmountLabel.setBounds(50, 200, 150, 30);
+        selectAmountLabel.setBounds(40, 200, 150, 30);
         selectAmountLabel.setFont(new Font("Inter", Font.PLAIN, 20));
 
         separator = new JLabel("________________________________________________________________________________");
