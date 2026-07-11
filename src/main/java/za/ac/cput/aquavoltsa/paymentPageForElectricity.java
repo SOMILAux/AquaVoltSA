@@ -48,8 +48,6 @@ public class paymentPageForElectricity extends JFrame {
     JPanel purchaseSummaryPanel, meterNumberPanel, customerNamePanel, purchaseAmountPanel, serviceFeePanel, totalAmountPanel, footerPanel;
     JPanel panelMeterNumber, panelName, panelAmount, panelServiceFee;
     ImageIcon curveSpace, summaryIcon, security;
-    
-    ArrayList<TransactionHistoryE> history = new ArrayList<>();
 
     public paymentPageForElectricity(long meterNumber, String name, int amount) {
 
@@ -132,27 +130,38 @@ public class paymentPageForElectricity extends JFrame {
         payingButton.setForeground(Color.WHITE);
         payingButton.setOpaque(true);
         payingButton.setBounds(20, 660, 370, 45);
-        
+
         //Adding Functionality to the pay button
         payingButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent A){
-                
+            public void actionPerformed(ActionEvent A) {
+
                 LocalDate date = LocalDate.now();
                 LocalTime time = LocalTime.now();
-                
+
                 //Formatting time so it shows only hours and minutes a purchase was made
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
                 String formattedTime = time.format(formatter);
-                
+
+                if (!debit_creditCard.isSelected() && !retail_voucherPayments.isSelected() && !eft.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Choose payment methods", "Select your payment method", JOptionPane.OK_OPTION);
+                } else {
+
+                    /*TransactionHistoryE a = new TransactionHistoryE("Electricity Purchase", String.valueOf(meterNumber), date.toString(), time.toString(), String.valueOf(amount), "Successful");
+
+                    TransactionHistoryE.createFile("Experiment.txt");
+                    TransactionHistoryE.writeToFile(a.toString());
+                    TransactionHistoryE.closeFile();*/
+
                 TransactionHistoryE.createFile("Transaction_History_for_Electricity.txt");
-                TransactionHistoryE.writeToFile("Water Purchase" + "#" + "Meter: " + meterNumber + "#" + amount + "#" + date + " - " + formattedTime + "#" + "Successful");
+                TransactionHistoryE.writeToFile("Electricity Purchase" + "#" + "Meter: " + meterNumber + "#" + amount + "#" + date + " - " + formattedTime + "#" + "Successful");
                 TransactionHistoryE.closeFile();
-                
-                dispose();
-                ElectricityPaymentSuccessfulPage paid = new ElectricityPaymentSuccessfulPage();
-                paid.setVisible(true);
-                
+                    dispose();
+                    ElectricityPaymentSuccessfulPage paid = new ElectricityPaymentSuccessfulPage();
+                    paid.setVisible(true);
+
+                }
+
             }
         });
 
@@ -327,7 +336,7 @@ public class paymentPageForElectricity extends JFrame {
         group.add(debit_creditCard);
         group.add(eft);
         group.add(retail_voucherPayments);
-        
+
         //Default radio button color
         Color defaultRadioButtonColor = eft.getBackground();
 
@@ -362,10 +371,10 @@ public class paymentPageForElectricity extends JFrame {
                 }
             }
         });
-        
+
         //Setting my orange color
         Color orangeColor = new Color(255, 165, 0, 60);
-        
+
         // Initialising the security icon and its panel
         security = new ImageIcon("cyber-security.png");
         securityIconLabel = new JLabel(security);
