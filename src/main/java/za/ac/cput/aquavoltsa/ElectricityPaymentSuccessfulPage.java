@@ -91,7 +91,7 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         title.setBounds(140, 18, 150, 30);
         
         //reshaping the white circular space under the logo
-        curveSpace = new ImageIcon("gray-circle.png");
+        curveSpace = new ImageIcon("gray-circlcurveSpacee.png");
         Image curve = curveSpace.getImage();
         Image resizedCurveSpace = curve.getScaledInstance(484, 83, Image.SCALE_SMOOTH);
         ImageIcon newCurveSpace = new ImageIcon(resizedCurveSpace);
