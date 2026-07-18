@@ -54,6 +54,13 @@ public class buyWaterPage extends JFrame {
 
         this.setTitle("Buying Water");
         this.setLayout(new BorderLayout());
+        this.setSize(425, 917);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setFocusable(true);
+        this.setVisible(true);
         
         backgroundPanel = new JPanel() {
 
