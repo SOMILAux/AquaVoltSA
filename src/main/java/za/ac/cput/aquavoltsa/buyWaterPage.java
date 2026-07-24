@@ -53,7 +53,6 @@ public class buyWaterPage extends JFrame {
     public buyWaterPage() {
 
         this.setTitle("Buying Water");
-        this.setLayout(new BorderLayout());
         this.setSize(425, 917);
         this.pack();
         this.setLocationRelativeTo(null);
