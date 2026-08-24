@@ -1,4 +1,4 @@
-package za.ac.cput.aquavoltsa;
+package za.ac.cput.aquavoltsa.GUI;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

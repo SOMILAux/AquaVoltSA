@@ -1,4 +1,4 @@
-package za.ac.cput.aquavoltsa;
+package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
 import java.awt.*;
