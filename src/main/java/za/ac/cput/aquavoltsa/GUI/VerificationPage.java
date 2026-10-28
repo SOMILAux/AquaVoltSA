@@ -1,78 +1,118 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package za.ac.cput.aquavoltsa.GUI;
+
+import java.awt.*;
+import java.util.Random;
 import javax.swing.*;
-    import java.awt.*;
-    import java.awt.event.*;
-    import java.util.Random;
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  * @StudentNumber 241028213
  * @author Oyama Sibunzi
  */
-public class VerificationPage extends JFrame {
-    private JLabel notificationLabel;
+public class VerificationPage extends BasePage {
+    private final UserStore.User user;
+    private final JLabel expiryLabel = Theme.label(" ", Theme.SMALL.deriveFont(Font.BOLD), Theme.RED, SwingConstants.CENTER);
+    private final Theme.HintField otpField = new Theme.HintField("Enter OTP");
+    private final JLabel otpErr = Theme.err();
+    private javax.swing.Timer countdown;
+    private String currentOtp = null;
+    private int secondsLeft = 0;
 
     public VerificationPage() {
-        setTitle("AquaVolt SA - Verification");
-        setSize(425, 917);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        this(null);
+    }
 
-        // Notification area (hidden by default)
-        notificationLabel = new JLabel("", SwingConstants.CENTER);
-        notificationLabel.setOpaque(true);
-        notificationLabel.setBackground(Color.lightGray);
-        notificationLabel.setVisible(false);
-        add(notificationLabel, BorderLayout.NORTH);
+    public VerificationPage(UserStore.User user) {
+        super("Verification");
+        this.user = user;
 
-        // Main content
-        JPanel panel = new JPanel(new GridLayout(8, 1, 10, 10));
-        JLabel title = new JLabel("Verification", SwingConstants.CENTER);
-        JCheckBox smsBox = new JCheckBox("SMS");
-        JCheckBox emailBox = new JCheckBox("Email");
-        JButton sendBtn = new JButton("Send");
-        JTextField otpField = new JTextField("Enter OTP");
-        JButton enterBtn = new JButton("Enter");
-        JButton backBtn = new JButton("Back");
+        gap(0);
+        put(Theme.label("Verification", Theme.TITLE, Theme.BLUE, SwingConstants.CENTER));
+        gap(8);
+        put(Theme.label("Send OTP via:", Theme.BODY, Theme.INK, SwingConstants.CENTER));
+        JCheckBox smsBox = Theme.check("SMS");
+        JCheckBox emailBox = Theme.check("Email");
+        JPanel boxes = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        boxes.setOpaque(false);
+        boxes.add(smsBox);
+        boxes.add(emailBox);
+        put(boxes);
+        gap(8);
+        JButton sendBtn = put(new Theme.Btn("Send", Theme.BLUE));
+        gap(2);
+        expiryLabel.setVisible(false);
+        put(expiryLabel);
+        put(Theme.label("Enter OTP that has been sent:", Theme.BODY, Theme.INK, SwingConstants.CENTER));
+        gap(6);
+        put(otpField);
+        put(otpErr);
+        gap(10);
 
-        panel.add(title);
-        panel.add(new JLabel("Send OTP via:", SwingConstants.CENTER));
-        panel.add(smsBox);
-        panel.add(emailBox);
-        panel.add(sendBtn);
-        panel.add(otpField);
-        panel.add(enterBtn);
-        panel.add(backBtn);
+        JButton enterBtn = new Theme.Btn("Enter", Theme.BLUE);
+        JButton backBtn = new Theme.Btn("Back", Theme.GREY);
+        enterBtn.setPreferredSize(new Dimension(130, 44));
+        backBtn.setPreferredSize(new Dimension(130, 44));
+        put(Theme.row(enterBtn, backBtn));
 
-        add(panel, BorderLayout.CENTER);
+        countdown = new javax.swing.Timer(1000, e -> {
+            secondsLeft--;
+            tick();
+        });
 
         // Send button action
         sendBtn.addActionListener(e -> {
-            String otp = generateOTP();
-            notificationLabel.setText("OTP: " + otp + "  Just Now");
-            notificationLabel.setVisible(true);
+            if (!smsBox.isSelected() && !emailBox.isSelected()) {
+                Theme.toast(this, "Please select SMS or Email first", 640, 2500);
+                return;
+            }
+            currentOtp = generateOTP();
+            secondsLeft = 60;
+            Theme.ok(otpErr, otpField);
+            tick();
+            countdown.restart();
 
-            // Hide after 60 seconds
-            Timer timer = new Timer(60000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    notificationLabel.setVisible(false);
-                }
-            });
-            timer.setRepeats(false);
-            timer.start();
+            String via = smsBox.isSelected() && emailBox.isSelected() ? "SMS & Email"
+                    : smsBox.isSelected() ? "SMS" : "Email";
+            Theme.toast(this, "OTP sent via " + via + ": " + currentOtp + " (demo)", 640, 4000);
+            if (smsBox.isSelected()) {   // phone-style notification banner (like the original "Just Now" label)
+                Theme.toast(this, "SMS \u2022 AquaVolt SA   OTP: " + currentOtp + "  Just Now", 6, 6000);
+            }
+        });
+
+        enterBtn.addActionListener(e -> {
+            Theme.ok(otpErr, otpField);
+            String code = otpField.getText().trim();
+            if (currentOtp == null) {
+                Theme.toast(this, "Send an OTP first (it may have expired)", 640, 2500);
+            } else if (code.isEmpty()) {
+                Theme.bad(otpErr, otpField, "Enter the OTP that was sent");
+            } else if (!code.equals(currentOtp)) {
+                Theme.bad(otpErr, otpField, "Incorrect OTP, please try again");
+            } else {
+                countdown.stop();
+                go(new HomePage(this.user));
+            }
         });
 
         // Back button action
         backBtn.addActionListener(e -> {
-            new LoginSignupPage().setVisible(true);
-            dispose();
+            countdown.stop();
+            go(new LoginSignupPage());
         });
+    }
+
+    private void tick() {
+        if (currentOtp == null) {
+            expiryLabel.setVisible(false);
+            return;
+        }
+        expiryLabel.setVisible(true);
+        if (secondsLeft <= 0) {
+            expiryLabel.setText("OTP expired - press Send for a new one");
+            currentOtp = null;
+            countdown.stop();
+        } else {
+            expiryLabel.setText("OTP expires in " + secondsLeft + "s");
+        }
     }
 
     // Generate random 6-digit OTP

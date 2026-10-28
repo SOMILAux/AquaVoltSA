@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package za.ac.cput.aquavoltsa.GUI;
+
+import java.awt.*;
 import javax.swing.*;
-    import java.awt.*;
-    import java.awt.event.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 /**
  * @StudentNumber 241028213
  * @author Oyama Sibunzi
@@ -17,6 +14,7 @@ public class TermsPage extends JFrame{
         setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        if (Theme.load("plain_logo.png") != null) setIconImage(Theme.load("plain_logo.png"));
 
         JTextArea termsArea = new JTextArea();
         termsArea.setText("AquaVolt SA Terms and Conditions...\n\n1. General Provisions...\n AquaVolt SA (“the App”) provides digital services for monitoring, billing, and payment of water and electricity usage.\n" +
@@ -49,14 +47,35 @@ public class TermsPage extends JFrame{
 "Dispute Resolution: Any disputes between customers, municipalities, Eskom, or AquaVolt SA will be resolved under South African law.\n" +
 "Termination of Service: AquaVolt SA reserves the right to suspend accounts for misuse, fraud, or non‑compliance.\n" +
 "Amendments: Terms & Conditions may be updated; customers and partners will be notified of changes.");
-        
+
         termsArea.setEditable(false);
+        termsArea.setLineWrap(true);
+        termsArea.setWrapStyleWord(true);
+        termsArea.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        termsArea.setMargin(new Insets(8, 16, 8, 16));
+        termsArea.setCaretPosition(0);
+
+        JLabel heading = Theme.label("Terms and Conditions", Theme.TITLE, Theme.BLUE, SwingConstants.CENTER);
+        heading.setBorder(BorderFactory.createEmptyBorder(18, 0, 10, 0));
 
         JScrollPane scrollPane = new JScrollPane(termsArea);
-        JButton backBtn = new JButton("Back");
+        scrollPane.setBorder(null);
+        JButton backBtn = new Theme.Btn("Back", Theme.GREY);
 
-        add(scrollPane, BorderLayout.CENTER);
-        add(backBtn, BorderLayout.SOUTH);
+        JPanel backRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 8));
+        backRow.setBackground(Color.WHITE);
+        backRow.add(backBtn);
+
+        JPanel south = new JPanel(new BorderLayout());
+        south.add(backRow, BorderLayout.NORTH);
+        south.add(Theme.footer(), BorderLayout.SOUTH);
+
+        JPanel root = new JPanel(new BorderLayout());
+        root.setBackground(Color.WHITE);
+        root.add(heading, BorderLayout.NORTH);
+        root.add(scrollPane, BorderLayout.CENTER);
+        root.add(south, BorderLayout.SOUTH);
+        setContentPane(root);
 
         backBtn.addActionListener(e -> {
             new SignupPage3().setVisible(true);
@@ -64,4 +83,3 @@ public class TermsPage extends JFrame{
         });
     }
 }
-
