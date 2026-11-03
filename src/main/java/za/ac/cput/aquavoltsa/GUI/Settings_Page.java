@@ -172,7 +172,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             
         }
         if(e.getActionCommand().equals("Terms & Conditions") || e.getSource() == btTerms_Conditions){
-            Terms_and_Conditions tm = new Terms_and_Conditions();
+            TermsPage tm = new TermsPage();
             tm.setSize(425, 917);
             tm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             tm.setVisible(true);
@@ -180,7 +180,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             
         }
         if(e.getSource() == btNotification_Preference){
-            Notification_Preference noti = new Notification_Preference();
+            NotificationPage noti = new NotificationPage();
             noti.setSize(425, 917);
             noti.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             noti.setVisible(true);
@@ -204,7 +204,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             
         }
         if (e.getSource() == btLanguage) {
-            Language language = new Language();
+            LanguagePage language = new LanguagePage();
             language.setSize(425, 917);
             language.setLocationRelativeTo(null);
             language.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
