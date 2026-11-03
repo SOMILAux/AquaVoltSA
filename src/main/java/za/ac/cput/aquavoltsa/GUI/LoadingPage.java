@@ -44,7 +44,7 @@ public class LoadingPage extends JFrame {
 
         mainPanel.setBackground(BACKGROUND);
 
-        mainPanel.setLayout(null);
+        mainPanel.setLayout(null);tgtt
 
         
 
