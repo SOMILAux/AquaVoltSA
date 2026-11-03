@@ -29,8 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import za.ac.cput.aquavoltsa.DAO.DAO;
-
+import org.kordamp.ikonli.swing.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 /**
  *Student Number: 251239853
  * @author Aphelele Shange
@@ -39,7 +39,7 @@ public class buyElectricityPage extends JFrame{
     
     JPanel backgroundPanel, headerPanel, centerPanel, buttonPanel, buttonPanel2, customPanel;
     ImageIcon logo, circle;
-    JLabel logoLabel, circleLabel, meterNumberLabel, selectAmountLabel, currencyLabel;
+    JLabel logoLabel, circleLabel, meterNumberLabel, selectAmountLabel, currencyLabel, sideLabel, sideLabel1, sideLabel2, sideLabel3, nextLabel, backLabel;
     JTextField meterNumberField, customAmountField;
     JSeparator separator;
     JToggleButton firstAmount,secondAmount, thirdAmount, customAmount;
@@ -56,6 +56,18 @@ public class buyElectricityPage extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setFocusable(true);
+        
+        //=========================
+        //ICON SECTION
+        //=========================
+        
+        FontIcon bolt = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
+        FontIcon bolt1 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
+        FontIcon bolt2 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
+        FontIcon bolt3 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
+        
+        FontIcon next = FontIcon.of(FontAwesomeSolid.ARROW_RIGHT, 25, Color.BLACK);
+        FontIcon back = FontIcon.of(FontAwesomeSolid.ARROW_LEFT, 25, Color.BLACK);
                 
         backgroundPanel = new JPanel(){
 
@@ -92,6 +104,14 @@ public class buyElectricityPage extends JFrame{
         logoLabel.setOpaque(true);
 
         circleLabel = new JLabel(circular);
+        
+        sideLabel = new JLabel(bolt);
+        sideLabel1 = new JLabel(bolt1);
+        sideLabel2 = new JLabel(bolt2);
+        sideLabel3 = new JLabel(bolt3);
+        
+        nextLabel = new JLabel(next);
+        backLabel = new JLabel(back);
 
         headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
@@ -129,32 +149,40 @@ public class buyElectricityPage extends JFrame{
         selectAmountLabel.setAlignmentX(LEFT_ALIGNMENT);
         
         firstAmount = new JToggleButton("R50");
+        firstAmount.setLayout(new BorderLayout());
         firstAmount.setBorderPainted(false);
         firstAmount.setFocusPainted(false);
         firstAmount.setMaximumSize(new Dimension(150, 50));
         firstAmount.setFont(new Font("Inter", Font.BOLD, 18));
         firstAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
+        firstAmount.add(sideLabel, BorderLayout.WEST);
         
         secondAmount = new JToggleButton("R100");
+        secondAmount.setLayout(new BorderLayout());
         secondAmount.setBorderPainted(false);
         secondAmount.setFocusPainted(false);
         secondAmount.setMaximumSize(new Dimension(150, 50));
         secondAmount.setFont(new Font("Inter", Font.BOLD, 18));
         secondAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
+        secondAmount.add(sideLabel1, BorderLayout.WEST);
         
         thirdAmount = new JToggleButton("R150");
+        thirdAmount.setLayout(new BorderLayout());
         thirdAmount.setBorderPainted(false);
         thirdAmount.setFocusPainted(false);
         thirdAmount.setMaximumSize(new Dimension(150, 50));
         thirdAmount.setFont(new Font("Inter", Font.BOLD, 18));
         thirdAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
+        thirdAmount.add(sideLabel2, BorderLayout.WEST);
         
         customAmount = new JToggleButton("CUSTOM");
+        customAmount.setLayout(new BorderLayout());
         customAmount.setBorderPainted(false);
         customAmount.setFocusPainted(false);
         customAmount.setMaximumSize(new Dimension(150, 50));
         customAmount.setFont(new Font("Inter", Font.BOLD, 18));
         customAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
+        customAmount.add(sideLabel3, BorderLayout.WEST);
         
          group = new ButtonGroup();
          
@@ -205,6 +233,7 @@ public class buyElectricityPage extends JFrame{
         customPanel.add(customAmountField, BorderLayout.CENTER);
         
         continueBtn = new JButton("CONTINUE");
+        continueBtn.setLayout(new BorderLayout());
         continueBtn.setBorderPainted(false);
         continueBtn.setFocusPainted(false);
         continueBtn.setAlignmentX(LEFT_ALIGNMENT);
@@ -212,8 +241,10 @@ public class buyElectricityPage extends JFrame{
         continueBtn.setFont(new Font("Inter", Font.BOLD, 18));
         continueBtn.putClientProperty(FlatClientProperties.STYLE,
                 "arc : 30; background : #FFB300; Foreground : #FFFFFF");
+        continueBtn.add(nextLabel, BorderLayout.EAST);
 
         backBtn = new JButton("BACK");
+        backBtn.setLayout(new BorderLayout());
         backBtn.setBorderPainted(false);
         backBtn.setFocusPainted(false);
         backBtn.setAlignmentX(LEFT_ALIGNMENT);
@@ -221,6 +252,7 @@ public class buyElectricityPage extends JFrame{
         backBtn.setFont(new Font("Inter", Font.BOLD, 18));
         backBtn.putClientProperty(FlatClientProperties.STYLE,
                 "arc : 30; background : #FFB300; Foreground : #FFFFFF");
+        backBtn.add(backLabel, BorderLayout.WEST);
         
         centerPanel.add(meterNumberLabel);
         centerPanel.add(Box.createVerticalStrut(10));
@@ -251,6 +283,9 @@ public class buyElectricityPage extends JFrame{
             public void itemStateChanged(ItemEvent I) {
                 if (firstAmount.isSelected()) {
                     amount = 50;
+                    bolt.setIconColor(Color.WHITE);
+                }else{
+                    bolt.setIconColor(Color.ORANGE);
                 }
             }
         });
@@ -260,6 +295,9 @@ public class buyElectricityPage extends JFrame{
             public void itemStateChanged(ItemEvent I) {
                 if (secondAmount.isSelected()) {
                     amount = 100;
+                    bolt1.setIconColor(Color.WHITE);
+                }else{
+                    bolt1.setIconColor(Color.ORANGE);
                 }
             }
         });
@@ -269,6 +307,9 @@ public class buyElectricityPage extends JFrame{
             public void itemStateChanged(ItemEvent I) {
                 if (thirdAmount.isSelected()) {
                     amount = 150;
+                    bolt2.setIconColor(Color.WHITE);
+                }else{
+                    bolt2.setIconColor(Color.ORANGE);
                 }
             }
         });
@@ -278,9 +319,11 @@ public class buyElectricityPage extends JFrame{
             public void itemStateChanged(ItemEvent I) {
                 if (customAmount.isSelected()) {
                     customPanel.setVisible(true);
+                    bolt3.setIconColor(Color.WHITE);
                     
                 } else {
                     customPanel.setVisible(false);
+                    bolt3.setIconColor(Color.ORANGE);
                 }
             }
         });
