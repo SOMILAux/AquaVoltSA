@@ -44,7 +44,7 @@ public class LoadingPage extends JFrame {
 
         mainPanel.setBackground(BACKGROUND);
 
-        mainPanel.setLayout(null);tgtt
+        mainPanel.setLayout(null);
 
         
 
@@ -228,15 +228,6 @@ public class LoadingPage extends JFrame {
 
     
 
-   /** public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(() -> {
-            
-        new za.ac.cput.aquavoltsa.GUI.LoadingPage();
-
-            new LoadingPage();
-
-        });
-    } **/
 }
 
