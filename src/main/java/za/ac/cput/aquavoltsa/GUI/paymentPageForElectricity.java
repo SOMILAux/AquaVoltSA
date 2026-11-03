@@ -34,6 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
 import za.ac.cput.aquavoltsa.DAO.DAO;
 import za.ac.cput.aquavoltsa.Domain.ElectricityToken;
 import za.ac.cput.aquavoltsa.Domain.Payment;
@@ -50,10 +52,10 @@ public class paymentPageForElectricity extends JFrame {
     JPanel serviceFeePanel, totalPanel, leftMidSummaryPanel, rightMidSummaryPanel, meterNumberValue, customerNameValue, purchaseAmountValue, serviceFeeValue, totalValuePanel, panel1, panel2, panel3;
     JLabel circleLabel, secureIconLabel, confirmLabel, summaryIconLabel, purchaseSummaryLabel, meterNumberLabel, customerNameLabel, purchaseAmountLabel, serviceFeeLabel, totalLabel;
     JLabel meterLabel, nameLabel, amountLabel, serviceFee, totalValueLabel, paymentMethodLabel, paymentText;
-    JButton backBtn, buyBtn;
+    JButton backBtn;
     JRadioButton debit, eft, retail;
     ButtonGroup group;
-    ImageIcon circle, summaryIcon, secureIcon;
+    ImageIcon circle, secureIcon;
     JButton payBtn;
 
     String paymentMethod;
@@ -68,6 +70,13 @@ public class paymentPageForElectricity extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setFocusable(true);
+        
+        //=========================
+        //ICON SECTION
+        //=========================
+        
+        FontIcon backIcon = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
+        FontIcon summaryIcon = FontIcon.of(FontAwesomeSolid.CLIPBOARD_LIST, 25, Color.GRAY);
 
         backgroundPanel = new JPanel() {
 
@@ -97,8 +106,6 @@ public class paymentPageForElectricity extends JFrame {
         Image resizedCircle = circleIcon.getScaledInstance(490, 83, Image.SCALE_SMOOTH);
         ImageIcon circular = new ImageIcon(resizedCircle);
 
-        summaryIcon = new ImageIcon("summary.png");
-
         secureIcon = new ImageIcon("secure.png");
 
         circleLabel = new JLabel(circular);
@@ -115,28 +122,23 @@ public class paymentPageForElectricity extends JFrame {
         confirmLabel = new JLabel("Confirm & Pay");
         confirmLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-        backBtn = new JButton(new ImageIcon("back.png"));
+        backBtn = new JButton();
+        backBtn.setIcon(backIcon);
         backBtn.setFocusPainted(false);
         backBtn.setBorderPainted(false);
         backBtn.setBackground(Color.decode("#FFB300"));
-
-        buyBtn = new JButton(new ImageIcon("buy.png"));
-        buyBtn.setFocusPainted(false);
-        buyBtn.setBorderPainted(false);
-        buyBtn.setBackground(Color.decode("#FFB300"));
 
         headerPanel.add(Box.createHorizontalStrut(12));
         headerPanel.add(backBtn);
         headerPanel.add(Box.createHorizontalGlue());
         headerPanel.add(confirmLabel);
         headerPanel.add(Box.createHorizontalGlue());
-        headerPanel.add(buyBtn);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 25));
         //centerPanel.setOpaque(false);
-        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setBackground(Color.decode("#F8F8FF"));
 
         topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
@@ -146,7 +148,7 @@ public class paymentPageForElectricity extends JFrame {
         summaryPanel = new JPanel(new BorderLayout());
         summaryPanel.setMaximumSize(new Dimension(370, 250));
         summaryPanel.setAlignmentX(LEFT_ALIGNMENT);
-        summaryPanel.setBackground(new Color(242, 242, 242));
+        summaryPanel.setBackground(Color.decode("#FFFFFF"));
         summaryPanel.putClientProperty(FlatClientProperties.STYLE, "arc : 20");
 
         summaryIconLabel = new JLabel(summaryIcon);
@@ -279,12 +281,15 @@ public class paymentPageForElectricity extends JFrame {
 
         panel1.add(debit);
         panel1.setAlignmentX(LEFT_ALIGNMENT);
+        panel1.setBackground(Color.decode("#FFFFFF"));
 
         panel2.add(eft);
         panel2.setAlignmentX(LEFT_ALIGNMENT);
+        panel2.setBackground(Color.decode("#FFFFFF"));
 
         panel3.add(retail);
         panel3.setAlignmentX(LEFT_ALIGNMENT);
+        panel3.setBackground(Color.decode("#FFFFFF"));
 
         group.add(debit);
         group.add(eft);

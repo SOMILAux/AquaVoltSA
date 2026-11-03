@@ -31,45 +31,46 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import org.kordamp.ikonli.swing.FontIcon;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+
 /**
- *Student Number: 251239853
+ * Student Number: 251239853
+ *
  * @author Aphelele Shange
  */
-public class buyElectricityPage extends JFrame{
-    
+public class buyElectricityPage extends JFrame {
+
     JPanel backgroundPanel, headerPanel, centerPanel, buttonPanel, buttonPanel2, customPanel;
     ImageIcon logo, circle;
     JLabel logoLabel, circleLabel, meterNumberLabel, selectAmountLabel, currencyLabel, sideLabel, sideLabel1, sideLabel2, sideLabel3, nextLabel, backLabel;
     JTextField meterNumberField, customAmountField;
     JSeparator separator;
-    JToggleButton firstAmount,secondAmount, thirdAmount, customAmount;
+    JToggleButton firstAmount, secondAmount, thirdAmount, customAmount;
     ButtonGroup group;
     JButton continueBtn, backBtn;
-    
+
     int amount;
-    
-    public buyElectricityPage(){
-        
+
+    public buyElectricityPage() {
+
         this.setTitle("Buying electricity");
         this.setSize(425, 917);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setFocusable(true);
-        
+
         //=========================
         //ICON SECTION
         //=========================
-        
         FontIcon bolt = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
         FontIcon bolt1 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
         FontIcon bolt2 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
         FontIcon bolt3 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
-        
-        FontIcon next = FontIcon.of(FontAwesomeSolid.ARROW_RIGHT, 25, Color.BLACK);
-        FontIcon back = FontIcon.of(FontAwesomeSolid.ARROW_LEFT, 25, Color.BLACK);
-                
-        backgroundPanel = new JPanel(){
+
+        FontIcon next = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_RIGHT, 30, Color.BLACK);
+        FontIcon back = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
+
+        backgroundPanel = new JPanel() {
 
             @Override
             public void paintComponent(Graphics g) {
@@ -88,7 +89,7 @@ public class buyElectricityPage extends JFrame{
             }
 
         };
-        
+
         backgroundPanel.setLayout(new BorderLayout());
         logo = new ImageIcon("firstLogo.png");
         Image logoIcon = logo.getImage();
@@ -104,12 +105,12 @@ public class buyElectricityPage extends JFrame{
         logoLabel.setOpaque(true);
 
         circleLabel = new JLabel(circular);
-        
+
         sideLabel = new JLabel(bolt);
         sideLabel1 = new JLabel(bolt1);
         sideLabel2 = new JLabel(bolt2);
         sideLabel3 = new JLabel(bolt3);
-        
+
         nextLabel = new JLabel(next);
         backLabel = new JLabel(back);
 
@@ -120,7 +121,7 @@ public class buyElectricityPage extends JFrame{
         headerPanel.add(logoLabel);
         headerPanel.add(Box.createVerticalStrut(-60));
         headerPanel.add(circleLabel);
-        
+
         //Initialising the content Panel
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -130,7 +131,7 @@ public class buyElectricityPage extends JFrame{
         meterNumberLabel = new JLabel("Meter Number");
         meterNumberLabel.setFont(new Font("Arial", Font.BOLD, 20));
         meterNumberLabel.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         meterNumberField = new JTextField();
         meterNumberField.setFont(new Font("Arial", Font.PLAIN, 20));
         meterNumberField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
@@ -138,7 +139,7 @@ public class buyElectricityPage extends JFrame{
         meterNumberField.putClientProperty(FlatClientProperties.STYLE, "arc: 20");
         meterNumberField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your Meter Number");
         meterNumberField.setMargin(new Insets(0, 10, 0, 5));
-        
+
         separator = new JSeparator();
         separator.setPreferredSize(new Dimension(425, 2));
         separator.setForeground(Color.decode("#FFFFFF"));
@@ -147,7 +148,7 @@ public class buyElectricityPage extends JFrame{
         selectAmountLabel = new JLabel("Select Amount");
         selectAmountLabel.setFont(new Font("Arial", Font.BOLD, 20));
         selectAmountLabel.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         firstAmount = new JToggleButton("R50");
         firstAmount.setLayout(new BorderLayout());
         firstAmount.setBorderPainted(false);
@@ -156,7 +157,7 @@ public class buyElectricityPage extends JFrame{
         firstAmount.setFont(new Font("Inter", Font.BOLD, 18));
         firstAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
         firstAmount.add(sideLabel, BorderLayout.WEST);
-        
+
         secondAmount = new JToggleButton("R100");
         secondAmount.setLayout(new BorderLayout());
         secondAmount.setBorderPainted(false);
@@ -165,7 +166,7 @@ public class buyElectricityPage extends JFrame{
         secondAmount.setFont(new Font("Inter", Font.BOLD, 18));
         secondAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
         secondAmount.add(sideLabel1, BorderLayout.WEST);
-        
+
         thirdAmount = new JToggleButton("R150");
         thirdAmount.setLayout(new BorderLayout());
         thirdAmount.setBorderPainted(false);
@@ -174,7 +175,7 @@ public class buyElectricityPage extends JFrame{
         thirdAmount.setFont(new Font("Inter", Font.BOLD, 18));
         thirdAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
         thirdAmount.add(sideLabel2, BorderLayout.WEST);
-        
+
         customAmount = new JToggleButton("CUSTOM");
         customAmount.setLayout(new BorderLayout());
         customAmount.setBorderPainted(false);
@@ -183,34 +184,34 @@ public class buyElectricityPage extends JFrame{
         customAmount.setFont(new Font("Inter", Font.BOLD, 18));
         customAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
         customAmount.add(sideLabel3, BorderLayout.WEST);
-        
-         group = new ButtonGroup();
-         
-         group.add(firstAmount);
-         group.add(secondAmount);
-         group.add(thirdAmount);
-         group.add(customAmount);
+
+        group = new ButtonGroup();
+
+        group.add(firstAmount);
+        group.add(secondAmount);
+        group.add(thirdAmount);
+        group.add(customAmount);
 
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
         buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
         buttonPanel.setOpaque(false);
-        
+
         buttonPanel.add(firstAmount);
         buttonPanel.add(Box.createHorizontalStrut(50));
         buttonPanel.add(secondAmount);
-        
+
         buttonPanel2 = new JPanel();
         buttonPanel2.setLayout(new BoxLayout(buttonPanel2, BoxLayout.X_AXIS));
         buttonPanel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
         buttonPanel2.setAlignmentX(LEFT_ALIGNMENT);
         buttonPanel2.setOpaque(false);
-        
+
         buttonPanel2.add(thirdAmount);
         buttonPanel2.add(Box.createHorizontalStrut(50));
         buttonPanel2.add(customAmount);
-        
+
         currencyLabel = new JLabel("R");
         currencyLabel.setFont(new Font("Inter", Font.BOLD, 20));
         currencyLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -228,10 +229,10 @@ public class buyElectricityPage extends JFrame{
         customPanel.setVisible(false);
         customPanel.putClientProperty(FlatClientProperties.STYLE, "arc : 20");
         customPanel.setOpaque(false);
-        
+
         customPanel.add(currencyLabel, BorderLayout.WEST);
         customPanel.add(customAmountField, BorderLayout.CENTER);
-        
+
         continueBtn = new JButton("CONTINUE");
         continueBtn.setLayout(new BorderLayout());
         continueBtn.setBorderPainted(false);
@@ -253,7 +254,7 @@ public class buyElectricityPage extends JFrame{
         backBtn.putClientProperty(FlatClientProperties.STYLE,
                 "arc : 30; background : #FFB300; Foreground : #FFFFFF");
         backBtn.add(backLabel, BorderLayout.WEST);
-        
+
         centerPanel.add(meterNumberLabel);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(meterNumberField);
@@ -271,12 +272,12 @@ public class buyElectricityPage extends JFrame{
         centerPanel.add(continueBtn);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(backBtn);
-        
+
         backgroundPanel.add(headerPanel, BorderLayout.NORTH);
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
-        
+
         add(backgroundPanel);
-        
+
         //Adding Functionality             
         firstAmount.addItemListener(new ItemListener() {
             @Override
@@ -284,81 +285,81 @@ public class buyElectricityPage extends JFrame{
                 if (firstAmount.isSelected()) {
                     amount = 50;
                     bolt.setIconColor(Color.WHITE);
-                }else{
+                } else {
                     bolt.setIconColor(Color.ORANGE);
                 }
             }
         });
-        
+
         secondAmount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent I) {
                 if (secondAmount.isSelected()) {
                     amount = 100;
                     bolt1.setIconColor(Color.WHITE);
-                }else{
+                } else {
                     bolt1.setIconColor(Color.ORANGE);
                 }
             }
         });
-        
+
         thirdAmount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent I) {
                 if (thirdAmount.isSelected()) {
                     amount = 150;
                     bolt2.setIconColor(Color.WHITE);
-                }else{
+                } else {
                     bolt2.setIconColor(Color.ORANGE);
                 }
             }
         });
-        
+
         customAmount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent I) {
                 if (customAmount.isSelected()) {
                     customPanel.setVisible(true);
                     bolt3.setIconColor(Color.WHITE);
-                    
+
                 } else {
                     customPanel.setVisible(false);
                     bolt3.setIconColor(Color.ORANGE);
                 }
             }
         });
-        
+
         continueBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String meterNumber = meterNumberField.getText();
                 String Amount = customAmountField.getText();
-                
+
+                if (customAmount.isSelected()) {
+                    try {
+                        amount = Integer.parseInt(Amount);
+                    } catch (NumberFormatException n) {
+                        JOptionPane.showMessageDialog(null, "Amount should contain only Digits");
+                    }
+                }
 
                 if (meterNumber.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your Meter Number", "Meter number field is empty", JOptionPane.OK_OPTION);
-                } else if (!firstAmount.isSelected() && !secondAmount.isSelected() && !thirdAmount.isSelected() &&  !customAmount.isSelected()) {
+                } else if (!firstAmount.isSelected() && !secondAmount.isSelected() && !thirdAmount.isSelected() && !customAmount.isSelected()) {
                     JOptionPane.showMessageDialog(null, "Choose or enter your Amount!", "Select one Toggle Button", JOptionPane.OK_OPTION);
                 } else if (customAmount.isSelected() && Amount.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your amount", "Amount cannot be empty", JOptionPane.NO_OPTION);
+                } else if (amount < 50) {
+                    JOptionPane.showMessageDialog(null, "Minimum purchase is R50", "Amount cannot be less than R50", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
-                    if (customAmount.isSelected()) {
-                        try{
-                        amount = Integer.parseInt(Amount);
-                        }catch(NumberFormatException n){
-                            JOptionPane.showMessageDialog(null, "Amount should contain only Digits");
-                        }
-                    }
-                    
+
                     long meter = 0;
                     try {
                         meter = Long.parseLong(meterNumber);
                     } catch (NumberFormatException n) {
                         JOptionPane.showMessageDialog(null, "Meter Number should contain only Digits!");
                     }
-                    
-                                        
+
                     paymentPageForElectricity page = new paymentPageForElectricity(meter, "Aphelele Shange", amount);
                     page.setVisible(true);
                     dispose();
@@ -366,7 +367,7 @@ public class buyElectricityPage extends JFrame{
             }
 
         });
-        
+
     }
 
 }
