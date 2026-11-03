@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class NotificationPage extends JFrame {
 

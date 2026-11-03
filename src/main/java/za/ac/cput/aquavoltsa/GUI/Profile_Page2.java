@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class Profile_Page2 extends JFrame {
 

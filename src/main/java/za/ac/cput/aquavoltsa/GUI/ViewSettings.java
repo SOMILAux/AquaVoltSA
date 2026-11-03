@@ -4,7 +4,6 @@ package za.ac.cput.aquavoltsa.GUI;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Sbahle
@@ -12,11 +11,11 @@ package za.ac.cput.aquavoltsa.GUI;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class ViewSettings {
 
-    public static void main(String[] args) {
-
+    public ViewSettings() {
         String sql = "SELECT * FROM Settings";
 
         try {

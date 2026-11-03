@@ -6,6 +6,7 @@ import za.ac.cput.aquavoltsa.GUI.Settings_Page;
 import java.awt.*;
 import java.sql.*;
 import javax.swing.*;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class Notification_Preference extends JFrame {
 
@@ -248,9 +249,5 @@ public class Notification_Preference extends JFrame {
         this.dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Notification_Preference().setVisible(true);
-        });
-    }
+    
 }

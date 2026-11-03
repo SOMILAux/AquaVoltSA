@@ -13,6 +13,7 @@ import java.security.spec.KeySpec;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.util.Base64;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 
 public class Change_Password_Page extends JFrame {

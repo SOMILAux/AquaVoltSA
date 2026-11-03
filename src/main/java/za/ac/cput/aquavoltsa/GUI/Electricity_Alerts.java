@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class Electricity_Alerts extends JFrame {
 
@@ -338,10 +339,5 @@ public class Electricity_Alerts extends JFrame {
         statement.addBatch();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Electricity_Alerts page = new Electricity_Alerts();
-            page.setVisible(true);
-        });
-    }
+    
 }

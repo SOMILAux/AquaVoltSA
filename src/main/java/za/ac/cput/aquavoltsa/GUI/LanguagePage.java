@@ -5,6 +5,7 @@ package za.ac.cput.aquavoltsa.GUI;
  *
  * @author Sbahle
  */
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;  
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class LanguagePage extends JFrame {
 
@@ -24,6 +26,8 @@ public class LanguagePage extends JFrame {
     private static String selectedLanguage = "English";
 
     private Map<String, String[]> translations;
+    
+    
 
     public LanguagePage() {
 
@@ -475,8 +479,5 @@ public class LanguagePage extends JFrame {
     // ==================================================
     // MAIN
     // ==================================================
-    public static void main(String[] args) {
-
-        new LanguagePage();
-    }
+    
 }

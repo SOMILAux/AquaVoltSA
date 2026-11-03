@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class Water_Alerts extends JFrame {
 
@@ -335,10 +336,5 @@ public class Water_Alerts extends JFrame {
         statement.addBatch();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Water_Alerts page = new Water_Alerts();
-            page.setVisible(true);
-        });
-    }
+    
 }
