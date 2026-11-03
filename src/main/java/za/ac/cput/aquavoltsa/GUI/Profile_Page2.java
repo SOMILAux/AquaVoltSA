@@ -83,11 +83,11 @@ public class Profile_Page2 extends JFrame {
         genderIcon = new ImageIcon(
                 getClass().getResource("/icons/profile.png"));
         date_of_birth_Icon = new ImageIcon(
-                getClass().getResource("/icons/calendar.png"));
+                getClass().getResource("/icons/calend.png"));
         account_status_Icon = new ImageIcon(
                 getClass().getResource("/icons/account.png"));
         logoIcon = new ImageIcon(
-                getClass().getResource("/icons/logo.png"));
+                getClass().getResource("/icons/plain_logo.png"));
 
         lbFull_Name = new JLabel("Full Name");
         lbUsername = new JLabel("Username");

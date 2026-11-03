@@ -13,6 +13,17 @@ import main.java.za.ac.cput.aquavoltsa.GUI.Water_Alerts;
 */
 
 public class Settings_Page extends JFrame implements ActionListener{
+    /*
+    public static void main(String[] args) {
+
+        Settings_Page page = new Settings_Page();
+        page.showGui();
+        page.setSize(425, 917);
+        //page.setLocationRelativeTo(null);
+        page.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        page.setVisible(true);
+    }
+*/
     private JLabel lbSettings, lbAccount,lbNotifications, lbApp_Preference, lbBlank, lbProfile_Settings, lbJust_b;
     private JButton  btProfile_Settings, btTerms_Conditions, btNotification_Preference, btWater_Alerts, btElectricity_Alerts;
     private JButton  btLanguage, btHelp_Support, btAbout_AquaVolt;
@@ -62,7 +73,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         help_supportIcon = new ImageIcon(getClass().getResource("/icons/help.png"));
         aboutIcon = new ImageIcon(getClass(). getResource("/icons/about.png"));
         logoutIcon = new ImageIcon(getClass().getResource("/icons/logout.png"));
-        logoIcon = new ImageIcon( getClass(). getResource("/icons/logo.png"));
+        logoIcon = new ImageIcon( getClass(). getResource("/icons/plain_logo.png"));
         
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
       
@@ -154,7 +165,7 @@ public class Settings_Page extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if( e.getActionCommand().equals("Profile Settings") || e.getSource() == btProfile_Settings){
             Profile_Page2 profile = new Profile_Page2();
-            profile.setSize(600,820);
+            profile.setSize(425, 917);
             profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             profile.setVisible(true);
             this.dispose();
@@ -162,7 +173,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         }
         if(e.getActionCommand().equals("Terms & Conditions") || e.getSource() == btTerms_Conditions){
             Terms_and_Conditions tm = new Terms_and_Conditions();
-            tm.setSize(650, 800);
+            tm.setSize(425, 917);
             tm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             tm.setVisible(true);
             this.dispose();
@@ -170,7 +181,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         }
         if(e.getSource() == btNotification_Preference){
             Notification_Preference noti = new Notification_Preference();
-            noti.setSize(600, 800);
+            noti.setSize(425, 917);
             noti.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             noti.setVisible(true);
             this.dispose();
@@ -178,7 +189,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         }
         if(e.getSource() == btWater_Alerts){
             Water_Alerts water = new Water_Alerts();
-            water.setSize(600,800);
+            water.setSize(425, 917);
             water.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             water.setVisible(true);
             this.dispose();
@@ -186,7 +197,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         }
         if(e.getSource() == btElectricity_Alerts){
             Electricity_Alerts elect  = new Electricity_Alerts();
-            elect.setSize(600, 800);
+            elect.setSize(425, 917);
             elect.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             elect.setVisible(true);
             this.dispose();
@@ -194,7 +205,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         }
         if (e.getSource() == btLanguage) {
             Language language = new Language();
-            language.setSize(600, 800);
+            language.setSize(425, 917);
             language.setLocationRelativeTo(null);
             language.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             language.setVisible(true);
@@ -203,7 +214,7 @@ public class Settings_Page extends JFrame implements ActionListener{
 }
         if(e.getActionCommand().equals("Help & Support") || e.getSource() == btHelp_Support){
             Help_and_Support_Page help = new Help_and_Support_Page();
-            help.setSize(400,600);
+            help.setSize(425, 917);
             help.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             help.setVisible(true);
             
@@ -225,6 +236,7 @@ if (e.getSource() == btLogOut) {
         this.dispose();
     }
 }
+
 
     }
     

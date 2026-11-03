@@ -76,7 +76,7 @@ public class Change_Password_Page extends JFrame {
 
         setTitle("Change Password");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(600, 700);
+        setSize(425, 917);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(5, 1));
 
@@ -181,7 +181,7 @@ public class Change_Password_Page extends JFrame {
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
-            page.setSize(600, 800);
+            page.setSize(425, 917);
             page.setLocationRelativeTo(null);
             page.setVisible(true);
             this.dispose();
@@ -214,7 +214,7 @@ public class Change_Password_Page extends JFrame {
         add(panel_2);
 
         // Existing logo
-        logoIcon = new ImageIcon(getClass().getResource("/icons/logo.png"));
+        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
         Image logoImage = logoIcon.getImage().getScaledInstance(
                 130, 130, Image.SCALE_SMOOTH);
         lbJust_blank2.setIcon(new ImageIcon(logoImage));
