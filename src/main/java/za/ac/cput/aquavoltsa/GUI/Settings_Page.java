@@ -13,7 +13,7 @@ import main.java.za.ac.cput.aquavoltsa.GUI.Water_Alerts;
 */
 
 public class Settings_Page extends JFrame implements ActionListener{
-    /*
+   
     public static void main(String[] args) {
 
         Settings_Page page = new Settings_Page();
@@ -23,7 +23,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         page.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         page.setVisible(true);
     }
-*/
+
     private JLabel lbSettings, lbAccount,lbNotifications, lbApp_Preference, lbBlank, lbProfile_Settings, lbJust_b;
     private JButton  btProfile_Settings, btTerms_Conditions, btNotification_Preference, btWater_Alerts, btElectricity_Alerts;
     private JButton  btLanguage, btHelp_Support, btAbout_AquaVolt;
