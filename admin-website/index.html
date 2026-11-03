@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AquaVolt SA - Admin Portal</title>
+<style>
+:root{--blue:#2196F3;--navy:#0d47a1;--yellow:#FFC107;--ink:#1c2733;--grey:#6b7785;--line:#e6ebf1;--bg:#f2f6fb;--green:#2e7d32;--red:#d32f2f;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+.yv{color:var(--yellow)}
+
+/* ---------- login ---------- */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;
+  background:linear-gradient(160deg,#e3f2fd,#fff 55%,#fff8e1)}
+#login::before{content:"";position:absolute;inset:0;background:url(images/bg1.png) center/cover;opacity:.35}
+.card-login{position:relative;width:100%;max-width:410px;background:#fff;border-radius:20px;padding:34px 32px 26px;
+  box-shadow:0 20px 60px rgba(13,71,161,.18);text-align:center;animation:rise .6s ease}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.card-login img.logo{width:86px}
+.brand{font-size:28px;font-weight:800;margin-top:6px;letter-spacing:.3px}
+.sub{color:var(--grey);margin:4px 0 22px;font-size:14px}
+.field{text-align:left;margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--grey);margin-bottom:5px}
+.field input{width:100%;padding:13px 14px;border:1.5px solid #cfd8e3;border-radius:12px;font-size:15px;outline:none;transition:.2s}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(33,150,243,.15)}
+.pw{position:relative}.pw button{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--blue);font-weight:600;font-size:12px;padding:6px}
+.btn{border:0;border-radius:999px;padding:13px 22px;font-weight:700;font-size:15px;color:#fff;background:var(--blue);transition:.2s}
+.btn:hover{background:#1976d2;transform:translateY(-1px)}
+.btn.full{width:100%}
+.btn.grey{background:#757575}.btn.red{background:var(--red)}.btn.green{background:var(--green)}
+.btn.sm{padding:7px 14px;font-size:12.5px}
+.errmsg{color:var(--red);font-size:13px;min-height:18px;margin-bottom:8px}
+.partners{margin-top:22px;border-top:1px solid var(--line);padding-top:14px;font-size:12px;font-weight:600}
+.partners div{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;font-weight:400}
+.partners img{height:30px}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* ---------- app shell ---------- */
+#app{display:flex;min-height:100vh}
+aside{width:250px;background:linear-gradient(180deg,var(--navy),#0b2f6b);color:#fff;padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+aside .top{display:flex;align-items:center;gap:10px;padding:0 8px 22px;border-bottom:1px solid rgba(255,255,255,.15)}
+aside .top img{width:42px;background:#fff;border-radius:12px;padding:5px}
+aside .top b{font-size:19px}aside .top small{display:block;opacity:.7;font-size:11px}
+nav{margin-top:18px;display:flex;flex-direction:column;gap:6px}
+nav button{display:flex;align-items:center;justify-content:space-between;background:none;border:0;color:#dbe8ff;padding:12px 14px;border-radius:12px;font-size:14.5px;text-align:left;transition:.2s}
+nav button:hover{background:rgba(255,255,255,.1)}
+nav button.on{background:#fff;color:var(--navy);font-weight:700}
+.badge{background:var(--yellow);color:#3b2a00;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:700}
+aside .foot{margin-top:auto;font-size:12px;opacity:.85;padding:10px 8px}
+.live{display:flex;align-items:center;gap:8px}
+.dot{width:9px;height:9px;border-radius:50%;background:#69f0ae;box-shadow:0 0 0 0 rgba(105,240,174,.7);animation:pulse 2s infinite}
+.dot.off{background:var(--yellow);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(105,240,174,0)}100%{box-shadow:0 0 0 0 rgba(105,240,174,0)}}
+main{flex:1;padding:26px 30px;min-width:0}
+.topbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.topbar h1{font-size:24px;flex:1;min-width:200px}
+.search{position:relative;flex:0 1 380px;width:100%}
+.search input{width:100%;padding:12px 16px 12px 40px;border-radius:999px;border:1.5px solid #cfd8e3;font-size:14px;outline:none;background:#fff}
+.search input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(33,150,243,.15)}
+.search span{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--grey)}
+.banner{background:#fff8e1;border:1px solid #ffe082;color:#7a5b00;padding:10px 14px;border-radius:12px;margin-bottom:16px;font-size:13.5px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:20px}
+.stat{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(30,60,100,.06);border-top:4px solid var(--blue)}
+.stat.y{border-color:var(--yellow)}.stat.g{border-color:var(--green)}.stat.n{border-color:var(--navy)}
+.stat small{color:var(--grey);font-weight:600}.stat b{display:block;font-size:32px;margin-top:4px}
+.panel{background:var(--card);border-radius:18px;box-shadow:0 2px 10px rgba(30,60,100,.06);overflow:hidden}
+.panel-h{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.panel-h h2{font-size:17px;flex:1}
+.tabs{display:flex;gap:6px}
+.tabs button{border:0;background:var(--bg);padding:7px 14px;border-radius:999px;font-weight:600;color:var(--grey);font-size:13px}
+.tabs button.on{background:var(--blue);color:#fff}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--grey);padding:12px 20px;background:#fafcfe}
+td{padding:13px 20px;border-top:1px solid var(--line);font-size:14px;vertical-align:middle}
+tr:hover td{background:#f8fbff}
+.who{display:flex;align-items:center;gap:12px}
+.av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.who small,td small{color:var(--grey);display:block;font-size:12px}
+.pill{padding:4px 11px;border-radius:999px;font-size:12px;font-weight:700}
+.pill.ok{background:#e8f5e9;color:var(--green)}.pill.wait{background:#fff3cd;color:#8a6500}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.empty{padding:40px;text-align:center;color:var(--grey)}
+mark{background:#fff3a8;padding:0 2px;border-radius:3px}
+
+/* ---------- modal / toast ---------- */
+.overlay{position:fixed;inset:0;background:rgba(13,30,60,.55);display:grid;place-items:center;padding:16px;z-index:50;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:26px;animation:rise .3s}
+.modal h3{font-size:20px;margin-bottom:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin:18px 0}
+.grid div small{display:block;color:var(--grey);font-size:11.5px;font-weight:600;text-transform:uppercase}
+.grid .wide{grid-column:1/-1}
+.mfoot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+#toasts{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:60}
+.toast{background:#263238;color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:rise .3s;font-size:14px}
+.toast.ok{border-left:5px solid #69f0ae}.toast.bad{border-left:5px solid #ff8a80}
+@media(max-width:860px){aside{display:none}main{padding:18px 14px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<section id="login">
+  <form class="card-login" id="loginForm" autocomplete="off">
+    <img class="logo" src="images/plain_logo.png" alt="AquaVolt SA">
+    <div class="brand">Aqua<span class="yv">V</span>olt SA</div>
+    <p class="sub">Staff &amp; municipality admin portal</p>
+    <div class="field"><label for="u">Username</label><input id="u" type="text" placeholder="Enter username" required></div>
+    <div class="field"><label for="p">Password</label>
+      <div class="pw"><input id="p" type="password" placeholder="Enter password" required><button type="button" id="showPw">Show</button></div></div>
+    <div class="errmsg" id="loginErr"></div>
+    <button class="btn full" type="submit">Sign in</button>
+    <div class="partners">Partnered with:
+      <div><img src="images/national_logo1.png" alt=""> SA Municipality <img src="images/eskom1.png" alt="Eskom" style="height:44px;margin:-6px 0"></div>
+    </div>
+  </form>
+</section>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+  <aside>
+    <div class="top"><img src="images/plain_logo.png" alt=""><div><b>Aqua<span class="yv">V</span>olt SA</b><small>Admin Portal</small></div></div>
+    <nav>
+      <button data-f="all" class="on">&#9783;&nbsp; All accounts <span class="badge" id="nAll">0</span></button>
+      <button data-f="PENDING">&#9203;&nbsp; Awaiting approval <span class="badge" id="nPend">0</span></button>
+      <button data-f="VERIFIED">&#10004;&nbsp; Verified <span class="badge" id="nVer">0</span></button>
+    </nav>
+    <div class="foot">
+      <div class="live"><span class="dot" id="dot"></span><span id="liveTxt">Live from the Java app</span></div>
+      <button class="btn grey sm" id="logout" style="margin-top:14px;width:100%">Sign out</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <h1 id="title">All accounts</h1>
+      <div class="search"><span>&#128269;</span><input id="q" type="search" placeholder="Search by name, username, email, ID or meter..."></div>
+      <button class="btn sm" id="refresh">&#8635; Refresh</button>
+      <button class="btn sm grey" id="csv">&#8681; Export CSV</button>
+    </div>
+    <div class="banner hidden" id="offline">Java app not reachable - showing <b>demo data</b>. Run the NetBeans app and open <b>http://localhost:8080</b> for live data.</div>
+
+    <div class="stats">
+      <div class="stat n"><small>Total accounts</small><b id="sTotal">0</b></div>
+      <div class="stat y"><small>Awaiting approval</small><b id="sPend">0</b></div>
+      <div class="stat g"><small>Verified</small><b id="sVer">0</b></div>
+      <div class="stat"><small>Meter details added</small><b id="sMeter">0</b></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h"><h2>Customer accounts</h2>
+        <div class="tabs" id="tabs"><button data-f="all" class="on">All</button><button data-f="PENDING">Pending</button><button data-f="VERIFIED">Verified</button></div></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Customer</th><th>ID number</th><th>Contact</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="rows"></tbody></table></div>
+      <div class="empty hidden" id="empty">No accounts match your search.</div>
+    </div>
+  </main>
+</div>
+
+<div id="modalHost"></div>
+<div id="toasts"></div>
+
+<script>
+const KEY = 'admin12304';
+const BASE = location.protocol.startsWith('http') ? '' : 'http://localhost:8080';   // opened from the Java server or straight from disk
+let users = [], filter = 'all', query = '', offline = false, timer = null;
+
+const DEMO = [
+ {id:'D1',fullName:'Cheese Mokoena',idNumber:'9001015800086',username:'Cheese',email:'cheese@mail.co.za',phone:'0821234567',address:'12 Long Street, Cape Town',meter:'MTR-44821',serial:'SN-77120',waterMeter:'WTR-1024',accountNo:'ACC-9981',status:'VERIFIED',created:'2026-10-20 09:12'},
+ {id:'D2',fullName:'Thando Nkosi',idNumber:'9505055800083',username:'Thando',email:'thando@gmail.com',phone:'0735550142',address:'8 Vilakazi Street, Soweto',meter:'MTR-10977',serial:'SN-30551',waterMeter:'',accountNo:'',status:'PENDING',created:'2026-10-22 14:40'},
+ {id:'D3',fullName:'Naledi Dlamini',idNumber:'0001015800087',username:'Naledi',email:'naledi@outlook.com',phone:'0614449087',address:'45 Berea Road, Durban',meter:'',serial:'',waterMeter:'WTR-5521',accountNo:'ACC-1207',status:'PENDING',created:'2026-10-23 08:05'},
+ {id:'D4',fullName:'Sipho Khumalo',idNumber:'8812125800085',username:'Sipho',email:'sipho.k@mail.com',phone:'0794447712',address:'3 Church Street, Pretoria',meter:'MTR-88231',serial:'SN-12089',waterMeter:'WTR-7710',accountNo:'ACC-3345',status:'VERIFIED',created:'2026-10-18 17:30'}
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- login ---------- */
+function enter(){ $('#login').classList.add('hidden'); $('#app').classList.remove('hidden'); load(); timer = setInterval(load, 5000); }
+$('#loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if ($('#u').value.trim() === 'admin12304' && $('#p').value === 'admin12304') { sessionStorage.setItem('av_admin','1'); enter(); }
+  else { $('#loginErr').textContent = 'Incorrect username or password'; const c = $('.card-login'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); }
+});
+$('#showPw').onclick = () => { const p = $('#p'); const s = p.type === 'password'; p.type = s ? 'text' : 'password'; $('#showPw').textContent = s ? 'Hide' : 'Show'; };
+$('#logout').onclick = () => { sessionStorage.removeItem('av_admin'); clearInterval(timer); location.reload(); };
+if (sessionStorage.getItem('av_admin')) enter();
+
+/* ---------- data ---------- */
+async function api(path, method){
+  const r = await fetch(BASE + path + (path.includes('?') ? '&' : '?') + 'k=' + KEY, {method: method || 'GET'});
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+async function load(){
+  try { users = await api('/api/users'); offline = false; }
+  catch (e) { if (!offline) users = JSON.parse(JSON.stringify(DEMO)); offline = true; }
+  render();
+}
+async function act(kind, id){
+  if (offline) {
+    if (kind === 'delete') users = users.filter(u => u.id !== id);
+    else users.forEach(u => { if (u.id === id) u.status = kind === 'approve' ? 'VERIFIED' : 'PENDING'; });
+  } else {
+    try { await api('/api/' + kind + '?id=' + encodeURIComponent(id), 'POST'); await load(); }
+    catch (e) { return toast('Could not reach the Java app', 'bad'); }
+  }
+  render();
+}
+
+/* ---------- render ---------- */
+const initials = n => n.split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase() || '?';
+const mask = id => id.length > 6 ? id.slice(0,6) + '*'.repeat(id.length - 6) : id;
+function hl(t){ t = esc(t); if (!query) return t; const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','ig'); return t.replace(re,'<mark>$1</mark>'); }
+function visible(){
+  const q = query.toLowerCase();
+  return users.filter(u => (filter === 'all' || u.status === filter) &&
+    (!q || [u.fullName,u.username,u.email,u.idNumber,u.phone,u.meter,u.waterMeter].some(v => (v||'').toLowerCase().includes(q))));
+}
+function render(){
+  const pend = users.filter(u => u.status === 'PENDING').length, ver = users.length - pend;
+  $('#sTotal').textContent = $('#nAll').textContent = users.length;
+  $('#sPend').textContent = $('#nPend').textContent = pend;
+  $('#sVer').textContent = $('#nVer').textContent = ver;
+  $('#sMeter').textContent = users.filter(u => u.meter || u.waterMeter).length;
+  $('#offline').classList.toggle('hidden', !offline);
+  $('#dot').classList.toggle('off', offline);
+  $('#liveTxt').textContent = offline ? 'Demo mode (offline)' : 'Live from the Java app';
+  const list = visible();
+  $('#empty').classList.toggle('hidden', list.length > 0);
+  $('#rows').innerHTML = list.map(u => `
+    <tr>
+      <td><div class="who"><div class="av">${esc(initials(u.fullName))}</div><div>${hl(u.fullName)}<small>@${hl(u.username)}</small></div></div></td>
+      <td>${esc(mask(u.idNumber))}</td>
+      <td>${hl(u.email)}<small>${hl(u.phone)}</small></td>
+      <td>${esc(u.created)}</td>
+      <td><span class="pill ${u.status === 'VERIFIED' ? 'ok' : 'wait'}">${u.status === 'VERIFIED' ? 'Verified' : 'Pending'}</span></td>
+      <td><div class="acts">
+        <button class="btn sm grey" onclick="view('${u.id}')">View</button>
+        ${u.status === 'PENDING' ? `<button class="btn sm green" onclick="accept('${u.id}')">Accept</button>` : ''}
+        <button class="btn sm red" onclick="confirmDelete('${u.id}')">Delete</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+/* ---------- actions & modals ---------- */
+const byId = id => users.find(u => u.id === id);
+function modal(html){ $('#modalHost').innerHTML = `<div class="overlay" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`; }
+function closeModal(){ $('#modalHost').innerHTML = ''; }
+function accept(id){ const u = byId(id); act('approve', id); closeModal(); toast((u ? u.fullName : 'Account') + ' has been accepted and can now log in', 'ok'); }
+function confirmDelete(id){
+  const u = byId(id); if (!u) return;
+  modal(`<h3>Delete account?</h3><p style="color:var(--grey);margin:10px 0 22px">This permanently removes <b>${esc(u.fullName)}</b> (@${esc(u.username)}) from the AquaVolt SA database. This cannot be undone.</p>
+    <div class="mfoot"><button class="btn grey sm" onclick="closeModal()">Cancel</button><button class="btn red sm" onclick="doDelete('${id}')">Yes, delete</button></div>`);
+}
+function doDelete(id){ const u = byId(id); act('delete', id); closeModal(); toast((u ? u.fullName : 'Account') + ' was deleted', 'bad'); }
+function view(id){
+  const u = byId(id); if (!u) return;
+  const f = (l, v, w) => `<div class="${w ? 'wide' : ''}"><small>${l}</small>${esc(v) || '<span style="color:var(--grey)">Not provided</span>'}</div>`;
+  modal(`<div class="who"><div class="av" style="width:56px;height:56px;font-size:20px">${esc(initials(u.fullName))}</div>
+      <div><h3>${esc(u.fullName)}</h3><span class="pill ${u.status === 'VERIFIED' ? 'ok' : 'wait'}">${u.status === 'VERIFIED' ? 'Verified' : 'Pending verification'}</span></div></div>
+    <div class="grid">${f('Username','@' + u.username)}${f('ID number',u.idNumber)}${f('Email',u.email)}${f('Phone',u.phone)}
+      ${f('Home address',u.address,1)}${f('Electricity meter',u.meter)}${f('Meter serial',u.serial)}${f('Water meter',u.waterMeter)}${f('Municipal account',u.accountNo)}${f('Signed up',u.created,1)}</div>
+    <div class="mfoot"><button class="btn grey sm" onclick="closeModal()">Close</button>
+      ${u.status === 'PENDING' ? `<button class="btn green sm" onclick="accept('${u.id}')">Accept account</button>` : `<button class="btn grey sm" onclick="act('pending','${u.id}');closeModal();toast('Moved back to pending','ok')">Revoke approval</button>`}
+      <button class="btn red sm" onclick="confirmDelete('${u.id}')">Delete</button></div>`);
+}
+function toast(msg, kind){ const t = document.createElement('div'); t.className = 'toast ' + (kind || ''); t.textContent = msg; $('#toasts').appendChild(t); setTimeout(() => t.remove(), 3500); }
+
+/* ---------- controls ---------- */
+const titles = {all:'All accounts', PENDING:'Awaiting approval', VERIFIED:'Verified accounts'};
+function setFilter(f){
+  filter = f; $('#title').textContent = titles[f];
+  document.querySelectorAll('nav button, #tabs button').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  render();
+}
+document.querySelectorAll('nav button, #tabs button').forEach(b => b.onclick = () => setFilter(b.dataset.f));
+$('#q').addEventListener('input', e => { query = e.target.value.trim(); render(); });
+$('#refresh').onclick = async () => { await load(); toast('Refreshed', 'ok'); };
+$('#csv').onclick = () => {
+  const rows = [['Name','Username','ID number','Email','Phone','Address','Electricity meter','Water meter','Status','Signed up']];
+  visible().forEach(u => rows.push([u.fullName,u.username,u.idNumber,u.email,u.phone,u.address,u.meter,u.waterMeter,u.status,u.created]));
+  const csv = rows.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = 'aquavolt_accounts.csv'; a.click();
+};
+</script>
+</body>
+</html>

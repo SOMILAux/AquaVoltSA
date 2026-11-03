@@ -23,6 +23,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
 
 /**
  *Student Number: 251239853
@@ -48,10 +50,18 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         this.setFocusable(true);
         this.setVisible(true);
         
+        //=========================
+        //ICON SECTION
+        //=========================
+        
+        
+        //FontIcon homeIcon = FontIcon.of(FontAwesomeSolid.HOME, 25, Color.BLACK);
+        FontIcon copyIcon = FontIcon.of(FontAwesomeSolid.COPY, 25, Color.BLACK);
+        
         homeIcon = new ImageIcon("home.png");
         HomeIcon = new ImageIcon("home.png");
         electricityIcon = new ImageIcon("thunder.png");
-        copyIcon = new ImageIcon("copy.png");
+        //copyIcon = new ImageIcon("copy.png");
         
         tickIcon = new ImageIcon("check.png");
         Image icon = tickIcon.getImage();

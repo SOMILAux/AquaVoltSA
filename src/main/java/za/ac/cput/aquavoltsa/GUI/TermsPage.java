@@ -11,10 +11,8 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class TermsPage extends JFrame{
     public TermsPage() {
         setTitle("AquaVolt SA - Terms and Conditions");
-        setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        if (Theme.load("plain_logo.png") != null) setIconImage(Theme.load("plain_logo.png"));
+        setIconImage(Theme.image("plain_logo.png"));
 
         JTextArea termsArea = new JTextArea();
         termsArea.setText("AquaVolt SA Terms and Conditions...\n\n1. General Provisions...\n AquaVolt SA (“the App”) provides digital services for monitoring, billing, and payment of water and electricity usage.\n" +
@@ -75,7 +73,10 @@ public class TermsPage extends JFrame{
         root.add(heading, BorderLayout.NORTH);
         root.add(scrollPane, BorderLayout.CENTER);
         root.add(south, BorderLayout.SOUTH);
+        root.setPreferredSize(new Dimension(425, 917));   // GUI size
         setContentPane(root);
+        pack();
+        setLocationRelativeTo(null);
 
         backBtn.addActionListener(e -> {
             new SignupPage3().setVisible(true);

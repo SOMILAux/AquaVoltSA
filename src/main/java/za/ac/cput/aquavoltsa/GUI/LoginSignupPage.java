@@ -4,11 +4,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,8 +46,7 @@ public class LoginSignupPage extends BasePage {
 
         JButton enterBtn = put(new Theme.Btn("Enter", Theme.BLUE));
         gap(10);
-        JLabel or = new JLabel(Theme.icon(Theme.load("or1.png"), 220, 0), SwingConstants.CENTER);
-        if (or.getIcon() == null) { or.setText("Or"); or.setFont(Theme.BODY); }
+        JLabel or = new JLabel(Theme.icon("or1.png", 220, 25), SwingConstants.CENTER);
         put(or);
         JButton signupBtn = put(Theme.link("Sign Up"));
 
@@ -84,7 +81,6 @@ public class LoginSignupPage extends BasePage {
                     "Account pending", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-
         go(new VerificationPage(user));
     }
 
@@ -94,22 +90,15 @@ public class LoginSignupPage extends BasePage {
     }
 }
 
-/**
- * Loading screen shown when the app opens (like the Android app), then moves to the login page.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
- */
 class SplashPage extends JFrame {
     private int progress = 0;
 
     public SplashPage() {
         setTitle("AquaVolt SA");
-        setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        if (Theme.load("plain_logo.png") != null) setIconImage(Theme.load("plain_logo.png"));
+        setIconImage(Theme.image("plain_logo.png"));
 
-        JLabel logo = new JLabel(Theme.icon(Theme.load("plain_logo.png"), 200, 0));
+        JLabel logo = new JLabel(Theme.icon("plain_logo.png", 200, 208));
         logo.setAlignmentX(0.5f);
 
         JProgressBar bar = new JProgressBar(0, 100);
@@ -138,7 +127,10 @@ class SplashPage extends JFrame {
         JPanel all = new JPanel(new BorderLayout());
         all.add(root, BorderLayout.CENTER);
         all.add(Theme.footer(), BorderLayout.SOUTH);
+        all.setPreferredSize(new Dimension(425, 917));   // GUI size
         setContentPane(all);
+        pack();
+        setLocationRelativeTo(null);
 
         String[] steps = {"Starting AquaVolt SA...", "Connecting to municipality services...",
             "Syncing Eskom tariffs...", "Almost ready..."};
@@ -248,7 +240,6 @@ class HomePage extends BasePage {
 }
 
 /**
- * Every page shares the Android layout: logo header on top, a scrolling body, "Partnered with" footer.
  * @StudentNumber 241028213
  * @author Oyama Sibunzi
  */
@@ -257,11 +248,8 @@ abstract class BasePage extends JFrame {
 
     protected BasePage(String title) {
         super("AquaVolt SA - " + title);
-        setSize(425, 917);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        BufferedImage ic = Theme.load("plain_logo.png");
-        if (ic != null) setIconImage(ic);
+        setIconImage(Theme.image("plain_logo.png"));
 
         body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
         body.setBackground(Color.WHITE);
@@ -277,7 +265,10 @@ abstract class BasePage extends JFrame {
         root.add(Theme.header(), BorderLayout.NORTH);
         root.add(scroll, BorderLayout.CENTER);
         root.add(Theme.footer(), BorderLayout.SOUTH);
+        root.setPreferredSize(new Dimension(425, 917));   // GUI size
         setContentPane(root);
+        pack();
+        setLocationRelativeTo(null);
     }
 
     /** Adds a component to the scrolling body, centred and stretched to the full width. */
@@ -307,11 +298,6 @@ abstract class BasePage extends JFrame {
     }
 }
 
-/**
- * Shared colours, fonts and small UI helpers so every page matches the Android app.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
- */
 final class Theme {
     public static final Color BLUE = new Color(33, 150, 243), GREY = new Color(117, 117, 117),
             RED = new Color(211, 47, 47), PURPLE = new Color(103, 80, 164), BORDER = new Color(176, 176, 176),
@@ -321,48 +307,19 @@ final class Theme {
 
     private Theme() { }
 
-    // ---------- images ----------
-    static BufferedImage load(String name) {
-        try {
-            URL u = Theme.class.getResource("images/" + name);
-            if (u != null) return javax.imageio.ImageIO.read(u);
-            for (String dir : new String[]{"images/", "src/loginsignuppage/images/"}) {
-                java.io.File f = new java.io.File(dir + name);
-                if (f.exists()) return javax.imageio.ImageIO.read(f);
-            }
-        } catch (Exception e) {
-            // fall through
-        }
-        return null;
+    static ImageIcon icon(String file, int width, int height) {
+        ImageIcon logo = new ImageIcon(file);
+        Image logoIcon = logo.getImage();
+        Image resizedLogo = logoIcon.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedLogo);
     }
 
-    /** Trims blank margins (the Eskom logo has a lot of white around it). */
-    static BufferedImage crop(BufferedImage im) {
-        if (im == null) return null;
-        int x0 = im.getWidth(), y0 = im.getHeight(), x1 = 0, y1 = 0;
-        for (int y = 0; y < im.getHeight(); y++) {
-            for (int x = 0; x < im.getWidth(); x++) {
-                int p = im.getRGB(x, y), a = p >>> 24, r = (p >> 16) & 255, g = (p >> 8) & 255, b = p & 255;
-                if (a > 30 && (r < 235 || g < 235 || b < 235)) {
-                    x0 = Math.min(x0, x); x1 = Math.max(x1, x);
-                    y0 = Math.min(y0, y); y1 = Math.max(y1, y);
-                }
-            }
-        }
-        return x1 <= x0 ? im : im.getSubimage(x0, y0, x1 - x0 + 1, y1 - y0 + 1);
+    static Image image(String file) {
+        return new ImageIcon(file).getImage();
     }
 
-    /** h <= 0 keeps the aspect ratio. */
-    static ImageIcon icon(BufferedImage im, int w, int h) {
-        if (im == null) return null;
-        if (h <= 0) h = Math.max(1, w * im.getHeight() / im.getWidth());
-        return new ImageIcon(im.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-    }
-
-    // ---------- header / footer used on every page ----------
     static JComponent header() {
-        JLabel l = new JLabel(icon(load("Logo1.png"), 425, 0), SwingConstants.CENTER);
-        if (l.getIcon() == null) { l.setText("AquaVolt SA"); l.setFont(TITLE); }
+        JLabel l = new JLabel(icon("Logo1.png", 425, 246), SwingConstants.CENTER);
         l.setOpaque(true);
         l.setBackground(Color.WHITE);
         return l;
@@ -376,19 +333,14 @@ final class Theme {
         t.setAlignmentX(0.5f);
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 4));
         row.setOpaque(false);
-        row.add(new JLabel(icon(crop(load("national_logo1.png")), 32, 0)));
+        row.add(new JLabel(icon("national_logo1.png", 32, 40)));
         row.add(label("SA Municipality", SMALL.deriveFont(12f), INK, SwingConstants.LEFT));
-        row.add(new JLabel(icon(crop(load("eskom1.png")), 105, 0)));
+        row.add(new JLabel(icon("eskom1.png", 105, 60)));
         JPanel strip = new JPanel() {
-            private final BufferedImage bg = load("bg1.png");
+            private final Image bg = image("bg1.png");
             @Override protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (bg != null) {
-                    Graphics2D g2 = (Graphics2D) g;
-                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-                    int h = getWidth() * bg.getHeight() / bg.getWidth();
-                    g2.drawImage(bg, 0, getHeight() - h, getWidth(), h, null);
-                }
+                g.drawImage(bg, 0, getHeight() - 261, 425, 261, this);   // bottom of the background picture
             }
         };
         strip.setBackground(Color.WHITE);
@@ -635,8 +587,6 @@ final class Theme {
 /**
  * The app's "database": a tab-separated text file (aquavolt_users.txt) in the project folder.
  * The Java app and the admin website (through AdminServer) both read and write through this class.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class UserStore {
     public static final String PENDING = "PENDING", VERIFIED = "VERIFIED";
@@ -688,6 +638,7 @@ final class UserStore {
         if (!existed) seed();
     }
 
+    //These are my Demo names in my admin
     private static void seed() {
         demo("Cheese Mokoena", "9001015800086", "Cheese", "Cheese@123", "cheese@mail.co.za", "0821234567",
                 "12 Long Street, Cape Town", "MTR-44821", "SN-77120", "WTR-1024", "ACC-9981", VERIFIED);
@@ -795,8 +746,6 @@ final class UserStore {
 /**
  * Runs inside the Java app (no extra libraries). Open http://localhost:8080 while the app is running
  * to reach the admin website, which reads the same user database as the app.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class AdminServer {
     private static final String KEY = "admin12304";
