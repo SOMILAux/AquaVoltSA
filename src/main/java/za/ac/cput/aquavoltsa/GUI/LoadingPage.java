@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.*;
 
 // 240135717 | buhle SIhlahla
+// loading Page
 
 public class LoadingPage extends JFrame {
 
