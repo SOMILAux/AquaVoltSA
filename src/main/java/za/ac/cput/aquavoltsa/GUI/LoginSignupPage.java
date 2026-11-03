@@ -335,7 +335,7 @@ final class Theme {
         row.setOpaque(false);
         row.add(new JLabel(icon("national_logo1.png", 32, 40)));
         row.add(label("SA Municipality", SMALL.deriveFont(12f), INK, SwingConstants.LEFT));
-        row.add(new JLabel(icon("eskom_logo.png", 105, 27)));
+        row.add(new JLabel(icon("eskom1.png", 105, 60)));
         JPanel strip = new JPanel() {
             private final Image bg = image("bg1.png");
             @Override protected void paintComponent(Graphics g) {
@@ -587,8 +587,6 @@ final class Theme {
 /**
  * The app's "database": a tab-separated text file (aquavolt_users.txt) in the project folder.
  * The Java app and the admin website (through AdminServer) both read and write through this class.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class UserStore {
     public static final String PENDING = "PENDING", VERIFIED = "VERIFIED";
@@ -640,6 +638,7 @@ final class UserStore {
         if (!existed) seed();
     }
 
+    //These are my Demo names in my admin
     private static void seed() {
         demo("Cheese Mokoena", "9001015800086", "Cheese", "Cheese@123", "cheese@mail.co.za", "0821234567",
                 "12 Long Street, Cape Town", "MTR-44821", "SN-77120", "WTR-1024", "ACC-9981", VERIFIED);
@@ -747,8 +746,6 @@ final class UserStore {
 /**
  * Runs inside the Java app (no extra libraries). Open http://localhost:8080 while the app is running
  * to reach the admin website, which reads the same user database as the app.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class AdminServer {
     private static final String KEY = "admin12304";
