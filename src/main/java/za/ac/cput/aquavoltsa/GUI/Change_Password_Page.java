@@ -186,6 +186,7 @@ public class Change_Password_Page extends JFrame {
             page.setLocationRelativeTo(null);
             page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             page.setVisible(true);
+            this.dispose();
         });
 
         panel_2.setLayout(new GridBagLayout());
