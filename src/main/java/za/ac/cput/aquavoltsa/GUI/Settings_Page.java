@@ -19,7 +19,7 @@ public class Settings_Page extends JFrame implements ActionListener{
         Settings_Page page = new Settings_Page();
         page.showGui();
         page.setSize(425, 917);
-        //page.setLocationRelativeTo(null);
+        page.setLocationRelativeTo(null);
         page.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         page.setVisible(true);
     }
@@ -167,6 +167,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             Profile_Page2 profile = new Profile_Page2();
             profile.setSize(425, 917);
             profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            profile.setLocationRelativeTo(null);
             profile.setVisible(true);
             this.dispose();
             
@@ -175,6 +176,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             TermsPage tm = new TermsPage();
             tm.setSize(425, 917);
             tm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            tm.setLocationRelativeTo(null);
             tm.setVisible(true);
             this.dispose();
             
@@ -183,6 +185,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             NotificationPage noti = new NotificationPage();
             noti.setSize(425, 917);
             noti.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            noti.setLocationRelativeTo(null);
             noti.setVisible(true);
             this.dispose();
             
@@ -191,6 +194,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             Water_Alerts water = new Water_Alerts();
             water.setSize(425, 917);
             water.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            water.setLocationRelativeTo(null);
             water.setVisible(true);
             this.dispose();
             
@@ -199,6 +203,7 @@ public class Settings_Page extends JFrame implements ActionListener{
             Electricity_Alerts elect  = new Electricity_Alerts();
             elect.setSize(425, 917);
             elect.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            elect.setLocationRelativeTo(null);
             elect.setVisible(true);
             this.dispose();
             
@@ -216,10 +221,18 @@ public class Settings_Page extends JFrame implements ActionListener{
             Help_and_Support_Page help = new Help_and_Support_Page();
             help.setSize(425, 917);
             help.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            help.setLocationRelativeTo(null);
             help.setVisible(true);
+            this.dispose();
             
         }
         if(e.getSource() == btAbout_AquaVolt){
+            AboutPage about = new AboutPage();
+            about.setSize(425,917);
+            about.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            about.setLocationRelativeTo(null);
+            about.setVisible(true);
+            this.dispose();
             
         }
         
@@ -233,6 +246,7 @@ if (e.getSource() == btLogOut) {
     );
 
     if (choice == JOptionPane.YES_OPTION) {
+        new LoginSignupPage().setVisible(true);
         this.dispose();
     }
 }

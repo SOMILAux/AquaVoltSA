@@ -28,7 +28,7 @@ public class Electricity_Alerts extends JFrame {
 
     public Electricity_Alerts() {
         setTitle("Electricity Alerts");
-        setSize(600, 700);
+        setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -39,20 +39,21 @@ public class Electricity_Alerts extends JFrame {
     private void createInterface() {
 
         JPanel mainPanel = new JPanel(new BorderLayout(10, 15));
-        mainPanel.setBackground(Color.orange);
+        Color gold = new Color(218, 165, 32);
+        mainPanel.setBackground(gold);
         mainPanel.setBorder(
                 BorderFactory.createEmptyBorder(15, 25, 25, 25));
 
         // Back button at the top-left
         JPanel topPanel = new JPanel(
                 new FlowLayout(FlowLayout.LEFT));
-        topPanel.setBackground(Color.orange);
+        topPanel.setBackground(gold);
 
         JButton btBack = new JButton("Back");
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
-            page.setSize(600, 800);
+            page.setSize(425, 917);
             page.setLocationRelativeTo(null);
             page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             page.setVisible(true);
@@ -64,7 +65,7 @@ public class Electricity_Alerts extends JFrame {
 
         // Main content
         JPanel contentPanel = new JPanel();
-        contentPanel.setBackground(Color.orange);
+        contentPanel.setBackground(gold);
         contentPanel.setLayout(
                 new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
@@ -129,7 +130,7 @@ public class Electricity_Alerts extends JFrame {
         // Buttons side by side underneath the combo box
         JPanel buttonPanel = new JPanel(
                 new FlowLayout(FlowLayout.CENTER, 15, 5));
-        buttonPanel.setBackground(Color.orange);
+        buttonPanel.setBackground(gold);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btSave = new JButton("Save Preference");

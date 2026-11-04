@@ -249,7 +249,7 @@ public class Profile_Page2 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Settings_Page sett = new Settings_Page();
                 sett.showGui();
-                sett.setSize(600, 810);
+                sett.setSize(425, 917);
                 sett.setLocationRelativeTo(null);
                 sett.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 sett.setVisible(true);
@@ -329,8 +329,9 @@ public class Profile_Page2 extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Change_Password_Page change = new Change_Password_Page();
-                change.setSize(500, 800);
+                change.setSize(425, 917);
                 change.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                change.setLocationRelativeTo(null);
                 change.setVisible(true);
                 dispose();
             }
@@ -697,13 +698,5 @@ public class Profile_Page2 extends JFrame {
             JOptionPane.showMessageDialog(
                     this, "Could not load profile: " + ex.getMessage());
         }
-    }
-
-    public static void main(String[] args) {
-        Profile_Page2 profile = new Profile_Page2();
-        profile.setSize(600, 800);
-        profile.setLocationRelativeTo(null);
-        profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        profile.setVisible(true);
-    }
-        }
+    }  
+ }

@@ -14,9 +14,10 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
     public Help_and_Support_Page() {
 
         setTitle("Help and Support");
-        setSize(600, 700);
+        setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
 
         Color gold = new Color(218, 165, 32);
         Color cream = new Color(255, 248, 220);
@@ -27,27 +28,33 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         mainPanel.setLayout(null);
 
         JLabel lblTitle = new JLabel("HELP AND SUPPORT");
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 25));
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 22));
         lblTitle.setForeground(Color.WHITE);
-        lblTitle.setBounds(150, 25, 350, 40);
+        lblTitle.setBounds(85, 25, 255, 35);
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(lblTitle);
 
         JLabel lblMessage = new JLabel("How can we help you?");
-        lblMessage.setFont(new Font("Arial", Font.BOLD, 18));
+        lblMessage.setFont(new Font("Arial", Font.BOLD, 16));
         lblMessage.setForeground(Color.WHITE);
-        lblMessage.setBounds(190, 80, 300, 30);
+        lblMessage.setBounds(75, 75, 275, 30);
+        lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(lblMessage);
+
+        // =========================
+        // HELP PANEL
+        // =========================
 
         JPanel helpPanel = new JPanel();
         helpPanel.setLayout(null);
         helpPanel.setBackground(cream);
-        helpPanel.setBounds(50, 130, 480, 170);
+        helpPanel.setBounds(30, 125, 350, 155);
         mainPanel.add(helpPanel);
 
         JLabel lblHelp = new JLabel("Help");
-        lblHelp.setFont(new Font("Arial", Font.BOLD, 20));
+        lblHelp.setFont(new Font("Arial", Font.BOLD, 18));
         lblHelp.setForeground(blue);
-        lblHelp.setBounds(25, 15, 200, 30);
+        lblHelp.setBounds(20, 12, 200, 25);
         helpPanel.add(lblHelp);
 
         JLabel lblHelpText = new JLabel(
@@ -55,25 +62,31 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
                 + "Contact our support team for assistance "
                 + "with your account and settings.</html>"
         );
-        lblHelpText.setFont(new Font("Arial", Font.PLAIN, 14));
-        lblHelpText.setBounds(25, 50, 420, 55);
+
+        lblHelpText.setFont(new Font("Arial", Font.PLAIN, 13));
+        lblHelpText.setBounds(20, 45, 310, 45);
         helpPanel.add(lblHelpText);
 
         btHelp = new JButton("Contact Support");
-        btHelp.setBounds(25, 115, 180, 35);
+        btHelp.setBounds(20, 105, 155, 32);
+        btHelp.setFont(new Font("Arial", Font.PLAIN, 12));
         btHelp.addActionListener(this);
         helpPanel.add(btHelp);
+
+        // =========================
+        // FEEDBACK PANEL
+        // =========================
 
         JPanel feedbackPanel = new JPanel();
         feedbackPanel.setLayout(null);
         feedbackPanel.setBackground(cream);
-        feedbackPanel.setBounds(50, 320, 480, 170);
+        feedbackPanel.setBounds(30, 300, 350, 155);
         mainPanel.add(feedbackPanel);
 
         JLabel lblFeedback = new JLabel("Feedback");
-        lblFeedback.setFont(new Font("Arial", Font.BOLD, 20));
+        lblFeedback.setFont(new Font("Arial", Font.BOLD, 18));
         lblFeedback.setForeground(blue);
-        lblFeedback.setBounds(25, 15, 200, 30);
+        lblFeedback.setBounds(20, 12, 200, 25);
         feedbackPanel.add(lblFeedback);
 
         JLabel lblFeedbackText = new JLabel(
@@ -81,34 +94,55 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
                 + "Please share your experience to help us "
                 + "improve AquaVolt SA.</html>"
         );
-        lblFeedbackText.setFont(new Font("Arial", Font.PLAIN, 14));
-        lblFeedbackText.setBounds(25, 50, 420, 55);
+
+        lblFeedbackText.setFont(new Font("Arial", Font.PLAIN, 13));
+        lblFeedbackText.setBounds(20, 45, 310, 45);
         feedbackPanel.add(lblFeedbackText);
 
         btFeedback = new JButton("Send Feedback");
-        btFeedback.setBounds(25, 115, 180, 35);
+        btFeedback.setBounds(20, 105, 155, 32);
+        btFeedback.setFont(new Font("Arial", Font.PLAIN, 12));
         btFeedback.addActionListener(this);
         feedbackPanel.add(btFeedback);
 
+        // =========================
+        // WEBSITE BUTTON
+        // =========================
+
         btWebsite = new JButton("Visit Website");
-        btWebsite.setBounds(75, 510, 190, 40);
+        btWebsite.setBounds(30, 485, 165, 38);
+        btWebsite.setFont(new Font("Arial", Font.PLAIN, 12));
         btWebsite.addActionListener(this);
         mainPanel.add(btWebsite);
 
+        // =========================
+        // EMAIL BUTTON
+        // =========================
+
         btEmail = new JButton("Email Support");
-        btEmail.setBounds(300, 510, 190, 40);
+        btEmail.setBounds(215, 485, 165, 38);
+        btEmail.setFont(new Font("Arial", Font.PLAIN, 12));
         btEmail.addActionListener(this);
         mainPanel.add(btEmail);
+
+        // =========================
+        // UNDERSTAND CHECKBOX
+        // =========================
 
         cbUnderstand = new JCheckBox("I understand");
         cbUnderstand.setBackground(gold);
         cbUnderstand.setForeground(Color.WHITE);
-        cbUnderstand.setFont(new Font("Arial", Font.PLAIN, 14));
-        cbUnderstand.setBounds(210, 565, 180, 30);
+        cbUnderstand.setFont(new Font("Arial", Font.PLAIN, 13));
+        cbUnderstand.setBounds(125, 545, 160, 30);
         mainPanel.add(cbUnderstand);
 
+        // =========================
+        // BACK BUTTON
+        // =========================
+
         btBack = new JButton("Back");
-        btBack.setBounds(210, 610, 150, 35);
+        btBack.setBounds(135, 600, 140, 35);
+        btBack.setFont(new Font("Arial", Font.BOLD, 13));
         btBack.addActionListener(this);
         mainPanel.add(btBack);
 
@@ -119,6 +153,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == btHelp) {
+
             JOptionPane.showMessageDialog(this,
                     "Please contact our support team for assistance.",
                     "Help",
@@ -126,6 +161,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         }
 
         else if (e.getSource() == btFeedback) {
+
             JOptionPane.showMessageDialog(this,
                     "Thank you for your feedback!",
                     "Feedback",
@@ -133,34 +169,43 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         }
 
         else if (e.getSource() == btWebsite) {
+
             try {
                 Desktop.getDesktop().browse(
                         new URI("http://AquaVolt.com"));
+
             } catch (Exception ex) {
+
                 JOptionPane.showMessageDialog(this,
                         "Unable to open the website.");
             }
         }
 
         else if (e.getSource() == btEmail) {
+
             try {
                 Desktop.getDesktop().mail(
                         new URI("mailto:support@aquavolt.com"));
+
             } catch (Exception ex) {
+
                 JOptionPane.showMessageDialog(this,
                         "Unable to open your email application.");
             }
         }
 
         else if (e.getSource() == btBack) {
-            new Settings_Page().setVisible(true);
+
+            Settings_Page page = new Settings_Page();
+
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+
             this.dispose();
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Help_and_Support_Page().setVisible(true);
-        });
-    }
 }
+

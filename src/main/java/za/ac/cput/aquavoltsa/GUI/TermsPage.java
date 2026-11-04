@@ -1,3 +1,4 @@
+
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -8,7 +9,8 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @StudentNumber 241028213
  * @author Oyama Sibunzi
  */
-public class TermsPage extends JFrame{
+public class TermsPage extends JFrame {
+
     public TermsPage() {
         setTitle("AquaVolt SA - Terms and Conditions");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,7 +22,7 @@ public class TermsPage extends JFrame{
 "AquaVolt SA does not supply water or electricity directly; it facilitates access, transparency, and payments.\n" +
 " \n2. Customer Terms...\nEligibility: Customers must be registered with a valid municipal account number, ID, or address.\n" +
 "Access & Security: Customers agree to keep login credentials confidential and use OTP verification when required.\n" +
-"Usage Monitoring: Customers can view real‑time water and electricity consumption, tariff rates, and free allocations.\n" +
+"Usage Monitoring: Customers can view real-time water and electricity consumption, tariff rates, and free allocations.\n" +
 "Payments: All payments made through the App are routed securely to the relevant municipality or Eskom. AquaVolt SA does not hold funds.\n" +
 "Data Accuracy: Customers acknowledge that consumption data is provided by municipalities/Eskom and AquaVolt SA is not liable for discrepancies.\n" +
 "Alerts & Notifications: Customers consent to receiving usage alerts, tariff updates, and payment reminders.\n" +
@@ -43,7 +45,7 @@ public class TermsPage extends JFrame{
 "Partnership Scope: AquaVolt SA acts as a digital partner, not a supplier of water/electricity.\n"
                 + "\n5. Legal & Compliance...\nPrivacy: All data is handled according to South Africa’s POPIA (Protection of Personal Information Act).\n" +
 "Dispute Resolution: Any disputes between customers, municipalities, Eskom, or AquaVolt SA will be resolved under South African law.\n" +
-"Termination of Service: AquaVolt SA reserves the right to suspend accounts for misuse, fraud, or non‑compliance.\n" +
+"Termination of Service: AquaVolt SA reserves the right to suspend accounts for misuse, fraud, or non-compliance.\n" +
 "Amendments: Terms & Conditions may be updated; customers and partners will be notified of changes.");
 
         termsArea.setEditable(false);
@@ -58,6 +60,7 @@ public class TermsPage extends JFrame{
 
         JScrollPane scrollPane = new JScrollPane(termsArea);
         scrollPane.setBorder(null);
+
         JButton backBtn = new Theme.Btn("Back", Theme.GREY);
 
         JPanel backRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 8));
@@ -73,14 +76,21 @@ public class TermsPage extends JFrame{
         root.add(heading, BorderLayout.NORTH);
         root.add(scrollPane, BorderLayout.CENTER);
         root.add(south, BorderLayout.SOUTH);
-        root.setPreferredSize(new Dimension(425, 917));   // GUI size
+        root.setPreferredSize(new Dimension(425, 917));
+
         setContentPane(root);
         pack();
         setLocationRelativeTo(null);
 
         backBtn.addActionListener(e -> {
-            new SignupPage3().setVisible(true);
-            dispose();
+            Settings_Page page = new Settings_Page();
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+            this.dispose();
         });
     }
 }
+
