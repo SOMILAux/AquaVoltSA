@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
 
 /**
  *Student Number: 251239853
@@ -33,9 +34,9 @@ import org.kordamp.ikonli.swing.FontIcon;
 public class ElectricityPaymentSuccessfulPage extends JFrame{
     
     JPanel backgroundPanel, headerPanel, topPanel, centerPanel, picturePanel, tokenPanel, tokenHolderPanel;
-    JLabel paymentSuccessfulLabel, circleLabel, smallCircleLabel, dropIconLabel, tickIconLabel, paymentLabel, purchaseText, tokenLabel, transactionID;
-    JLabel ElectricityLabel, text, lightLabel, token;
-    ImageIcon homeIcon, HomeIcon, electricityIcon, copyIcon, tickIcon, circle, smallCircleIcon, thunderIcon;
+    JLabel paymentSuccessfulLabel, circleLabel, smallCircleLabel, dropIconLabel, tickIconLabel, paymentLabel, purchaseText, tokenLabel;
+    JLabel ElectricityLabel, text, lightLabel, token, copyLabel, homeLabel;
+    ImageIcon tickIcon, circle, smallCircleIcon, thunderIcon;
     JButton homeBtn, copyBtn, HomeBtn;
     
     Random rand;
@@ -57,20 +58,21 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         
         //FontIcon homeIcon = FontIcon.of(FontAwesomeSolid.HOME, 25, Color.BLACK);
         FontIcon copyIcon = FontIcon.of(FontAwesomeSolid.COPY, 25, Color.BLACK);
+        FontIcon electricityIcon = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
+        FontIcon homeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
+        FontIcon HomeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
         
-        homeIcon = new ImageIcon("home.png");
-        HomeIcon = new ImageIcon("home.png");
-        electricityIcon = new ImageIcon("thunder.png");
-        //copyIcon = new ImageIcon("copy.png");
+        copyLabel = new JLabel(copyIcon);
+        homeLabel = new JLabel(HomeIcon);
         
         tickIcon = new ImageIcon("check.png");
         Image icon = tickIcon.getImage();
         Image Icon = icon.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon tick = new ImageIcon(Icon);
 
-        circle = new ImageIcon("gray-circle.png");
+        circle = new ImageIcon("circle.png");
         Image circleIcon = circle.getImage();
-        Image resizedCircle = circleIcon.getScaledInstance(490, 83, Image.SCALE_SMOOTH);
+        Image resizedCircle = circleIcon.getScaledInstance(500, 83, Image.SCALE_SMOOTH);
         ImageIcon circular = new ImageIcon(resizedCircle);
 
         smallCircleIcon = new ImageIcon("circle.png");
@@ -127,14 +129,14 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         
         topPanel.add(Box.createVerticalStrut(10));
         topPanel.add(headerPanel);
-        topPanel.add(Box.createVerticalStrut(10));
+        topPanel.add(Box.createVerticalStrut(-9));
         topPanel.add(circleLabel);
 
         headerPanel.add(homeBtn);
         headerPanel.add(paymentSuccessfulLabel);
         
         centerPanel = new JPanel();
-        centerPanel.setBackground(Color.decode("#EAEAEA"));
+        centerPanel.setBackground(Color.decode("#F8F8FF"));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
@@ -211,26 +213,28 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         text.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
         
         copyBtn = new JButton("Copy ID");
+        copyBtn.setLayout(new BorderLayout());
         copyBtn.setFocusPainted(false);
         copyBtn.setBackground(Color.decode("#EAEAEA"));
         copyBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         copyBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        copyBtn.setIcon(copyIcon);
         copyBtn.putClientProperty("FlatLaf.style",
                 "borderColor: #FFA500;"
                 + "arc: 30;"
                 + "borderWidth: 1");
+        copyBtn.add(copyLabel, BorderLayout.WEST);
 
         HomeBtn = new JButton("Back to Home");
+        HomeBtn.setLayout(new BorderLayout());
         HomeBtn.setFocusPainted(false);
         HomeBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         HomeBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        HomeBtn.setIcon(HomeIcon);
         HomeBtn.putClientProperty("FlatLaf.style",
                 "background: #FFB300;"
                 + "arc: 30;"
                 + "foreground : #FFFFFF;"
                 + "borderWidth : 0");
+        HomeBtn.add(homeLabel, BorderLayout.WEST);
 
         tokenPanel.add(tokenLabel, BorderLayout.NORTH);
         tokenPanel.add(tokenHolderPanel, BorderLayout.CENTER);

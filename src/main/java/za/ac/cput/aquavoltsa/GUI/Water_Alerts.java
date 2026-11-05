@@ -25,9 +25,8 @@ public class Water_Alerts extends JFrame {
 
     public Water_Alerts() {
         setTitle("Water Alerts");
-        setSize(425, 917);
+        setSize(600, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLocationRelativeTo(null);
 
         createInterface();
@@ -49,7 +48,7 @@ public class Water_Alerts extends JFrame {
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
-            page.setSize(425, 917);
+            page.setSize(600, 800);
             page.setLocationRelativeTo(null);
             page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             page.setVisible(true);
