@@ -1,6 +1,6 @@
 package za.ac.cput.aquavoltsa.GUI;
 
-
+// This class manages the About page of the AquaVolt SA application.
 /**
  *
  * @author Sbahle

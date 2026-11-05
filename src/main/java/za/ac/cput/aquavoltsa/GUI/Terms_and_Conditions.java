@@ -1,5 +1,5 @@
 
-
+// This class displays the terms and conditions of the AquaVolt SA application.
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;

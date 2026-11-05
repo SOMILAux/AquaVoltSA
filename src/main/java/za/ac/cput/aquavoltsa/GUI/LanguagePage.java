@@ -1,6 +1,5 @@
 package za.ac.cput.aquavoltsa.GUI;
-
-
+//This class allows users to select and save their preferred language.
 /**
  *
  * @author Sbahle

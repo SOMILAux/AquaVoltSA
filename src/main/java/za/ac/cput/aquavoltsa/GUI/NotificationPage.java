@@ -1,5 +1,5 @@
 package za.ac.cput.aquavoltsa.GUI;
-
+// This class manages the AquaVolt SA notification functionality.
 
 /**
  *
