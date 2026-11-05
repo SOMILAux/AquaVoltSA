@@ -15,7 +15,7 @@ public class AboutPage extends JFrame {
         setTitle("About AquaVolt SA");
         setSize(400, 750);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
 
         // MAIN PANEL
         JPanel panel = new JPanel();
@@ -216,7 +216,15 @@ public class AboutPage extends JFrame {
                 new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)
         );
 
-        backButton.addActionListener(e -> dispose());
+        backButton.addActionListener(e -> {
+            Settings_Page page = new Settings_Page();
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+            this.dispose();
+        });
 
         panel.add(backButton);
 

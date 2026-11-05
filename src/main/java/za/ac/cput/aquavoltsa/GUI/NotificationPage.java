@@ -1,3 +1,4 @@
+
 package za.ac.cput.aquavoltsa.GUI;
 // This class manages the AquaVolt SA notification functionality.
 
@@ -5,18 +6,23 @@ package za.ac.cput.aquavoltsa.GUI;
  *
  * @author Sbahle Simelane
  */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
+/**
+ *
+ * @author Sbahle Simelane
+ */
 public class NotificationPage extends JFrame {
 
     public NotificationPage() {
 
         setTitle("AquaVolt SA Notifications");
-        setSize(400, 700);
+        setSize(425, 917);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -38,122 +44,151 @@ public class NotificationPage extends JFrame {
         // =========================
         // LOAD NOTIFICATIONS FROM DATABASE
         // =========================
+
         int yPosition = 130;
+        boolean notificationFound = false;
 
         try {
+
             Connection conn = DBConnection.getConnection();
 
-            String sql = "SELECT NotificationTitle, NotificationMessage "
-                    + "FROM Notifications "
-                    + "ORDER BY NotificationID";
+            if (conn == null) {
 
-            PreparedStatement pst = conn.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next() && yPosition <= 490) {
-
-                String notificationTitle
-                        = rs.getString("NotificationTitle");
-
-                String notificationMessage
-                        = rs.getString("NotificationMessage");
-
-                JPanel notificationPanel = new JPanel();
-
-                notificationPanel.setBounds(
-                        40, yPosition, 300, 70
+                JLabel errorLabel = new JLabel(
+                        "Database connection failed."
                 );
 
-                notificationPanel.setBackground(Color.WHITE);
+                errorLabel.setBounds(55, 150, 300, 30);
+                errorLabel.setForeground(Color.RED);
+                panel.add(errorLabel);
 
-                notificationPanel.setBorder(
-                        BorderFactory.createLineBorder(
-                                Color.LIGHT_GRAY
-                        )
-                );
+            } else {
 
-                notificationPanel.setLayout(null);
+                String sql = "SELECT NotificationTitle, NotificationMessage "
+                        + "FROM Notifications "
+                        + "ORDER BY NotificationID";
 
-                notificationPanel.setCursor(
-                        new Cursor(Cursor.HAND_CURSOR)
-                );
+                try (
+                    PreparedStatement pst = conn.prepareStatement(sql);
+                    ResultSet rs = pst.executeQuery()
+                ) {
 
-                JLabel notificationTitleLabel
-                        = new JLabel(notificationTitle.toUpperCase());
+                    while (rs.next() && yPosition <= 490) {
 
-                notificationTitleLabel.setFont(
-                        new Font(
-                                "Arial",
-                                Font.BOLD,
-                                14
-                        )
-                );
+                        notificationFound = true;
 
-// Notification colours
-                if (notificationTitle.equalsIgnoreCase("Drought Alert")) {
-                    notificationTitleLabel.setForeground(Color.RED);
+                        String notificationTitle =
+                                rs.getString("NotificationTitle");
 
-                } else if (notificationTitle.equalsIgnoreCase("Loadshedding Update")) {
-                    notificationTitleLabel.setForeground(Color.ORANGE);
+                        String notificationMessage =
+                                rs.getString("NotificationMessage");
 
-                } else if (notificationTitle.equalsIgnoreCase("Usage Warning")) {
-                    notificationTitleLabel.setForeground(Color.BLUE);
+                        JPanel notificationPanel = new JPanel();
 
-                } else if (notificationTitle.equalsIgnoreCase("Payment Reminder")) {
-                    notificationTitleLabel.setForeground(new Color(0, 153, 0));
+                        notificationPanel.setBounds(
+                                40, yPosition, 300, 70
+                        );
 
-                } else if (notificationTitle.equalsIgnoreCase("System Update")) {
-                    notificationTitleLabel.setForeground(Color.BLUE);
+                        notificationPanel.setBackground(Color.WHITE);
+
+                        notificationPanel.setBorder(
+                                BorderFactory.createLineBorder(
+                                        Color.LIGHT_GRAY
+                                )
+                        );
+
+                        notificationPanel.setLayout(null);
+
+                        notificationPanel.setCursor(
+                                new Cursor(Cursor.HAND_CURSOR)
+                        );
+
+                        JLabel notificationTitleLabel =
+                                new JLabel(notificationTitle.toUpperCase());
+
+                        notificationTitleLabel.setFont(
+                                new Font("Arial", Font.BOLD, 14)
+                        );
+
+                        // Notification colours
+
+                        if (notificationTitle.equalsIgnoreCase("Drought Alert")) {
+
+                            notificationTitleLabel.setForeground(Color.RED);
+
+                        } else if (notificationTitle.equalsIgnoreCase("Loadshedding Update")) {
+
+                            notificationTitleLabel.setForeground(Color.ORANGE);
+
+                        } else if (notificationTitle.equalsIgnoreCase("Usage Warning")) {
+
+                            notificationTitleLabel.setForeground(Color.BLUE);
+
+                        } else if (notificationTitle.equalsIgnoreCase("Payment Reminder")) {
+
+                            notificationTitleLabel.setForeground(new Color(0, 153, 0));
+
+                        } else if (notificationTitle.equalsIgnoreCase("System Update")) {
+
+                            notificationTitleLabel.setForeground(Color.BLUE);
+                        }
+
+                        notificationTitleLabel.setBounds(
+                                10, 10, 270, 20
+                        );
+
+                        JLabel notificationMessageLabel =
+                                new JLabel(notificationMessage);
+
+                        notificationMessageLabel.setBounds(
+                                10, 35, 280, 20
+                        );
+
+                        notificationPanel.add(notificationTitleLabel);
+                        notificationPanel.add(notificationMessageLabel);
+
+                        // CLICK NOTIFICATION
+
+                        notificationPanel.addMouseListener(
+                                new MouseAdapter() {
+
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+
+                                openNotificationDetails(
+                                        notificationTitle,
+                                        notificationMessage
+                                );
+                            }
+                        });
+
+                        panel.add(notificationPanel);
+
+                        yPosition += 90;
+                    }
                 }
 
-                notificationTitleLabel.setBounds(
-                        10, 10, 270, 20
-                );
+                conn.close();
 
-                JLabel notificationMessageLabel
-                        = new JLabel(notificationMessage);
+                if (!notificationFound) {
 
-                notificationMessageLabel.setBounds(
-                        10, 35, 280, 20
-                );
+                    JLabel noNotificationLabel = new JLabel(
+                            "No notifications available."
+                    );
 
-                notificationPanel.add(
-                        notificationTitleLabel
-                );
+                    noNotificationLabel.setBounds(
+                            85, 150, 250, 30
+                    );
 
-                notificationPanel.add(
-                        notificationMessageLabel
-                );
-
-                // CLICK NOTIFICATION
-                notificationPanel.addMouseListener(
-                        new MouseAdapter() {
-
-                    @Override
-                    public void mouseClicked(
-                            MouseEvent e) {
-
-                        openNotificationDetails(
-                                notificationTitle,
-                                notificationMessage
-                        );
-                    }
-                });
-
-                panel.add(notificationPanel);
-
-                yPosition += 90;
+                    panel.add(noNotificationLabel);
+                }
             }
-
-            rs.close();
-            pst.close();
-            conn.close();
 
         } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Unable to load notifications from database.",
+                    "Unable to load notifications.\n" + e.getMessage(),
                     "Database Error",
                     JOptionPane.ERROR_MESSAGE
             );
@@ -164,6 +199,7 @@ public class NotificationPage extends JFrame {
         // =========================
         // BACK BUTTON
         // =========================
+
         JButton backButton = new JButton("Back");
 
         backButton.setBounds(
@@ -175,21 +211,25 @@ public class NotificationPage extends JFrame {
         backButton.setFocusPainted(false);
 
         backButton.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        14
-                )
+                new Font("Arial", Font.BOLD, 14)
         );
 
         panel.add(backButton);
 
-        backButton.addActionListener(
-                e -> dispose()
-        );
+        backButton.addActionListener(e -> {
 
-        JScrollPane scrollPane
-                = new JScrollPane(panel);
+            Settings_Page page = new Settings_Page();
+
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+
+            this.dispose();
+        });
+
+        JScrollPane scrollPane = new JScrollPane(panel);
 
         add(scrollPane);
 
@@ -199,12 +239,13 @@ public class NotificationPage extends JFrame {
     // ==================================================
     // NOTIFICATION DETAILS
     // ==================================================
+
     private void openNotificationDetails(
             String title,
             String message) {
 
-        JFrame detailsFrame
-                = new JFrame("Notification Details");
+        JFrame detailsFrame =
+                new JFrame("Notification Details");
 
         detailsFrame.setSize(400, 500);
 
@@ -214,21 +255,15 @@ public class NotificationPage extends JFrame {
 
         detailsFrame.setLocationRelativeTo(this);
 
-        JPanel detailsPanel
-                = new JPanel();
+        JPanel detailsPanel = new JPanel();
 
         detailsPanel.setLayout(null);
         detailsPanel.setBackground(Color.WHITE);
 
-        JLabel heading
-                = new JLabel(title);
+        JLabel heading = new JLabel(title);
 
         heading.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        22
-                )
+                new Font("Arial", Font.BOLD, 22)
         );
 
         heading.setBounds(
@@ -237,15 +272,10 @@ public class NotificationPage extends JFrame {
 
         detailsPanel.add(heading);
 
-        JTextArea messageArea
-                = new JTextArea(message);
+        JTextArea messageArea = new JTextArea(message);
 
         messageArea.setFont(
-                new Font(
-                        "Arial",
-                        Font.PLAIN,
-                        16
-                )
+                new Font("Arial", Font.PLAIN, 16)
         );
 
         messageArea.setLineWrap(true);
@@ -253,8 +283,8 @@ public class NotificationPage extends JFrame {
         messageArea.setEditable(false);
         messageArea.setBackground(Color.WHITE);
 
-        JScrollPane messageScroll
-                = new JScrollPane(messageArea);
+        JScrollPane messageScroll =
+                new JScrollPane(messageArea);
 
         messageScroll.setBounds(
                 30, 100, 330, 200
@@ -262,8 +292,7 @@ public class NotificationPage extends JFrame {
 
         detailsPanel.add(messageScroll);
 
-        JButton detailsBackButton
-                = new JButton("Back");
+        JButton detailsBackButton = new JButton("Back");
 
         detailsBackButton.setBounds(
                 140, 340, 100, 35
@@ -284,11 +313,5 @@ public class NotificationPage extends JFrame {
         detailsFrame.setVisible(true);
     }
 
-    // ==================================================
-    // MAIN METHOD
-    // ==================================================
-    public static void main(String[] args) {
-
-        new NotificationPage();
-    }
+ 
 }

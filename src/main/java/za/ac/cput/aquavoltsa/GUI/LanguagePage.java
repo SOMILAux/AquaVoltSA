@@ -229,9 +229,16 @@ public class LanguagePage extends JFrame {
 
         mainPanel.add(backButton);
 
-        backButton.addActionListener(
-                e -> dispose()
-        );
+        backButton.addActionListener(  e -> {
+            Settings_Page  page = new Settings_Page();
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+
+            this.dispose();
+        });
 
         // =========================
         // SCROLL
