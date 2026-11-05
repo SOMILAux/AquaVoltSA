@@ -21,6 +21,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.material2.Material2AL;
+import org.kordamp.ikonli.swing.FontIcon;
 
 /**
  * Student Number: 251239853
@@ -31,9 +34,9 @@ public class WaterPaymentSuccessfulPage extends JFrame {
 
     JPanel backgroundPanel, headerPanel, topPanel, centerPanel, picturePanel, transactionPanel;
     JLabel paymentSuccessfulLabel, circleLabel, tickIconLabel, dropIconLabel, smallCircleLabel, paymentLabel, purchaseText, transactionIDLabel, transactionID, waterDropLabel;
-    JLabel text;
-    ImageIcon homeIcon, circle, waterIcon, tickIcon, smallCircleIcon, waterDropIcon, copyIcon, HomeIcon;
-    JButton homeBtn, copyBtn, HomeBtn;
+    JLabel text, copyLabel, homeLabel, historyLabel;
+    ImageIcon circle, waterIcon, tickIcon, smallCircleIcon;
+    JButton homeBtn, copyBtn, HomeBtn, historyBtn;
 
     public WaterPaymentSuccessfulPage() {
 
@@ -43,23 +46,34 @@ public class WaterPaymentSuccessfulPage extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setFocusable(true);
+        
+        //=========================
+        //ICON SECTION
+        //=========================
+        
+        
+        //FontIcon homeIcon = FontIcon.of(FontAwesomeSolid.HOME, 25, Color.BLACK);
+        FontIcon copyIcon = FontIcon.of(FontAwesomeSolid.COPY, 25, Color.BLACK);
+        FontIcon tintIcon = FontIcon.of(FontAwesomeSolid.TINT, 30, Color.BLUE);
+        FontIcon historyIcon = FontIcon.of(FontAwesomeSolid.HISTORY, 30, Color.BLACK);
+        FontIcon homeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
+        FontIcon HomeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
 
-        homeIcon = new ImageIcon("home.png");
-        HomeIcon = new ImageIcon("home.png");
-        waterDropIcon = new ImageIcon("water-drop.png");
-        copyIcon = new ImageIcon("copy.png");
+        copyLabel = new JLabel(copyIcon);
+        homeLabel = new JLabel(HomeIcon);
+        historyLabel = new JLabel(historyIcon);
 
         tickIcon = new ImageIcon("check.png");
         Image icon = tickIcon.getImage();
         Image Icon = icon.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon tick = new ImageIcon(Icon);
 
-        circle = new ImageIcon("gray-circle.png");
+        circle = new ImageIcon("circle.png");
         Image circleIcon = circle.getImage();
         Image resizedCircle = circleIcon.getScaledInstance(490, 83, Image.SCALE_SMOOTH);
         ImageIcon circular = new ImageIcon(resizedCircle);
 
-        smallCircleIcon = new ImageIcon("circle.png");
+        smallCircleIcon = new ImageIcon("gray-circle.png");
         Image icon1 = smallCircleIcon.getImage();
         Image Icon1 = icon1.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         ImageIcon smallCircle = new ImageIcon(Icon1);
@@ -118,7 +132,7 @@ public class WaterPaymentSuccessfulPage extends JFrame {
         headerPanel.add(paymentSuccessfulLabel);
 
         centerPanel = new JPanel();
-        centerPanel.setBackground(Color.decode("#EAEAEA"));
+        centerPanel.setBackground(Color.decode("#F8F8FF"));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
@@ -177,7 +191,7 @@ public class WaterPaymentSuccessfulPage extends JFrame {
         transactionID.setForeground(Color.decode("#00C6FF"));
         transactionID.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
 
-        waterDropLabel = new JLabel(waterDropIcon);
+        waterDropLabel = new JLabel(tintIcon);
         waterDropLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         text = new JLabel("Thank you for using our services");
@@ -185,26 +199,40 @@ public class WaterPaymentSuccessfulPage extends JFrame {
         text.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
 
         copyBtn = new JButton("Copy ID");
+        copyBtn.setLayout(new BorderLayout());
         copyBtn.setFocusPainted(false);
         copyBtn.setBackground(Color.decode("#EAEAEA"));
         copyBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         copyBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        copyBtn.setIcon(copyIcon);
         copyBtn.putClientProperty("FlatLaf.style",
                 "borderColor: #11DDFD;"
                 + "arc: 30;"
                 + "borderWidth: 1");
+        copyBtn.add(copyLabel, BorderLayout.WEST);
 
         HomeBtn = new JButton("Back to Home");
+        HomeBtn.setLayout(new BorderLayout());
         HomeBtn.setFocusPainted(false);
         HomeBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         HomeBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        HomeBtn.setIcon(HomeIcon);
         HomeBtn.putClientProperty("FlatLaf.style",
                 "background: #00C6FF;"
                 + "arc: 30;"
                 + "foreground : #FFFFFF;"
                 + "borderWidth : 0");
+        HomeBtn.add(homeLabel, BorderLayout.WEST);
+        
+        historyBtn = new JButton("View History");
+        historyBtn.setLayout(new BorderLayout());
+        historyBtn.setFocusPainted(false);
+        historyBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        historyBtn.setFont(new Font("Inter", Font.BOLD, 16));
+        historyBtn.putClientProperty("FlatLaf.style",
+                "background: #00C6FF;"
+                + "arc: 30;"
+                + "foreground : #FFFFFF;"
+                + "borderWidth : 0");
+        historyBtn.add(historyLabel, BorderLayout.WEST);
 
         transactionPanel.add(transactionIDLabel, BorderLayout.NORTH);
         transactionPanel.add(transactionID, BorderLayout.CENTER);
@@ -222,6 +250,8 @@ public class WaterPaymentSuccessfulPage extends JFrame {
         centerPanel.add(copyBtn);
         centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(HomeBtn);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(historyBtn);
 
         backgroundPanel.add(topPanel, BorderLayout.NORTH);
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);

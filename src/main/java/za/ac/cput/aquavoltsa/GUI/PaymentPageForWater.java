@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import com.formdev.flatlaf.*;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
 import za.ac.cput.aquavoltsa.DAO.DAO;
 import za.ac.cput.aquavoltsa.Domain.Payment;
 import za.ac.cput.aquavoltsa.Domain.Transaction;
@@ -47,8 +50,8 @@ public class PaymentPageForWater extends JFrame {
     JLabel confirmLabel, circleLabel, purchaseSummaryLabel, meterNumberLabel, customerNameLabel, addressLabel, purchaseAmountLabel, serviceFeeLabel;
     JLabel meterLabel, nameLabel, addressLabelValue, amountLabel, serviceFee, totalLabel, totalValueLabel;
     JLabel summaryIconLabel, paymentMethodLabel, paymentText, secureIconLabel;
-    JButton backBtn, buyBtn, payBtn;
-    ImageIcon circle, summaryIcon, secureIcon;
+    JButton backBtn, payBtn;
+    ImageIcon circle, secureIcon;
     JRadioButton debit, eft, retail;
     ButtonGroup group;
 
@@ -62,6 +65,13 @@ public class PaymentPageForWater extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setFocusable(true);
+        
+        //=========================
+        //ICON SECTION
+        //=========================
+        
+        FontIcon backIcon = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
+        FontIcon summaryIcon = FontIcon.of(FontAwesomeSolid.CLIPBOARD_LIST, 25, Color.GRAY);
 
         backgroundPanel = new JPanel() {
 
@@ -91,8 +101,6 @@ public class PaymentPageForWater extends JFrame {
         Image resizedCircle = circleIcon.getScaledInstance(490, 83, Image.SCALE_SMOOTH);
         ImageIcon circular = new ImageIcon(resizedCircle);
 
-        summaryIcon = new ImageIcon("summary.png");
-
         secureIcon = new ImageIcon("secure.png");
 
         circleLabel = new JLabel(circular);
@@ -109,33 +117,27 @@ public class PaymentPageForWater extends JFrame {
         confirmLabel = new JLabel("Confirm & Pay");
         confirmLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-        backBtn = new JButton(new ImageIcon("back.png"));
+        backBtn = new JButton();
+        backBtn.setIcon(backIcon);
         backBtn.setFocusPainted(false);
         backBtn.setBorderPainted(false);
         backBtn.setBackground(Color.decode("#00C6FF"));
-
-        buyBtn = new JButton(new ImageIcon("buy.png"));
-        buyBtn.setFocusPainted(false);
-        buyBtn.setBorderPainted(false);
-        buyBtn.setBackground(Color.decode("#00C6FD"));
+        backBtn.setContentAreaFilled(false);
+        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         headerPanel.add(Box.createHorizontalStrut(12));
         headerPanel.add(backBtn);
         headerPanel.add(Box.createHorizontalGlue());
         headerPanel.add(confirmLabel);
         headerPanel.add(Box.createHorizontalGlue());
-        headerPanel.add(buyBtn);
+        //headerPanel.add(buyBtn);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 25));
         //centerPanel.setOpaque(false);
-        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setBackground(Color.decode("#F8F8FF"));
 
-        /*contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        contentPanel.setBackground(Color.WHITE);*/
         topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.setOpaque(false);
@@ -144,7 +146,7 @@ public class PaymentPageForWater extends JFrame {
         summaryPanel = new JPanel(new BorderLayout());
         summaryPanel.setMaximumSize(new Dimension(370, 250));
         summaryPanel.setAlignmentX(LEFT_ALIGNMENT);
-        summaryPanel.setBackground(Color.CYAN);
+        summaryPanel.setBackground(Color.decode("#FFFFFF"));
         summaryPanel.putClientProperty(FlatClientProperties.STYLE, "arc : 20");
 
         summaryIconLabel = new JLabel(summaryIcon);
@@ -289,12 +291,15 @@ public class PaymentPageForWater extends JFrame {
 
         panel1.add(debit);
         panel1.setAlignmentX(LEFT_ALIGNMENT);
+        panel1.setBackground(Color.decode("#FFFFFF"));
 
         panel2.add(eft);
         panel2.setAlignmentX(LEFT_ALIGNMENT);
+        panel2.setBackground(Color.decode("#FFFFFF"));
 
         panel3.add(retail);
         panel3.setAlignmentX(LEFT_ALIGNMENT);
+        panel3.setBackground(Color.decode("#FFFFFF"));
 
         group.add(debit);
         group.add(eft);

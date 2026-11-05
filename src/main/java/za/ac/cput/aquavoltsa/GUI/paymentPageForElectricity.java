@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package za.ac.cput.aquavoltsa.GUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Component.LEFT_ALIGNMENT;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -127,6 +124,8 @@ public class paymentPageForElectricity extends JFrame {
         backBtn.setFocusPainted(false);
         backBtn.setBorderPainted(false);
         backBtn.setBackground(Color.decode("#FFB300"));
+        backBtn.setContentAreaFilled(false);
+        backBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         headerPanel.add(Box.createHorizontalStrut(12));
         headerPanel.add(backBtn);

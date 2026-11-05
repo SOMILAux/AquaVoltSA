@@ -33,6 +33,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import com.formdev.flatlaf.*;
 import java.awt.Insets;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
 import za.ac.cput.aquavoltsa.DAO.DAO;
 
 /**
@@ -43,7 +45,7 @@ import za.ac.cput.aquavoltsa.DAO.DAO;
 public class buyWaterPage extends JFrame {
 
     ImageIcon logo, circle;
-    JLabel logoLabel, circleLabel, meterNumberLabel, addressLabel, selectAmountLabel, currencyLabel;
+    JLabel logoLabel, circleLabel, meterNumberLabel, addressLabel, selectAmountLabel, currencyLabel, iconLabel, iconLabel1;
     JPanel backgroundPanel, headerPanel, centerPanel, buttonPanel, customPanel;
     JTextField meterNumberField, addressField, customAmountField;
     JSeparator separator;
@@ -61,6 +63,18 @@ public class buyWaterPage extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setFocusable(true);
+
+        //=========================
+        //ICON SECTION
+        //=========================
+        FontIcon tint = FontIcon.of(FontAwesomeSolid.TINT, 25, Color.BLUE);
+        FontIcon tint1 = FontIcon.of(FontAwesomeSolid.TINT, 25, Color.BLUE);
+
+        FontIcon next = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_RIGHT, 30, Color.BLACK);
+        FontIcon back = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
+
+        iconLabel = new JLabel(tint);
+        iconLabel1 = new JLabel(tint1);
 
         backgroundPanel = new JPanel() {
 
@@ -149,20 +163,24 @@ public class buyWaterPage extends JFrame {
         selectAmountLabel.setAlignmentX(LEFT_ALIGNMENT);
 
         firstAmount = new JToggleButton("R250");
+        firstAmount.setLayout(new BorderLayout());
         firstAmount.setBorderPainted(false);
         firstAmount.setFocusPainted(false);
         firstAmount.setPreferredSize(new Dimension(350, 40));
         firstAmount.setMaximumSize(new Dimension(150, 50));
         firstAmount.setFont(new Font("Inter", Font.BOLD, 18));
         firstAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #00C6FF; selectedForeground: #FFFFFF");
+        firstAmount.add(iconLabel, BorderLayout.WEST);
 
         customAmount = new JToggleButton("CUSTOM");
+        customAmount.setLayout(new BorderLayout());
         customAmount.setBorderPainted(false);
         customAmount.setFocusPainted(false);
         customAmount.setPreferredSize(new Dimension(350, 40));
         customAmount.setMaximumSize(new Dimension(150, 50));
         customAmount.setFont(new Font("Inter", Font.BOLD, 18));
         customAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #00C6FF; selectedForeground: #FFFFFF");
+        customAmount.add(iconLabel1, BorderLayout.WEST);
 
         group = new ButtonGroup();
 
@@ -242,15 +260,17 @@ public class buyWaterPage extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-        
-       // DAO.createPaymentTable();
 
+        // DAO.createPaymentTable();
         //Adding Functionality             
         firstAmount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent I) {
                 if (firstAmount.isSelected()) {
                     amount = 250;
+                    tint.setIconColor(Color.WHITE);
+                } else {
+                    tint.setIconColor(Color.BLUE);
                 }
             }
         });
@@ -260,10 +280,11 @@ public class buyWaterPage extends JFrame {
             public void itemStateChanged(ItemEvent I) {
                 if (customAmount.isSelected()) {
                     customPanel.setVisible(true);
-
+                    tint1.setIconColor(Color.WHITE);
                     String cAmount = customAmountField.getText();
-                    
+
                 } else {
+                    tint1.setIconColor(Color.BLUE);
                     customPanel.setVisible(false);
                 }
             }
@@ -275,7 +296,14 @@ public class buyWaterPage extends JFrame {
                 String meterNumber = meterNumberField.getText();
                 String address = addressField.getText();
                 String Amount = customAmountField.getText();
-                
+
+                if (customAmount.isSelected() && !Amount.isEmpty()) {
+                    try {
+                        amount = Integer.parseInt(Amount);
+                    } catch (NumberFormatException n) {
+                        JOptionPane.showMessageDialog(null, "Amount should contain only Digits");
+                    }
+                }
 
                 if (meterNumber.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your Meter Number", "Meter number field is empty", JOptionPane.OK_OPTION);
@@ -285,20 +313,17 @@ public class buyWaterPage extends JFrame {
                     JOptionPane.showMessageDialog(null, "Choose or enter your Amount!", "Select one Toggle Button", JOptionPane.OK_OPTION);
                 } else if (customAmount.isSelected() && Amount.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your amount", "Amount cannot be empty", JOptionPane.NO_OPTION);
+                } else if (amount < 50) {
+                    JOptionPane.showMessageDialog(null, "Minimum purchase is R50", "Amount cannot be less than R50", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
-                    if (customAmount.isSelected()) {
-                        amount = Integer.parseInt(Amount);
-                    }
-                    
+
                     long meter = 0;
                     try {
                         meter = Long.parseLong(meterNumber);
                     } catch (NumberFormatException n) {
                         JOptionPane.showMessageDialog(null, "Cannot convert Meter Number");
                     }
-                    
-                                        
+
                     PaymentPageForWater page = new PaymentPageForWater(meter, "Aphelele Shange", address, amount, 2.50);
                     page.setVisible(true);
                     dispose();

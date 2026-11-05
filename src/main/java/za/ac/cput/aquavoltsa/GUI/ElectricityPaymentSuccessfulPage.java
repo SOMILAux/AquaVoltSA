@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import static java.awt.Component.LEFT_ALIGNMENT;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -34,10 +35,10 @@ import org.kordamp.ikonli.material2.Material2AL;
 public class ElectricityPaymentSuccessfulPage extends JFrame{
     
     JPanel backgroundPanel, headerPanel, topPanel, centerPanel, picturePanel, tokenPanel, tokenHolderPanel;
-    JLabel paymentSuccessfulLabel, circleLabel, smallCircleLabel, dropIconLabel, tickIconLabel, paymentLabel, purchaseText, tokenLabel;
-    JLabel ElectricityLabel, text, lightLabel, token, copyLabel, homeLabel;
+    JLabel paymentSuccessfulLabel, circleLabel, smallCircleLabel, eleIconLabel, tickIconLabel, paymentLabel, purchaseText, tokenLabel;
+    JLabel ElectricityLabel, text, lightLabel, token, copyLabel, homeLabel, historyLabel;
     ImageIcon tickIcon, circle, smallCircleIcon, thunderIcon;
-    JButton homeBtn, copyBtn, HomeBtn;
+    JButton homeBtn, copyBtn, HomeBtn, historyBtn;
     
     Random rand;
     
@@ -58,12 +59,14 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         
         //FontIcon homeIcon = FontIcon.of(FontAwesomeSolid.HOME, 25, Color.BLACK);
         FontIcon copyIcon = FontIcon.of(FontAwesomeSolid.COPY, 25, Color.BLACK);
-        FontIcon electricityIcon = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
+        FontIcon electricityIcon = FontIcon.of(FontAwesomeSolid.BOLT, 30, Color.ORANGE);
+        FontIcon historyIcon = FontIcon.of(FontAwesomeSolid.HISTORY, 30, Color.BLACK);
         FontIcon homeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
         FontIcon HomeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
         
         copyLabel = new JLabel(copyIcon);
         homeLabel = new JLabel(HomeIcon);
+        historyLabel = new JLabel(historyIcon);
         
         tickIcon = new ImageIcon("check.png");
         Image icon = tickIcon.getImage();
@@ -75,7 +78,7 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         Image resizedCircle = circleIcon.getScaledInstance(500, 83, Image.SCALE_SMOOTH);
         ImageIcon circular = new ImageIcon(resizedCircle);
 
-        smallCircleIcon = new ImageIcon("circle.png");
+        smallCircleIcon = new ImageIcon("gray-circle.png");
         Image icon1 = smallCircleIcon.getImage();
         Image Icon1 = icon1.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         ImageIcon smallCircle = new ImageIcon(Icon1);
@@ -111,6 +114,8 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         homeBtn.setBorderPainted(false);
         homeBtn.setBackground(Color.decode("#FFB300"));
         homeBtn.setIcon(homeIcon);
+        homeBtn.setContentAreaFilled(false);
+        homeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         paymentSuccessfulLabel = new JLabel("Payment Successful");
         paymentSuccessfulLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -143,8 +148,8 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         smallCircleLabel = new JLabel(smallCircle);
         smallCircleLabel.setOpaque(false);
 
-        dropIconLabel = new JLabel(electricityIcon);
-        dropIconLabel.setOpaque(false);
+        eleIconLabel = new JLabel(electricityIcon);
+        eleIconLabel.setOpaque(false);
 
         tickIconLabel = new JLabel(tick);
         tickIconLabel.setOpaque(false);
@@ -235,6 +240,18 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
                 + "foreground : #FFFFFF;"
                 + "borderWidth : 0");
         HomeBtn.add(homeLabel, BorderLayout.WEST);
+        
+        historyBtn = new JButton("Show History");
+        historyBtn.setLayout(new BorderLayout());
+        historyBtn.setFocusPainted(false);
+        historyBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        historyBtn.setFont(new Font("Inter", Font.BOLD, 16));
+        historyBtn.putClientProperty("FlatLaf.style",
+                "background: #FFB300;"
+                + "arc: 30;"
+                + "foreground : #FFFFFF;"
+                + "borderWidth : 0");
+        historyBtn.add(historyLabel, BorderLayout.WEST);
 
         tokenPanel.add(tokenLabel, BorderLayout.NORTH);
         tokenPanel.add(tokenHolderPanel, BorderLayout.CENTER);
@@ -252,6 +269,8 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         centerPanel.add(copyBtn);
         centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(HomeBtn);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(historyBtn);
         
         backgroundPanel.add(topPanel, BorderLayout.NORTH);
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);

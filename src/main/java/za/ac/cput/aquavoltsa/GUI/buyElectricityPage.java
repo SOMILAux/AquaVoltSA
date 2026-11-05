@@ -335,7 +335,7 @@ public class buyElectricityPage extends JFrame {
                 String meterNumber = meterNumberField.getText();
                 String Amount = customAmountField.getText();
 
-                if (customAmount.isSelected()) {
+                if (customAmount.isSelected() && !Amount.isEmpty()) {
                     try {
                         amount = Integer.parseInt(Amount);
                     } catch (NumberFormatException n) {

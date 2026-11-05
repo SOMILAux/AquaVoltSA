@@ -149,6 +149,8 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         waterBtn = new JToggleButton("Water");
         waterBtn.setFont(new Font("Inter", Font.BOLD, 17));
         waterBtn.setForeground(Color.decode("#00C6FF"));
+        waterBtn.putClientProperty(FlatClientProperties.STYLE, "selectedBackground : #00C6FF; foreground : #00C6FF ; selectedForeground : #FFFFFF");
+
 
         group = new ButtonGroup();
 
