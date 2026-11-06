@@ -10,6 +10,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.material2.Material2AL;
+import org.kordamp.ikonli.material2.Material2MZ;
+import org.kordamp.ikonli.swing.FontIcon;
 
 
 /**
@@ -73,11 +77,13 @@ public class DashboardFrame extends JFrame {
        
     /*   leftPanel.add(profileLabel);
        leftPanel.add(usernameLabel);*/
-    //Settings panel   
-       ImageIcon gearIcon = new ImageIcon("settings_24dp_1F1F1F 1.png");
-       Image scaledGear = gearIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+    //Settings panel 
+    
+       FontIcon settings = FontIcon.of(Material2MZ.SETTINGS, 30, Color.BLACK);
        
-       JButton settingsButton = new JButton(new ImageIcon(scaledGear));
+       
+       JButton settingsButton = new JButton();
+       settingsButton.setIcon(settings);
        settingsButton.setBorderPainted(false);
        settingsButton.setContentAreaFilled(false);
        settingsButton.setFocusPainted(false);
