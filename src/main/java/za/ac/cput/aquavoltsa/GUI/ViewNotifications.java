@@ -4,7 +4,6 @@ package za.ac.cput.aquavoltsa.GUI;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Sbahle
@@ -16,7 +15,7 @@ import java.sql.Statement;
 
 public class ViewNotifications {
 
-    public static void main(String[] args) {
+    public ViewNotifications() {
 
         String url = "jdbc:derby:AquaVoltDB";
 
@@ -26,16 +25,16 @@ public class ViewNotifications {
             Statement stmt = conn.createStatement();
 
             ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM Notifications"
+                    "SELECT * FROM Notifications"
             );
 
             System.out.println("===== AQUAVOLT NOTIFICATIONS =====");
 
             while (rs.next()) {
                 System.out.println(
-                    "ID: " + rs.getInt("NotificationID")
-                    + " | Title: " + rs.getString("NotificationTitle")
-                    + " | Status: " + rs.getString("NotificationStatus")
+                        "ID: " + rs.getInt("NotificationID")
+                        + " | Title: " + rs.getString("NotificationTitle")
+                        + " | Status: " + rs.getString("NotificationStatus")
                 );
             }
 

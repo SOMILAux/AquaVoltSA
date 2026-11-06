@@ -4,7 +4,6 @@ package za.ac.cput.aquavoltsa.GUI;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Sbahle
@@ -15,7 +14,7 @@ import java.sql.Statement;
 
 public class DatabaseSetup {
 
-    public static void main(String[] args) {
+    public DatabaseSetup() {
 
         String url = "jdbc:derby:AquaVoltDB;create=true";
 
@@ -29,8 +28,8 @@ public class DatabaseSetup {
             // Create Settings table
             try {
 
-                String settingsSQL =
-                        "CREATE TABLE Settings ("
+                String settingsSQL
+                        = "CREATE TABLE Settings ("
                         + "SettingsID INT PRIMARY KEY,"
                         + "UserID INT,"
                         + "Water_alerts VARCHAR(20),"

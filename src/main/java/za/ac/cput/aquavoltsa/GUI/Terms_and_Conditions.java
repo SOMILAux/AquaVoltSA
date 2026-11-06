@@ -173,11 +173,4 @@ public class Terms_and_Conditions extends JFrame {
             }
         });
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Terms_and_Conditions page = new Terms_and_Conditions();
-            page.setVisible(true);
-        });
-    }
 }

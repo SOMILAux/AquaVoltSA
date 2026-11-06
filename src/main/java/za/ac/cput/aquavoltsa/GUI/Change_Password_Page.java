@@ -1,6 +1,4 @@
-
 package za.ac.cput.aquavoltsa.GUI;
-
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -14,7 +12,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.util.Base64;
 import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
-
 
 public class Change_Password_Page extends JFrame {
 
@@ -38,15 +35,15 @@ public class Change_Password_Page extends JFrame {
     private JLabel lblLength, lblUppercase, lblNumber, lblSpecial;
     private JPanel checklistPanel;
 
-    private static final String ICON_VALID =
-            "<html><font color='green'><b>\u2713</b></font> ";
+    private static final String ICON_VALID
+            = "<html><font color='green'><b>\u2713</b></font> ";
 
-    private static final String ICON_INVALID =
-            "<html><font color='red'><b>\u2717</b></font> ";
+    private static final String ICON_INVALID
+            = "<html><font color='red'><b>\u2717</b></font> ";
 
     private final int userId = 1;
 
-    public Change_Password_Page () {
+    public Change_Password_Page() {
 
         lbSet_Password = new JLabel("Create Your Password");
         lbConfirm_Password = new JLabel("Confirm_Password");
@@ -108,8 +105,8 @@ public class Change_Password_Page extends JFrame {
         ImageIcon resizedEyeIcon = new ImageIcon(eyeImage);
 
         btShow_Password = new JButton(resizedEyeIcon);
-        btShow_Password.addActionListener(e ->
-                togglePassword(txtSet_Password));
+        btShow_Password.addActionListener(e
+                -> togglePassword(txtSet_Password));
         styleEyeButton(btShow_Password);
 
         password_panel = new JPanel(new BorderLayout());
@@ -117,8 +114,8 @@ public class Change_Password_Page extends JFrame {
         password_panel.add(btShow_Password, BorderLayout.EAST);
 
         btConfirm_Password = new JButton(resizedEyeIcon);
-        btConfirm_Password.addActionListener(e ->
-                togglePassword(txtConfirm_Password));
+        btConfirm_Password.addActionListener(e
+                -> togglePassword(txtConfirm_Password));
         styleEyeButton(btConfirm_Password);
 
         Confirm_Panel = new JPanel(new BorderLayout());
@@ -280,8 +277,8 @@ public class Change_Password_Page extends JFrame {
         boolean lengthOK = password.length() >= 8;
         boolean uppercaseOK = password.matches(".*[A-Z].*");
         boolean numberOK = password.matches(".*[0-9].*");
-        boolean specialOK =
-                password.matches(".*[!@#$%^&*(),.?\"{}|<>].*");
+        boolean specialOK
+                = password.matches(".*[!@#$%^&*(),.?\"{}|<>].*");
 
         updateRule(lblLength, "At least 8 characters", lengthOK);
         updateRule(lblUppercase,
@@ -339,11 +336,11 @@ public class Change_Password_Page extends JFrame {
             return;
         }
 
-        String selectSQL =
-                "SELECT password_hash FROM users WHERE user_id = ?";
+        String selectSQL
+                = "SELECT password_hash FROM users WHERE user_id = ?";
 
-        try (Connection connection =
-                     DBConnection.getConnection()) {
+        try (Connection connection
+                = DBConnection.getConnection()) {
 
             if (connection == null) {
                 JOptionPane.showMessageDialog(
@@ -353,8 +350,8 @@ public class Change_Password_Page extends JFrame {
 
             String storedPassword;
 
-            try (PreparedStatement statement =
-                         connection.prepareStatement(selectSQL)) {
+            try (PreparedStatement statement
+                    = connection.prepareStatement(selectSQL)) {
                 statement.setInt(1, userId);
 
                 try (ResultSet result = statement.executeQuery()) {
@@ -375,11 +372,11 @@ public class Change_Password_Page extends JFrame {
 
             String hashedPassword = hashPassword(newPassword);
 
-            String updateSQL =
-                    "UPDATE users SET password_hash = ? WHERE user_id = ?";
+            String updateSQL
+                    = "UPDATE users SET password_hash = ? WHERE user_id = ?";
 
-            try (PreparedStatement statement =
-                         connection.prepareStatement(updateSQL)) {
+            try (PreparedStatement statement
+                    = connection.prepareStatement(updateSQL)) {
                 statement.setString(1, hashedPassword);
                 statement.setInt(2, userId);
 
@@ -428,8 +425,8 @@ public class Change_Password_Page extends JFrame {
 
             byte[] actual;
             try {
-                SecretKeyFactory factory =
-                        SecretKeyFactory.getInstance(
+                SecretKeyFactory factory
+                        = SecretKeyFactory.getInstance(
                                 "PBKDF2WithHmacSHA256");
                 actual = factory.generateSecret(spec).getEncoded();
             } finally {
@@ -453,8 +450,8 @@ public class Change_Password_Page extends JFrame {
 
         byte[] hash;
         try {
-            SecretKeyFactory factory =
-                    SecretKeyFactory.getInstance(
+            SecretKeyFactory factory
+                    = SecretKeyFactory.getInstance(
                             "PBKDF2WithHmacSHA256");
             hash = factory.generateSecret(spec).getEncoded();
         } finally {
@@ -483,13 +480,13 @@ public class Change_Password_Page extends JFrame {
             return;
         }
 
-        String sql =
-                "INSERT INTO user_lock_preferences (user_id, lock_type) "
+        String sql
+                = "INSERT INTO user_lock_preferences (user_id, lock_type) "
                 + "VALUES (?, ?) ON DUPLICATE KEY UPDATE "
                 + "lock_type = VALUES(lock_type)";
 
-        try (Connection connection =
-                     DBConnection.getConnection()) {
+        try (Connection connection
+                = DBConnection.getConnection()) {
 
             if (connection == null) {
                 JOptionPane.showMessageDialog(
@@ -497,8 +494,8 @@ public class Change_Password_Page extends JFrame {
                 return;
             }
 
-            try (PreparedStatement statement =
-                         connection.prepareStatement(sql)) {
+            try (PreparedStatement statement
+                    = connection.prepareStatement(sql)) {
                 statement.setInt(1, userId);
                 statement.setString(2, selected);
                 statement.executeUpdate();
@@ -517,16 +514,16 @@ public class Change_Password_Page extends JFrame {
     }
 
     private String getCurrentLockType() {
-        String sql =
-                "SELECT lock_type FROM user_lock_preferences "
+        String sql
+                = "SELECT lock_type FROM user_lock_preferences "
                 + "WHERE user_id = ?";
 
-        try (Connection connection =
-                     DBConnection.getConnection()) {
+        try (Connection connection
+                = DBConnection.getConnection()) {
 
             if (connection != null) {
-                try (PreparedStatement statement =
-                             connection.prepareStatement(sql)) {
+                try (PreparedStatement statement
+                        = connection.prepareStatement(sql)) {
                     statement.setInt(1, userId);
 
                     try (ResultSet result = statement.executeQuery()) {
@@ -548,12 +545,4 @@ public class Change_Password_Page extends JFrame {
         rbChange_Lock_Type.setText(
                 "Change_Lock_Type (" + getCurrentLockType() + ")");
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Change_Password_Page page = new Change_Password_Page();
-            page.setVisible(true);
-        });
-    }
 }
-

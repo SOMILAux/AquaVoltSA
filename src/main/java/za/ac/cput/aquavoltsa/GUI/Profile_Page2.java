@@ -699,11 +699,4 @@ public class Profile_Page2 extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        Profile_Page2 profile = new Profile_Page2();
-        profile.setSize(600, 800);
-        profile.setLocationRelativeTo(null);
-        profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        profile.setVisible(true);
-    }
         }
