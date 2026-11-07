@@ -64,7 +64,7 @@ public class Profile_Page2 extends JFrame {
                 getClass().getResource("/icons/picture.png"));
         Image img = profile_picture_Icon.getImage();
         Image resizedImg = img.getScaledInstance(
-                300, 150, Image.SCALE_SMOOTH);
+                150, 150, Image.SCALE_SMOOTH);
         profile_picture_Icon = new ImageIcon(resizedImg);
 
         full_Name_Icon = new ImageIcon(
@@ -113,7 +113,7 @@ public class Profile_Page2 extends JFrame {
         btReset = new JRadioButton("Reset");
 
         txtFull_Name = new JTextField("Edit");
-        txtFull_Name.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtFull_Name.setFont(new Font("Arial", Font.PLAIN, 18));
         txtFull_Name.setBackground(new Color(173, 216, 230));
         txtFull_Name.setVisible(false);
         txtFull_Name.addActionListener(new ActionListener() {
@@ -128,7 +128,7 @@ public class Profile_Page2 extends JFrame {
         });
 
         txtUsername = new JTextField("Edit");
-        txtUsername.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtUsername.setFont(new Font("Arial", Font.PLAIN, 18));
         txtUsername.setBackground(new Color(173, 216, 230));
         txtUsername.setVisible(false);
         txtUsername.addActionListener(new ActionListener() {
@@ -143,7 +143,7 @@ public class Profile_Page2 extends JFrame {
         });
 
         txtEmail = new JTextField("Edit");
-        txtEmail.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtEmail.setFont(new Font("Arial", Font.PLAIN, 18));
         txtEmail.setBackground(new Color(173, 216, 230));
         txtEmail.setVisible(false);
         txtEmail.addActionListener(new ActionListener() {
@@ -158,7 +158,7 @@ public class Profile_Page2 extends JFrame {
         });
 
         txtPhone_Number = new JTextField("Edit");
-        txtPhone_Number.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtPhone_Number.setFont(new Font("Arial", Font.PLAIN, 18));
         txtPhone_Number.setBackground(new Color(173, 216, 230));
         txtPhone_Number.setVisible(false);
         txtPhone_Number.addActionListener(new ActionListener() {
@@ -173,7 +173,7 @@ public class Profile_Page2 extends JFrame {
         });
 
         txtHome = new JTextField("Home Adress");
-        txtHome.setFont(new Font("Arial", Font.PLAIN, 20));
+        txtHome.setFont(new Font("Arial", Font.PLAIN, 18));
         txtHome.setBackground(new Color(173, 216, 230));
         txtHome.setVisible(false);
         txtHome.addActionListener(new ActionListener() {
@@ -258,7 +258,7 @@ public class Profile_Page2 extends JFrame {
         });
 
         panel_1.add(btBack);
-        lbBack_Text.setFont(new Font("Arial", Font.BOLD, 30));
+        lbBack_Text.setFont(new Font("Arial", Font.BOLD, 20));
         panel_1.setBackground(new Color(173, 216, 230));
         panel_1.setLayout(new GridLayout(2, 1));
         panel_1.add(lbBack_Text);
@@ -272,7 +272,7 @@ public class Profile_Page2 extends JFrame {
         this.add(panel_2);
 
         lbFull_Name.setIcon(full_Name_Icon);
-        lbFull_Name.setFont(new Font("Arial", Font.BOLD, 20));
+        lbFull_Name.setFont(new Font("Arial", Font.BOLD, 18));
         lbFull_Name.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -284,7 +284,7 @@ public class Profile_Page2 extends JFrame {
         panel_3.add(txtFull_Name);
 
         lbUsername.setIcon(username_Icon);
-        lbUsername.setFont(new Font("Arial", Font.BOLD, 20));
+        lbUsername.setFont(new Font("Arial", Font.BOLD, 18));
         lbUsername.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -296,7 +296,7 @@ public class Profile_Page2 extends JFrame {
         panel_3.add(txtUsername);
 
         lbEmail_Adress.setIcon(email_Icon);
-        lbEmail_Adress.setFont(new Font("Arial", Font.BOLD, 20));
+        lbEmail_Adress.setFont(new Font("Arial", Font.BOLD, 18));
         lbEmail_Adress.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -312,7 +312,7 @@ public class Profile_Page2 extends JFrame {
         this.add(panel_3);
 
         lbPhone_Number.setIcon(phone_Number_Icon);
-        lbPhone_Number.setFont(new Font("Arial", Font.BOLD, 20));
+        lbPhone_Number.setFont(new Font("Arial", Font.BOLD, 18));
         lbPhone_Number.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -324,7 +324,7 @@ public class Profile_Page2 extends JFrame {
         panel_4.add(txtPhone_Number);
 
         lbChange_Password.setIcon(change_Password_Icon);
-        lbChange_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        lbChange_Password.setFont(new Font("Arial", Font.BOLD, 18));
         lbChange_Password.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -352,16 +352,16 @@ public class Profile_Page2 extends JFrame {
         this.add(panel_4);
 
         lbVerification.setIcon(genderIcon);
-        lbVerification.setFont(new Font("Arial", Font.BOLD, 20));
+        lbVerification.setFont(new Font("Arial", Font.BOLD, 18));
         panel_another4.add(lbVerification);
         panel_another4.add(cbGender);
 
         lbDate_of_birth.setIcon(date_of_birth_Icon);
-        lbDate_of_birth.setFont(new Font("Arial", Font.BOLD, 20));
+        lbDate_of_birth.setFont(new Font("Arial", Font.BOLD,18));
         panel_another4.add(lbDate_of_birth);
 
         lbAccount_status.setIcon(account_status_Icon);
-        lbAccount_status.setFont(new Font("Arial", Font.BOLD, 20));
+        lbAccount_status.setFont(new Font("Arial", Font.BOLD, 18));
         panel_another4.add(lbAccount_status);
         panel_another4.setLayout(new GridLayout(3, 1));
         panel_another4.setBackground(new Color(173, 216, 230));
@@ -378,14 +378,14 @@ public class Profile_Page2 extends JFrame {
         this.add(inner_panel);
 
         btSave_Changes.setBackground(Color.orange);
-        btSave_Changes.setFont(new Font("Arial", Font.BOLD, 20));
-        lbGender.setFont(new Font("Arial", Font.BOLD, 20));
+        btSave_Changes.setFont(new Font("Arial", Font.BOLD, 18));
+        lbGender.setFont(new Font("Arial", Font.BOLD, 18));
         panel_5.add(lbGender);
         panel_5.add(cbG);
         panel_5.add(btSave_Changes);
 
         btCancel.setBackground(Color.gray);
-        btCancel.setFont(new Font("Arial", Font.BOLD, 20));
+        btCancel.setFont(new Font("Arial", Font.BOLD, 18));
         panel_5.add(btCancel);
 
         btSave_Changes.addActionListener(new ActionListener() {
@@ -571,7 +571,7 @@ public class Profile_Page2 extends JFrame {
         this.add(panel_5);
 
         panel_6.setLayout(new GridLayout(1, 1));
-        lbKeep_secure.setFont(new Font("Arial", Font.BOLD, 22));
+        lbKeep_secure.setFont(new Font("Arial", Font.BOLD, 20));
 
         Image image = logoIcon.getImage().getScaledInstance(
                 100, 100, Image.SCALE_SMOOTH);

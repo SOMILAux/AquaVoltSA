@@ -88,8 +88,19 @@ public class DashboardFrame extends JFrame {
        settingsButton.setContentAreaFilled(false);
        settingsButton.setFocusPainted(false);
        
-       settingsButton.addActionListener(e-> JOptionPane.showMessageDialog(this, "Settings selected"));
        userProfile.add(settingsButton, BorderLayout.EAST);
+       settingsButton.addActionListener(e-> {
+           Settings_Page page = new Settings_Page();
+
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+
+            this.dispose();
+       });
+       //userProfile.add(settingsButton, BorderLayout.EAST);
        
        //JLabel gearLabel = new JLabel(new ImageIcon(scaledGear));
        

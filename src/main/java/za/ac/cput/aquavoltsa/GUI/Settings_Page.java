@@ -18,7 +18,7 @@ public class Settings_Page extends JFrame implements ActionListener {
     private JButton btProfile_Settings, btTerms_Conditions, btNotification_Preference, btWater_Alerts, btElectricity_Alerts;
     private JButton btLanguage, btHelp_Support, btAbout_AquaVolt;
     private JButton btLogOut;
-    private JLabel btBack;
+    private JLabel lbBack;
     private JPanel panel_1, panel_2, panel_3, panel_4, panel_5, inner_panel;
     private ImageIcon notificationIcon, settingsIcon, profileIcon, termsIcon, backIcon, waterIcon, electricityIcon,
             languageIcon, help_supportIcon, aboutIcon, logoutIcon, logoIcon;
@@ -40,7 +40,7 @@ public class Settings_Page extends JFrame implements ActionListener {
         btAbout_AquaVolt = new JButton("About AquaVolt     >");
         btLogOut = new JButton("LogOut");
         backIcon = new ImageIcon(getClass().getResource("/icons/back.png"));
-        btBack = new JLabel(backIcon);
+        lbBack = new JLabel();
         lbProfile_Settings = new JLabel("Profile_Settings", JLabel.CENTER);
         lbJust_b = new JLabel(" ");
 
@@ -70,14 +70,19 @@ public class Settings_Page extends JFrame implements ActionListener {
     public void showGui() {
         this.setLayout(new GridLayout(6, 1));
 
-        btBack.setIcon(backIcon);
-        btBack.setBackground(Color.LIGHT_GRAY);
-        panel_1.add(btBack);
+        
+        Image backImage = backIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        lbBack.setIcon(new ImageIcon(backImage));
+        lbBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+         panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
         lbSettings.setIcon(settingsIcon);
         lbSettings.setFont(new Font("Arial", Font.BOLD, 24));
+
+        panel_1.add(lbBack);
         panel_1.add(lbSettings);
-        panel_1.add(lbBlank);
-        panel_1.setLayout(new GridLayout(1, 3));
+
         panel_1.setBackground(Color.LIGHT_GRAY);
         this.add(panel_1);
 
@@ -146,8 +151,23 @@ public class Settings_Page extends JFrame implements ActionListener {
         btHelp_Support.addActionListener(this);
         btAbout_AquaVolt.addActionListener(this);
         btLogOut.addActionListener(this);
+        
+         lbBack.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                DashboardFrame change = new DashboardFrame();
+                change.setSize(425, 917);
+                change.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                change.setLocationRelativeTo(null);
+                change.setVisible(true);
+                dispose();
+            }
+        });
+        
 
     }
+    
+    
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Profile Settings") || e.getSource() == btProfile_Settings) {
@@ -239,5 +259,6 @@ public class Settings_Page extends JFrame implements ActionListener {
         }
 
     }
+    
 
 }

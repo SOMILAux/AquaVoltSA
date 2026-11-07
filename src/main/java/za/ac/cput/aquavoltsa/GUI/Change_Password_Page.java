@@ -81,7 +81,7 @@ public class Change_Password_Page extends JFrame {
         // Lock icon and heading
         lockIcon = new ImageIcon(getClass().getResource("/icons/lock.png"));
         Image image = lockIcon.getImage().getScaledInstance(
-                90, 90, Image.SCALE_SMOOTH);
+                85, 85, Image.SCALE_SMOOTH);
 
         lbJust_blank.setIcon(new ImageIcon(image));
         lbJust_blank.setHorizontalAlignment(JLabel.CENTER);
@@ -95,13 +95,14 @@ public class Change_Password_Page extends JFrame {
         lbJust_blank.setFont(new Font("Arial", Font.BOLD, 30));
         pre_panel_3.add(lbJust_blank);
         pre_panel_3.setLayout(new GridLayout(2, 1));
-        pre_panel_3.setBackground(Color.orange);
+        Color gold = new Color(218, 165, 32);
+        pre_panel_3.setBackground(gold);
         add(pre_panel_3);
 
         // Eye icon
         eyeIcon = new ImageIcon(getClass().getResource("/icons/eye.png"));
         Image eyeImage = eyeIcon.getImage().getScaledInstance(
-                30, 30, Image.SCALE_SMOOTH);
+                25, 25, Image.SCALE_SMOOTH);
         ImageIcon resizedEyeIcon = new ImageIcon(eyeImage);
 
         btShow_Password = new JButton(resizedEyeIcon);
@@ -123,34 +124,35 @@ public class Change_Password_Page extends JFrame {
         Confirm_Panel.add(btConfirm_Password, BorderLayout.EAST);
 
         // Existing password fields and panel layout
-        lbSet_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        lbCurrent_password.setFont(new Font("Arial", Font.BOLD, 20));
+        lbSet_Password.setFont(new Font("Arial", Font.BOLD, 18));
+        lbCurrent_password.setFont(new Font("Arial", Font.BOLD, 18));
 
         panel_1.add(lbCurrent_password);
-        txtCurrent_password.setBackground(Color.orange);
+        panel_1.setBackground(gold);
+        txtCurrent_password.setBackground(gold);
         panel_1.add(txtCurrent_password);
 
         panel_1.add(lbSet_Password);
-        txtSet_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        txtSet_Password.setBackground(Color.orange);
-        password_panel.setBackground(Color.orange);
+        txtSet_Password.setFont(new Font("Arial", Font.BOLD, 18));
+        txtSet_Password.setBackground(gold);
+        password_panel.setBackground(gold);
         panel_1.add(password_panel);
 
         panel_1.add(lbConfirm_Password);
-        lbConfirm_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        txtConfirm_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        txtConfirm_Password.setBackground(Color.orange);
-        Confirm_Panel.setBackground(Color.orange);
+        lbConfirm_Password.setFont(new Font("Arial", Font.BOLD, 18));
+        txtConfirm_Password.setFont(new Font("Arial", Font.BOLD, 18));
+        txtConfirm_Password.setBackground(gold);
+        Confirm_Panel.setBackground(gold);
         panel_1.add(Confirm_Panel);
 
         panel_1.add(lbAnother_blank);
-        panel_1.setBackground(Color.orange);
+        panel_1.setBackground(gold);
         panel_1.setLayout(new GridLayout(6, 1));
         add(panel_1);
 
         // Existing password checklist
         checklistPanel = new JPanel(new GridLayout(4, 1));
-        checklistPanel.setBackground(Color.orange);
+        checklistPanel.setBackground(gold);
         checklistPanel.setBorder(
                 BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
@@ -170,11 +172,11 @@ public class Change_Password_Page extends JFrame {
         setupPasswordListener();
 
         // Existing buttons and lock-type control
-        btSave_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        btSave_Password.setFont(new Font("Arial", Font.BOLD, 18));
         btSave_Password.setBackground(new Color(173, 216, 230));
         btSave_Password.addActionListener(e -> savePassword());
 
-        btBack.setFont(new Font("Arial", Font.BOLD, 20));
+        btBack.setFont(new Font("Arial", Font.BOLD, 18));
         btBack.setBackground(Color.gray);
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
@@ -186,7 +188,7 @@ public class Change_Password_Page extends JFrame {
         });
 
         panel_2.setLayout(new GridBagLayout());
-        panel_2.setBackground(Color.orange);
+        panel_2.setBackground(gold);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -205,21 +207,21 @@ public class Change_Password_Page extends JFrame {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
 
-        rbChange_Lock_Type.setBackground(Color.orange);
+        rbChange_Lock_Type.setBackground(gold);
         rbChange_Lock_Type.addActionListener(e -> changeLockType());
-        panel_2.add(rbChange_Lock_Type, gbc);
+        //panel_2.add(rbChange_Lock_Type, gbc);
 
         add(panel_2);
 
         // Existing logo
         logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
         Image logoImage = logoIcon.getImage().getScaledInstance(
-                130, 130, Image.SCALE_SMOOTH);
+                125, 125, Image.SCALE_SMOOTH);
         lbJust_blank2.setIcon(new ImageIcon(logoImage));
         lbJust_blank2.setHorizontalAlignment(JLabel.CENTER);
         lbJust_blank2.setVerticalAlignment(JLabel.CENTER);
 
-        panel_4.setBackground(Color.orange);
+        panel_4.setBackground(gold);
         panel_4.add(lbJust_blank2);
         add(panel_4);
 
