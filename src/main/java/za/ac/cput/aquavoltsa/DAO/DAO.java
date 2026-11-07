@@ -106,7 +106,7 @@ public class DAO {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Table 'TRANSACTIONS' has been created successfully.");
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            //JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         
     }
@@ -127,7 +127,7 @@ public class DAO {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Table 'UTILITY' has been created successfully.");
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            //JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         
     }

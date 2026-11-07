@@ -60,7 +60,7 @@ public class DatabaseSetup {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }
