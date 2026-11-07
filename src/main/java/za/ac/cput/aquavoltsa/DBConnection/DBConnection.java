@@ -36,7 +36,7 @@ public class DBConnection {
             System.out.println("===============");
             System.out.println("Connection Failed!");
             
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            //JOptionPane.showMessageDialog(null, ex.getMessage());
 
         }
 

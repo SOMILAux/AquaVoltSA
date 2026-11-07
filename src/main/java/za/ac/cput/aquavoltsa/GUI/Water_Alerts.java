@@ -15,6 +15,8 @@ public class Water_Alerts extends JFrame {
     private final Color BLUE = new Color(173, 216, 230);
     private final Color ORANGE = new Color(255, 140, 0);
     private final int userId = 1;
+    private ImageIcon logoIcon;
+    private JLabel lbJust_blank2;
 
     private JCheckBox cbWaterOutages;
     private JCheckBox cbWaterLeaks;
@@ -28,6 +30,7 @@ public class Water_Alerts extends JFrame {
         setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        lbJust_blank2 = new JLabel(" ");
 
         createInterface();
         loadPreferences();
@@ -168,6 +171,20 @@ public class Water_Alerts extends JFrame {
         contentPanel.add(cbDeliveryMethod);
         contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(buttonPanel);
+        
+        contentPanel.add(Box.createVerticalStrut(10)); 
+        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
+        Image logoImage = logoIcon.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+        lbJust_blank2.setIcon(new ImageIcon(logoImage));
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        logoPanel.setBackground(BLUE);
+        logoPanel.add(lbJust_blank2);
+
+        contentPanel.add(logoPanel);
+        
+        
+
+        
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         setContentPane(mainPanel);
@@ -193,10 +210,7 @@ public class Water_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Could not connect to the database. "
-                        + "Preferences could not be loaded.");
+                //JOptionPane.showMessageDialog(this, "Could not connect to the database. " + "Preferences could not be loaded.");
                 return;
             }
 
@@ -287,9 +301,7 @@ public class Water_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Database connection failed.");
+               // JOptionPane.showMessageDialog( this, "Database connection failed.");
                 return;
             }
 

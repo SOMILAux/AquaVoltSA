@@ -15,6 +15,9 @@ public class Electricity_Alerts extends JFrame {
 
     private final Color ORANGE = new Color(255, 140, 0);
     private final Color BLUE = new Color(173, 216, 230);
+    private ImageIcon logoIcon;
+    private JLabel lbJust_blank2;
+   
 
     // Test user ID. Connect this to the logged-in user later.
     private final int userId = 1;
@@ -31,9 +34,13 @@ public class Electricity_Alerts extends JFrame {
         setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        lbJust_blank2 = new JLabel(" ");
+       
 
         createInterface();
         loadPreferences();
+        
+        
     }
 
     private void createInterface() {
@@ -172,9 +179,28 @@ public class Electricity_Alerts extends JFrame {
         contentPanel.add(cbDeliveryMethod);
         contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(buttonPanel);
+        
+        contentPanel.add(Box.createVerticalStrut(10)); 
+
+        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
+        Image logoImage = logoIcon.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+
+        lbJust_blank2.setIcon(new ImageIcon(logoImage));
+
+
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        logoPanel.setBackground(gold);
+        logoPanel.add(lbJust_blank2);
+
+        contentPanel.add(logoPanel);
+        
+        
+
+        contentPanel.add(lbJust_blank2); 
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         setContentPane(mainPanel);
+           
     }
 
     private JCheckBox createCheckbox(String text) {
@@ -197,10 +223,7 @@ public class Electricity_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Could not connect to the database. "
-                        + "Preferences could not be loaded.");
+                //JOptionPane.showMessageDialog(this,"Could not connect to the database. " + "Preferences could not be loaded.");
                 return;
             }
 
@@ -248,10 +271,7 @@ public class Electricity_Alerts extends JFrame {
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Could not load electricity preferences:\n"
-                    + e.getMessage());
+            //JOptionPane.showMessageDialog( this,"Could not load electricity preferences:\n" + e.getMessage());
         }
     }
 
@@ -291,9 +311,7 @@ public class Electricity_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Database connection failed.");
+                //JOptionPane.showMessageDialog(this,"Database connection failed.");
                 return;
             }
 
@@ -320,10 +338,7 @@ public class Electricity_Alerts extends JFrame {
                     "Electricity alert preferences saved successfully!");
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Could not save electricity preferences:\n"
-                    + e.getMessage());
+            //JOptionPane.showMessageDialog(this, "Could not save electricity preferences:\n" + e.getMessage());
         }
     }
 
@@ -339,6 +354,10 @@ public class Electricity_Alerts extends JFrame {
         statement.setString(4, method);
         statement.addBatch();
     }
+    
+        
+}
+
 
     
-}
+

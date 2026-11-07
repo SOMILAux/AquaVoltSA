@@ -179,11 +179,11 @@ public class Change_Password_Page extends JFrame {
         btBack.setFont(new Font("Arial", Font.BOLD, 18));
         btBack.setBackground(Color.gray);
         btBack.addActionListener(e -> {
-            Settings_Page page = new Settings_Page();
-            page.showGui();
-            page.setSize(425, 917);
-            page.setLocationRelativeTo(null);
-            page.setVisible(true);
+            Profile_Page2 profile = new Profile_Page2();
+            profile.setSize(425, 917);
+            profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            profile.setLocationRelativeTo(null);
+            profile.setVisible(true);
             this.dispose();
         });
 
@@ -208,7 +208,7 @@ public class Change_Password_Page extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
 
         rbChange_Lock_Type.setBackground(gold);
-        rbChange_Lock_Type.addActionListener(e -> changeLockType());
+        //rbChange_Lock_Type.addActionListener(e -> changeLockType());
         //panel_2.add(rbChange_Lock_Type, gbc);
 
         add(panel_2);
@@ -225,7 +225,7 @@ public class Change_Password_Page extends JFrame {
         panel_4.add(lbJust_blank2);
         add(panel_4);
 
-        loadLockType();
+        //loadLockType();
         revalidate();
         repaint();
     }
@@ -464,7 +464,7 @@ public class Change_Password_Page extends JFrame {
                 + Base64.getEncoder().encodeToString(salt) + "$"
                 + Base64.getEncoder().encodeToString(hash);
     }
-
+/*
     private void changeLockType() {
         String[] options = {"Password", "PIN", "Pattern"};
 
@@ -491,8 +491,8 @@ public class Change_Password_Page extends JFrame {
                 = DBConnection.getConnection()) {
 
             if (connection == null) {
-                JOptionPane.showMessageDialog(
-                        this, "Database connection failed.");
+                //JOptionPane.showMessageDialog(
+                        //this, "Database connection failed.");
                 return;
             }
 
@@ -536,15 +536,18 @@ public class Change_Password_Page extends JFrame {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Could not read lock type: "
-                    + e.getMessage());
+            //System.out.println("Could not read lock type: "
+                    //+ e.getMessage());
         }
 
         return "Password";
+        
     }
 
     private void loadLockType() {
         rbChange_Lock_Type.setText(
                 "Change_Lock_Type (" + getCurrentLockType() + ")");
     }
+*/
 }
+
