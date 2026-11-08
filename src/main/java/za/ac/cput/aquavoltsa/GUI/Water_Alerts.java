@@ -48,6 +48,8 @@ public class Water_Alerts extends JFrame {
         topPanel.setBackground(BLUE);
 
         JButton btBack = new JButton("Back");
+        Color gold = new Color(218, 165, 32);
+        btBack.setBackground(Color.LIGHT_GRAY);
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
@@ -132,12 +134,13 @@ public class Water_Alerts extends JFrame {
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btSave = new JButton("Save Preferences");
-        btSave.setBackground(ORANGE);
+        btSave.setBackground(Color.orange);
         btSave.setForeground(Color.BLACK);
         btSave.setFocusPainted(false);
         btSave.addActionListener(e -> savePreferences());
 
         JButton btReset = new JButton("Reset");
+        btReset.setBackground(Color.LIGHT_GRAY);
         btReset.setFocusPainted(false);
         btReset.addActionListener(e -> {
             cbWaterOutages.setSelected(false);

@@ -83,40 +83,40 @@ public class Settings_Page extends JFrame implements ActionListener {
         panel_1.add(lbBack);
         panel_1.add(lbSettings);
 
-        panel_1.setBackground(Color.LIGHT_GRAY);
+        panel_1.setBackground(Color.WHITE);
         this.add(panel_1);
 
         Image image = logoIcon.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
         lbJust_b.setIcon(new ImageIcon(image));
         lbJust_b.setHorizontalAlignment(JLabel.CENTER);
         lbJust_b.setVerticalAlignment(JLabel.CENTER);
-        inner_panel.setBackground(Color.LIGHT_GRAY);
+        inner_panel.setBackground(Color.WHITE);
         this.inner_panel.add(lbJust_b);
         this.add(inner_panel);
 
         panel_2.add(lbAccount);
         lbAccount.setFont(new Font("Arial", Font.BOLD, 16));
         btProfile_Settings.setIcon(profileIcon);
-        btProfile_Settings.setBackground(Color.LIGHT_GRAY);
+        btProfile_Settings.setBackground(Color.WHITE);
         btProfile_Settings.setLayout(new GridLayout(1, 2));
         panel_2.add(btProfile_Settings);
-        btTerms_Conditions.setBackground(Color.LIGHT_GRAY);
+        btTerms_Conditions.setBackground(Color.WHITE);
         btTerms_Conditions.setIcon(termsIcon);
         panel_2.add(btTerms_Conditions);
         lbNotifications.setFont(new Font("Arial", Font.BOLD, 16));
         panel_2.add(lbNotifications);
         panel_2.setLayout(new GridLayout(4, 1));
-        panel_2.setBackground(Color.LIGHT_GRAY);
+        panel_2.setBackground(Color.WHITE);
         this.add(panel_2);
 
         btNotification_Preference.setIcon(notificationIcon);
-        btNotification_Preference.setBackground(Color.LIGHT_GRAY);
+        btNotification_Preference.setBackground(Color.WHITE);
         panel_3.add(btNotification_Preference);
         btWater_Alerts.setIcon(waterIcon);
-        btWater_Alerts.setBackground(Color.LIGHT_GRAY);
+        btWater_Alerts.setBackground(Color.WHITE);
         panel_3.add(btWater_Alerts);
         btElectricity_Alerts.setIcon(electricityIcon);
-        btElectricity_Alerts.setBackground(Color.LIGHT_GRAY);
+        btElectricity_Alerts.setBackground(Color.WHITE);
         panel_3.add(btElectricity_Alerts);
         panel_3.setLayout(new GridLayout(3, 1));
         this.add(panel_3);
@@ -124,22 +124,22 @@ public class Settings_Page extends JFrame implements ActionListener {
         lbApp_Preference.setFont(new Font("Arial", Font.BOLD, 16));
         panel_4.add(lbApp_Preference);
         btLanguage.setIcon(languageIcon);
-        btLanguage.setBackground(Color.LIGHT_GRAY);
+        btLanguage.setBackground(Color.WHITE);
         panel_4.add(btLanguage);
         btHelp_Support.setIcon(help_supportIcon);
-        btHelp_Support.setBackground(Color.LIGHT_GRAY);
+        btHelp_Support.setBackground(Color.WHITE);
         panel_4.add(btHelp_Support);
         btAbout_AquaVolt.setIcon(aboutIcon);
-        btAbout_AquaVolt.setBackground(Color.LIGHT_GRAY);
+        btAbout_AquaVolt.setBackground(Color.WHITE);
         panel_4.add(btAbout_AquaVolt);
         panel_4.setLayout(new GridLayout(4, 1));
-        panel_4.setBackground(Color.LIGHT_GRAY);
+        panel_4.setBackground(Color.WHITE);
         this.add(panel_4);
 
         btLogOut.setIcon(logoutIcon);
         btLogOut.setBackground(Color.ORANGE);
         panel_5.add(btLogOut);
-        panel_5.setBackground(Color.LIGHT_GRAY);
+        panel_5.setBackground(Color.WHITE);
         this.add(panel_5);
 
         btProfile_Settings.addActionListener(this);

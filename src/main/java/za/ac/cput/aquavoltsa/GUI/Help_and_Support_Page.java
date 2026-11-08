@@ -5,11 +5,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class Help_and_Support_Page extends JFrame implements ActionListener {
 
     private JButton btHelp, btFeedback, btWebsite, btEmail, btBack;
     private JCheckBox cbUnderstand;
+    private final Color BLUE = new Color(173, 216, 230);
 
     public Help_and_Support_Page() {
 
@@ -70,6 +72,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         btHelp = new JButton("Contact Support");
         btHelp.setBounds(20, 105, 155, 32);
         btHelp.setFont(new Font("Arial", Font.PLAIN, 12));
+        btHelp.setBackground(Color.WHITE);
         btHelp.addActionListener(this);
         helpPanel.add(btHelp);
 
@@ -102,6 +105,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         btFeedback = new JButton("Send Feedback");
         btFeedback.setBounds(20, 105, 155, 32);
         btFeedback.setFont(new Font("Arial", Font.PLAIN, 12));
+        btFeedback.setBackground(Color.WHITE);
         btFeedback.addActionListener(this);
         feedbackPanel.add(btFeedback);
 
@@ -112,6 +116,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         btWebsite = new JButton("Visit Website");
         btWebsite.setBounds(30, 485, 165, 38);
         btWebsite.setFont(new Font("Arial", Font.PLAIN, 12));
+        btWebsite.setBackground(BLUE);
         btWebsite.addActionListener(this);
         mainPanel.add(btWebsite);
 
@@ -122,6 +127,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         btEmail = new JButton("Email Support");
         btEmail.setBounds(215, 485, 165, 38);
         btEmail.setFont(new Font("Arial", Font.PLAIN, 12));
+        btEmail.setBackground(Color.LIGHT_GRAY);
         btEmail.addActionListener(this);
         mainPanel.add(btEmail);
 
@@ -143,6 +149,7 @@ public class Help_and_Support_Page extends JFrame implements ActionListener {
         btBack = new JButton("Back");
         btBack.setBounds(135, 600, 140, 35);
         btBack.setFont(new Font("Arial", Font.BOLD, 13));
+        btBack.setBackground(Color.orange);
         btBack.addActionListener(this);
         mainPanel.add(btBack);
 

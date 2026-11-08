@@ -55,8 +55,10 @@ public class Electricity_Alerts extends JFrame {
         JPanel topPanel = new JPanel(
                 new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(gold);
+        
 
         JButton btBack = new JButton("Back");
+        btBack.setBackground(Color.orange);
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
@@ -148,6 +150,7 @@ public class Electricity_Alerts extends JFrame {
 
         JButton btReset = new JButton("Reset");
         btReset.setFocusPainted(false);
+        btReset.setBackground(Color.LIGHT_GRAY);
         btReset.addActionListener(e -> {
             cbPowerOutage.setSelected(false);
             cbHighUsage.setSelected(false);
