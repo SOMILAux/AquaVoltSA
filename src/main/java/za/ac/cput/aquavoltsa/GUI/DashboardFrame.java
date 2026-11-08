@@ -309,4 +309,8 @@ public class DashboardFrame extends JFrame {
            
        }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ec7d8c4 (This is the Login-in pages done by Oyama)

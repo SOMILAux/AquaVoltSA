@@ -407,7 +407,7 @@ final class Theme {
         row.setOpaque(false);
         row.add(new JLabel(icon("national_logo1.png", 32, 40)));
         row.add(label("SA Municipality", SMALL.deriveFont(12f), INK, SwingConstants.LEFT));
-        row.add(new JLabel(icon("eskom_logo.png", 105, 27)));
+        row.add(new JLabel(icon("eskom1.png", 105, 27)));
         JPanel strip = new JPanel() {
             private final Image bg = image("bg1.png");
             @Override protected void paintComponent(Graphics g) {
