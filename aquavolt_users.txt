@@ -1,5 +1,4 @@
-<<<<<<< Upstream, based on origin/master
+
 Udb511aad	Sipho Khumalo	8812125800085	Sipho	48beacc5279d055e3f4f7730aeb05dac9b5f82e6aae8cd4a0412f3b1cf3b9a5c	sipho.k@mail.com	0794447712	3 Church Street, Pretoria	MTR-88231	SN-12089	WTR-7710	ACC-3345	VERIFIED	2026-10-28 14:29
 U15760a8c	Latoya Simelane	1234567891012	Latoya	e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a	samahle1950@gmail.com	0679223179						PENDING	2026-11-05 22:31
 =======
->>>>>>> 0756969 This is the Login-in pages done by Oyama

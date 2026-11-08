@@ -90,7 +90,6 @@ public class LoginSignupPage extends BasePage {
     }
 }
 
-
 /**
  * Loading screen shown when the app opens (like the Android app), then moves to the login page.
  * @StudentNumber 241028213
@@ -258,6 +257,11 @@ abstract class BasePage extends JFrame {
     protected final JPanel body = new Body();
 
     protected BasePage(String title) {
+        this(title, false);
+    }
+
+    /** compact = smaller logo and no "Partnered with" footer (used by the dashboard and the settings pages). */
+    protected BasePage(String title, boolean compact) {
         super("AquaVolt SA - " + title);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(Theme.image("plain_logo.png"));
@@ -273,13 +277,21 @@ abstract class BasePage extends JFrame {
 
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(Color.WHITE);
-        root.add(Theme.header(), BorderLayout.NORTH);
+        root.add(compact ? Theme.compactHeader() : Theme.header(), BorderLayout.NORTH);
         root.add(scroll, BorderLayout.CENTER);
-        root.add(Theme.footer(), BorderLayout.SOUTH);
+        if (!compact) root.add(Theme.footer(), BorderLayout.SOUTH);
         root.setPreferredSize(new Dimension(425, 917));   // GUI size
         setContentPane(root);
         pack();
         setLocationRelativeTo(null);
+    }
+
+    /** Adds the round back arrow (back.png) in the top-left corner. */
+    protected void setBack(Runnable action) {
+        Theme.BackButton b = new Theme.BackButton();
+        b.setBounds(10, 10, 44, 44);
+        b.addActionListener(e -> action.run());
+        getLayeredPane().add(b, JLayeredPane.PALETTE_LAYER);
     }
 
     /** Adds a component to the scrolling body, centred and stretched to the full width. */
@@ -342,6 +354,47 @@ final class Theme {
         l.setOpaque(true);
         l.setBackground(Color.WHITE);
         return l;
+    }
+
+    static JComponent compactHeader() {
+        JLabel l = new JLabel(icon("Logo1.png", 260, 151), SwingConstants.CENTER);
+        l.setOpaque(true);
+        l.setBackground(Color.WHITE);
+        return l;
+    }
+
+    /** Round back arrow: uses /icons/back.png when it exists, otherwise draws a chevron. */
+    static class BackButton extends JButton {
+        private final Image img;
+
+        BackButton() {
+            java.net.URL u = Theme.class.getResource("/icons/back.png");
+            img = u == null ? null : new ImageIcon(u).getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            setContentAreaFilled(false);
+            setBorderPainted(false);
+            setFocusPainted(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            setPreferredSize(new Dimension(44, 44));
+        }
+
+        @Override protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(new Color(245, 248, 252));
+            g2.fillOval(2, 2, getWidth() - 5, getHeight() - 5);
+            g2.setColor(new Color(215, 222, 232));
+            g2.drawOval(2, 2, getWidth() - 5, getHeight() - 5);
+            if (img != null) {
+                g2.drawImage(img, (getWidth() - 24) / 2, (getHeight() - 24) / 2, null);
+            } else {
+                g2.setColor(NAVY);
+                g2.setStroke(new BasicStroke(2.6f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                int cx = getWidth() / 2, cy = getHeight() / 2;
+                g2.drawLine(cx + 4, cy - 9, cx - 5, cy);
+                g2.drawLine(cx - 5, cy, cx + 4, cy + 9);
+            }
+            g2.dispose();
+        }
     }
 
     static JComponent footer() {

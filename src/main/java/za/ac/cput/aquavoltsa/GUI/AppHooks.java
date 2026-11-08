@@ -92,12 +92,7 @@ public final class AppHooks {
 
     private static void wire(JFrame f) {
         if (f instanceof Settings_Page) {
-            // The settings page had no way back to the dashboard, so add a small Home button on top of it.
-            JButton home = new JButton("Home");
-            home.setBounds(W - 100, 8, 80, 28);
-            home.setFocusPainted(false);
-            home.addActionListener(e -> go(f, new DashboardFrame()));
-            f.getLayeredPane().add(home, JLayeredPane.POPUP_LAYER);
+            wireSettingsBack((Settings_Page) f);
         } else if (f instanceof buyWaterPage) {
             buyWaterPage p = (buyWaterPage) f;
             p.backBtn.addActionListener(e -> go(p, new DashboardFrame()));
@@ -142,6 +137,71 @@ public final class AppHooks {
             p.waterBtn.addActionListener(e -> go(p, new TransactionHistoryForWaterPage()));
             searchable(p.searchField, p.historyPanel);
         }
+    }
+
+    /**
+     * Settings_Page: the picture at the top-left (back.png) now takes the customer back to the dashboard.
+     * It looks for the top-left-most button/label that only shows a small picture. If the page has none, a round
+     * back arrow is added in the corner instead.
+     */
+    private static void wireSettingsBack(Settings_Page f) {
+        Component best = null;
+        int by = Integer.MAX_VALUE, bx = Integer.MAX_VALUE;
+        for (Component c : allComponents(f.getContentPane())) {
+            javax.swing.Icon icon = null;
+            if (c instanceof JButton && blank(((JButton) c).getText())) icon = ((JButton) c).getIcon();
+            else if (c instanceof JLabel && blank(((JLabel) c).getText())) icon = ((JLabel) c).getIcon();
+            if (icon == null || icon.getIconWidth() > 80 || !c.isShowing()) continue;
+            java.awt.Point p = javax.swing.SwingUtilities.convertPoint(c.getParent(), c.getLocation(), f.getContentPane());
+            if (p.y > 140 || p.x > W / 2) continue;
+            if (p.y < by || (p.y == by && p.x < bx)) { best = c; by = p.y; bx = p.x; }
+        }
+        if (best instanceof JButton) {
+            JButton b = (JButton) best;
+            for (java.awt.event.ActionListener l : b.getActionListeners()) b.removeActionListener(l);
+            b.addActionListener(e -> toDashboard(f));
+        } else if (best instanceof JLabel) {
+            JLabel l = (JLabel) best;
+            for (java.awt.event.MouseListener m : l.getMouseListeners()) l.removeMouseListener(m);
+            l.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+            l.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override public void mouseClicked(java.awt.event.MouseEvent e) { toDashboard(f); }
+            });
+        } else {
+            Theme.BackButton back = new Theme.BackButton();
+            back.setBounds(8, 8, 44, 44);
+            back.addActionListener(e -> toDashboard(f));
+            f.getLayeredPane().add(back, JLayeredPane.POPUP_LAYER);
+        }
+    }
+
+    private static boolean blank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+    private static java.util.List<Component> allComponents(Container c) {
+        java.util.List<Component> list = new java.util.ArrayList<>();
+        for (Component k : c.getComponents()) {
+            list.add(k);
+            if (k instanceof Container) list.addAll(allComponents((Container) k));
+        }
+        return list;
+    }
+
+    /** Opens the settings page (same steps the group's pages use) and closes the current window. */
+    static void toSettings(JFrame from) {
+        Settings_Page page = new Settings_Page();
+        page.showGui();
+        page.setSize(W, H);
+        page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        page.setLocationRelativeTo(null);
+        page.setVisible(true);
+        from.dispose();
+    }
+
+    static void toDashboard(JFrame from) {
+        new DashboardFrame().setVisible(true);
+        from.dispose();
     }
 
     /** The buy pages read the meter with Long.parseLong, so only the digits of "MTR-44821" are used. */

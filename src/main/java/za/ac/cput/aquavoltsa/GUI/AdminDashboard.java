@@ -100,7 +100,22 @@ public class AdminDashboard extends JFrame {
             new RoleSelectPage().setVisible(true);
             dispose();
         });
-        bar.add(logout, BorderLayout.EAST);
+        // the admin's own picture: tap it to take a photo or choose one
+        UiKit.Avatar myPic = new UiKit.Avatar(me.fullName, "a", me.username, 36);
+        myPic.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        myPic.setToolTipText("Change my picture");
+        myPic.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                ProfilePictureDialog d = new ProfilePictureDialog(AdminDashboard.this, "a", me.username, me.fullName);
+                d.setVisible(true);
+                if (d.changed) { myPic.reload(); refresh(); }
+            }
+        });
+        JPanel east = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 4));
+        east.setOpaque(false);
+        east.add(myPic);
+        east.add(logout);
+        bar.add(east, BorderLayout.EAST);
         return bar;
     }
 
@@ -400,7 +415,7 @@ public class AdminDashboard extends JFrame {
     // ================================================================ cards
     private JComponent customerCard(UserStore.User u) {
         Card c = new Card(new BorderLayout(0, 8), null);
-        c.add(head(u.fullName, "@" + u.username + "   " + u.phone, label(u.status)), BorderLayout.NORTH);
+        c.add(head(u.fullName, "@" + u.username + "   " + u.phone, label(u.status), "c", u.username), BorderLayout.NORTH);
         c.add(Theme.label(u.email, Theme.SMALL.deriveFont(12f), Theme.INK, SwingConstants.LEFT), BorderLayout.CENTER);
 
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
@@ -419,7 +434,7 @@ public class AdminDashboard extends JFrame {
 
     private JComponent adminCard(AdminStore.Admin a) {
         Card c = new Card(new BorderLayout(0, 8), null);
-        c.add(head(a.fullName, "@" + a.username, label(a.status)), BorderLayout.NORTH);
+        c.add(head(a.fullName, "@" + a.username, label(a.status), "a", a.username), BorderLayout.NORTH);
         String info = a.main ? "Main administrator" : a.email + "   |   requested by " + a.requestedBy;
         c.add(Theme.label(info, Theme.SMALL.deriveFont(12f), Theme.INK, SwingConstants.LEFT), BorderLayout.CENTER);
         if (isMain && !a.main) {
@@ -440,14 +455,14 @@ public class AdminDashboard extends JFrame {
         return c;
     }
 
-    private JComponent head(String name, String line2, String status) {
+    private JComponent head(String name, String line2, String status, String kind, String username) {
         JPanel h = new JPanel(new BorderLayout(10, 0));
         h.setOpaque(false);
         JPanel names = new JPanel(new GridLayout(2, 1));
         names.setOpaque(false);
         names.add(Theme.label(name, Theme.BOLD, Theme.INK, SwingConstants.LEFT));
         names.add(Theme.label(line2, Theme.SMALL.deriveFont(12f), Theme.GREY, SwingConstants.LEFT));
-        h.add(new Avatar(name), BorderLayout.WEST);
+        h.add(new UiKit.Avatar(name, kind, username, 42), BorderLayout.WEST);   // profile picture (or initials)
         h.add(names, BorderLayout.CENTER);
         JPanel pill = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 6));
         pill.setOpaque(false);

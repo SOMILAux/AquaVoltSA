@@ -66,7 +66,7 @@ public class SignupPage3 extends BasePage {
 
         termsBtn.addActionListener(e -> {
             stash();
-            go(new TermsPage());
+            go(new SignupTermsPage());   // its own terms page: Back returns to sign-up page 3
         });
 
         backBtn.addActionListener(e -> {

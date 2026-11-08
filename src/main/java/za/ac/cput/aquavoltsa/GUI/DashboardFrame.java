@@ -17,8 +17,11 @@ import org.kordamp.ikonli.swing.FontIcon;
 
 
 /**
- * Home page
+ *
  * @author Shuma
+ * CONNECTED by Oyama: opens after login, shows the logged-in username, links to Profile, Settings
+ * and Notifications, and the Exit button logs out. (The old commented-out code at the bottom of the
+ * original file was left out - it did nothing.)
  */
 public class DashboardFrame extends JFrame {
  public DashboardFrame(){
@@ -33,14 +36,10 @@ public class DashboardFrame extends JFrame {
     //Content Panel
     JPanel contentPanel = new JPanel(new BorderLayout());
     
-       //contentPanel.setBorder(BorderFactory.createEmptyBorder());
-       
     //header banner
-      /* JPanel headerPanel = new JPanel(new BorderLayout());
-       headerPanel.setBackground(Color.WHITE);*/
-      
        ImageIcon logoheader = new ImageIcon("image 8.png");
        JLabel imageHeader = new JLabel(logoheader);
+       imageHeader.setHorizontalAlignment(SwingConstants.CENTER); // ALIGN: centre the banner
        contentPanel.add(imageHeader, BorderLayout.NORTH);
        
       //middlePanel 
@@ -51,36 +50,34 @@ public class DashboardFrame extends JFrame {
     //profile
        JPanel userProfile = new JPanel(new BorderLayout());
        userProfile.setBackground(Color.WHITE);
-      // userProfile.setOpaque(false);
        userProfile.setMaximumSize(new Dimension(420,50));
        userProfile.setPreferredSize(new Dimension(400,50));
+       userProfile.setAlignmentX(Component.CENTER_ALIGNMENT); // ALIGN: same centre line as the gauges
        
-       ImageIcon profileIcon = new ImageIcon("C:/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/java/Resources/user 1.png");
+       // FIX: this was an absolute path on Shuma's computer ("C:/Users/Shuma/..."), so it failed on every
+       // other PC. It now loads "user 1.png" from the project folder like the other pictures.
+       ImageIcon profileIcon = new ImageIcon("user 1.png");
        Image scaledProfile = profileIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 
-       JButton profileButton = new JButton("Username", new ImageIcon(scaledProfile));
+       // CONNECTED: shows the username of whoever logged in (it said "Username" before)
+       String shownName = Session.customer == null ? "Username" : Session.customer.username;
+       JButton profileButton = new JButton(shownName, new ImageIcon(scaledProfile));
        profileButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
        profileButton.setBorderPainted(false);
        profileButton.setContentAreaFilled(false);
        profileButton.setFocusPainted(false);
        profileButton.setHorizontalAlignment(SwingConstants.LEFT);
        
-       profileButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "User profile selected"));
+       // CONNECTED: opens the profile page (it used to show a "User profile selected" message)
+       profileButton.addActionListener(e -> {
+           Profile_Page2 profile = new Profile_Page2();
+           profile.setVisible(true);
+           this.dispose();
+       });
        userProfile.add(profileButton,BorderLayout.WEST);
-       /*JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,10,0));
-       leftPanel.setOpaque(false);*/
        
-       JLabel profileLabel = new JLabel(new ImageIcon(scaledProfile));
-       
-       JLabel usernameLabel = new JLabel("Username");
-       usernameLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-       
-    /*   leftPanel.add(profileLabel);
-       leftPanel.add(usernameLabel);*/
-    //Settings panel 
-    
+    //Notifications + Settings buttons (right side)
        FontIcon settings = FontIcon.of(Material2MZ.SETTINGS, 30, Color.BLACK);
-       
        
        JButton settingsButton = new JButton();
        settingsButton.setIcon(settings);
@@ -88,31 +85,41 @@ public class DashboardFrame extends JFrame {
        settingsButton.setContentAreaFilled(false);
        settingsButton.setFocusPainted(false);
        
-       userProfile.add(settingsButton, BorderLayout.EAST);
+       // CONNECTED: opens the settings page (same steps as AquaVolt_Main uses)
        settingsButton.addActionListener(e-> {
            Settings_Page page = new Settings_Page();
-
-            page.showGui();
-            page.setSize(425, 917);
-            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            page.setLocationRelativeTo(null);
-            page.setVisible(true);
-
-            this.dispose();
+           page.showGui();
+           page.setSize(425, 917);
+           page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           page.setVisible(true);
+           this.dispose();
        });
-       //userProfile.add(settingsButton, BorderLayout.EAST);
-       
-       //JLabel gearLabel = new JLabel(new ImageIcon(scaledGear));
-       
-      /* JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10,0));
-       rightPanel.setOpaque(false);
-       rightPanel.add(gearLabel);*/
+
+       // CONNECTED (new): notification button with the number of unread notifications from the database
+       int unread = NotificationStore.unread(Session.username());
+       JButton alertsButton = new JButton(unread > 0 ? "Alerts (" + unread + ")" : "Alerts");
+       alertsButton.setFont(new Font("SansSerif", unread > 0 ? Font.BOLD : Font.PLAIN, 13));
+       alertsButton.setForeground(unread > 0 ? new Color(211, 47, 47) : Color.DARK_GRAY);
+       alertsButton.setBorderPainted(false);
+       alertsButton.setContentAreaFilled(false);
+       alertsButton.setFocusPainted(false);
+       alertsButton.addActionListener(e -> {
+           new NotificationPage(true).setVisible(true);
+           this.dispose();
+       });
+
+       JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+       rightButtons.setOpaque(false);
+       rightButtons.add(alertsButton);
+       rightButtons.add(settingsButton);
+       userProfile.add(rightButtons, BorderLayout.EAST);
        
     //Water section
        GaugePanel waterPanel = new GaugePanel(
        "Water", new Color(0,180,90),true,
        "1. Average", " Usage",
        "2. 179L"," Used"," Today");
+       waterPanel.setAlignmentX(Component.CENTER_ALIGNMENT); // ALIGN
     //water details
         JPanel waterDetails = createDetailsPanel("Water Usage History", 
         new int[]{420,510,460,620},"Pay Water Bills","Water history");
@@ -128,15 +135,13 @@ public class DashboardFrame extends JFrame {
              SwingUtilities.invokeLater(() ->{ middlePanel.revalidate(); middlePanel.repaint();});
         }
         });
- 
-     /*  userProfile.add(leftPanel, BorderLayout.WEST);
-       userProfile.add(rightPanel, BorderLayout.EAST);*/
       
     //Electricity section 
        GaugePanel electricityPanel = new GaugePanel(
        "Electricity", new Color(225,195,0), false,
        "1. Running"," low",
        "2. 29kWh"," Used"," today");
+       electricityPanel.setAlignmentX(Component.CENTER_ALIGNMENT); // ALIGN
     //Electricity details
     JPanel electricityDetails = createDetailsPanel(
     "Electricity Usage History", new int[]{620,580,650,610},
@@ -161,8 +166,11 @@ public class DashboardFrame extends JFrame {
        exitButton.setFocusPainted(false);
        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
        exitButton.setMaximumSize(new Dimension(100,36));
-       exitButton.addActionListener(e ->{new LoginSignupPage().setVisible(true);
-       this.dispose();
+       // CONNECTED: Exit now logs the customer out properly before going back to the login page
+       exitButton.addActionListener(e ->{
+           Session.clear();
+           new LoginSignupPage().setVisible(true);
+           this.dispose();
        });
        
      
@@ -189,10 +197,12 @@ public class DashboardFrame extends JFrame {
      
        JPanel footerPanel = new JPanel(new BorderLayout());
        footerPanel.setBackground(Color.WHITE);
-       ImageIcon logofooter = new ImageIcon("C:/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/java/Resources/image 1.png");
+       // FIX: absolute path on Shuma's computer replaced with a file in the project folder
+       ImageIcon logofooter = new ImageIcon("image 1.png");
        Image scaledImage = logofooter.getImage().getScaledInstance(412,120, Image.SCALE_SMOOTH);
        logofooter = new ImageIcon(scaledImage);
        JLabel imageFooter = new JLabel(logofooter);
+       imageFooter.setHorizontalAlignment(SwingConstants.CENTER); // ALIGN: centre the footer picture
        contentPanel.add(imageFooter, BorderLayout.SOUTH);
        
         setVisible(true);
@@ -268,7 +278,7 @@ public class DashboardFrame extends JFrame {
 
         @Override
         protected void paintComponent(Graphics g) {
-            super.paintComponent(g); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            super.paintComponent(g);
         
            Graphics2D g2 = (Graphics2D) g.create();
            String[] months = {"Jan","Feb","Mar","Apr"};
@@ -300,109 +310,3 @@ public class DashboardFrame extends JFrame {
        }
     }
 }
-         
-    
-    
-    
-
-
-       
-        /* //Water  
-            JPanel waterPanel = new JPanel();
-            waterPanel.setBackground(Color.WHITE);
-
-            JLabel waterTitle = new JLabel("Water");
-            waterPanel.add(waterTitle);
-        //Water Gauge
-            WaterGauge waterGuage = new WaterGauge();
-            waterPanel.add(waterGuage);
-            //Water Info
-            JLabel WDetails = new JLabel("<html>1. Average<br>"+"Usage<br>"+"2.79 L<br>"+"Used<br>"+"Today</html>");
-            waterPanel.add(WDetails);
-            contentPanel.add(waterPanel);
-//Profile
-       /* JPanel profilePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        profilePanel.setOpaque(false);
-        ImageIcon profileImage = new ImageIcon(getClass().getResource("C:/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/java/Resources/user 1.png"));
-        JLabel profileLabel;
-        Image scaledProfile = profileImage.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH);
-        profileLabel = new JLabel(new ImageIcon(scaledProfile));
-        profilePanel.add(profileLabel);
-        JLabel username;
-        username = new JLabel("Username");
-        username.setFont(new Font("Arial", Font.PLAIN, 20));
-        profilePanel.add(username);*/
-        /* ImageIcon profileIcon = new ImageIcon("C:/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/Resources/user 1.png");
-            Image
-            JLabel profileLabel = new JLabel(profileIcon);
-            add(profileLabel); 
-        //Username    
-            JLabel usernameLabel = new JLabel("Username");
-            add(usernameLabel);*/
-                        
-          /*  ImageIcon profileIcon = new ImageIcon("C:/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/Resources/user 1.png");
-            Image
-            JLabel profileLabel = new JLabel(profileIcon);
-            contentPanel.add(profileLabel); 
-        //Username    
-            JLabel usernameLabel = new JLabel("Username");
-            contentPanel.add(usernameLabel);
-            
-            JPanel contentPanel = new JPanel();
-       contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-       contentPanel.setBackground(Color.WHITE);
-       add(contentPanel, BorderLayout.CENTER);
-       
-       //Settings    
-            ImageIcon settingsIcon = new ImageIcon("C/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/Resources/settings_24dp_1F1F1F 1.png");
-            Image scaledSetttings = settingsIcon.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
-            ImageIcon scaledSettingsIcon = new ImageIcon(scaledSetttings);
-            JLabel settingsLabel = new JLabel(scaledSettingsIcon);
-            add(settingsLabel);
-      /*  //Water  
-            JPanel waterPanel = new JPanel();
-            waterPanel.setBackground(Color.WHITE);
-
-            JLabel waterTitle = new JLabel("Water");
-            waterPanel.add(waterTitle);
-        //Water Gauge
-            WaterGauge waterGuage = new WaterGauge();
-            waterPanel.add(waterGuage);
-        //Water Info
-            JLabel WDetails = new JLabel("<html>1. Average<br>"+"Usage<br>"+"2.79 L<br>"+"Used<br>"+"Today</html>");
-            waterPanel.add(WDetails);
-            mainPanel.add(waterPanel);
-
-        //Electricity
-            JPanel electricityPanel = new JPanel();
-            electricityPanel.setBackground(Color.WHITE);
-            
-            JLabel electricityTitle = new JLabel("Electricity");
-            electricityPanel.add(electricityTitle);
-        //Electricity Guage
-            ElectricityGuage electricityGuage = new ElectricityGuage();
-            electricityPanel.add(electricityGuage);
-        //Electricity Info
-            JLabel electricityInfo = new JLabel("<html>Average<br>"+"Usage<br>"+"Used Today</html>");
-            electricityPanel.add(electricityInfo);
-           mainPanel.add(electricityPanel);
-           
-        //Footer Image   
-            ImageIcon footer = new ImageIcon("C:/Users/Shuma/OneDrive/Documents/NetBeansProjects/AquaVoltSA/src/main/resources/image 1.png"); 
-            Image scaledFooter = footer.getImage().getScaledInstance(400,100,Image.SCALE_SMOOTH);
-            ImageIcon scaledfooter = new ImageIcon(scaledImage);
-            JLabel footerlabel = new JLabel(scaledfooter);
-            mainPanel.add(footerlabel);   
-        add(mainPanel);   
-        */
-   
-
-    
-
-   
- 
-
-        
-         
-    
-

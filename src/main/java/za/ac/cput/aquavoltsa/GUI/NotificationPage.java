@@ -1,317 +1,120 @@
-
 package za.ac.cput.aquavoltsa.GUI;
 // This class manages the AquaVolt SA notification functionality.
 
 /**
  *
  * @author Sbahle Simelane
+ * RESTYLED + CONNECTED by Oyama: notifications come from the NOTIFICATIONS table in AquaVoltDB for the logged-in
+ * customer (admins send them from the admin dashboard). They are shown as cards in the same layout as the other
+ * pages; unread ones have a NEW badge and become "read" when opened. The back arrow returns to the dashboard
+ * when opened from there, otherwise to Settings.
  */
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
-import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
 
-/**
- *
- * @author Sbahle Simelane
- */
-public class NotificationPage extends JFrame {
+public class NotificationPage extends BasePage {
+    private final boolean fromDashboard;
 
     public NotificationPage() {
+        this(false);
+    }
 
-        setTitle("AquaVolt SA Notifications");
-        setSize(425, 917);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+    public NotificationPage(boolean fromDashboard) {
+        super("Notifications", true);
+        this.fromDashboard = fromDashboard;
+        setBack(this::back);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        panel.setBackground(Color.WHITE);
-        panel.setPreferredSize(new Dimension(380, 750));
+        put(Theme.label("Notifications", Theme.TITLE.deriveFont(20f), Theme.BLUE, SwingConstants.CENTER));
+        gap(10);
 
-        JLabel title = new JLabel("AquaVolt SA");
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setBounds(100, 30, 250, 30);
-        panel.add(title);
+        String user = Session.username();
+        List<NotificationStore.Note> notes = user == null
+                ? new ArrayList<NotificationStore.Note>() : NotificationStore.forUser(user);
 
-        JLabel heading = new JLabel("Notifications");
-        heading.setFont(new Font("Arial", Font.BOLD, 20));
-        heading.setBounds(115, 70, 200, 30);
-        panel.add(heading);
-
-        // =========================
-        // LOAD NOTIFICATIONS FROM DATABASE
-        // =========================
-
-        int yPosition = 130;
-        boolean notificationFound = false;
-
-        try {
-
-            Connection conn = DBConnection.getConnection();
-
-            if (conn == null) {
-
-                JLabel errorLabel = new JLabel(
-                        "Database connection failed."
-                );
-
-                errorLabel.setBounds(55, 150, 300, 30);
-                errorLabel.setForeground(Color.RED);
-                panel.add(errorLabel);
-
-            } else {
-
-                String sql = "SELECT NotificationTitle, NotificationMessage "
-                        + "FROM Notifications "
-                        + "ORDER BY NotificationID";
-
-                try (
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    ResultSet rs = pst.executeQuery()
-                ) {
-
-                    while (rs.next() && yPosition <= 490) {
-
-                        notificationFound = true;
-
-                        String notificationTitle =
-                                rs.getString("NotificationTitle");
-
-                        String notificationMessage =
-                                rs.getString("NotificationMessage");
-
-                        JPanel notificationPanel = new JPanel();
-
-                        notificationPanel.setBounds(
-                                40, yPosition, 300, 70
-                        );
-
-                        notificationPanel.setBackground(Color.WHITE);
-
-                        notificationPanel.setBorder(
-                                BorderFactory.createLineBorder(
-                                        Color.LIGHT_GRAY
-                                )
-                        );
-
-                        notificationPanel.setLayout(null);
-
-                        notificationPanel.setCursor(
-                                new Cursor(Cursor.HAND_CURSOR)
-                        );
-
-                        JLabel notificationTitleLabel =
-                                new JLabel(notificationTitle.toUpperCase());
-
-                        notificationTitleLabel.setFont(
-                                new Font("Arial", Font.BOLD, 14)
-                        );
-
-                        // Notification colours
-
-                        if (notificationTitle.equalsIgnoreCase("Drought Alert")) {
-
-                            notificationTitleLabel.setForeground(Color.RED);
-
-                        } else if (notificationTitle.equalsIgnoreCase("Loadshedding Update")) {
-
-                            notificationTitleLabel.setForeground(Color.ORANGE);
-
-                        } else if (notificationTitle.equalsIgnoreCase("Usage Warning")) {
-
-                            notificationTitleLabel.setForeground(Color.BLUE);
-
-                        } else if (notificationTitle.equalsIgnoreCase("Payment Reminder")) {
-
-                            notificationTitleLabel.setForeground(new Color(0, 153, 0));
-
-                        } else if (notificationTitle.equalsIgnoreCase("System Update")) {
-
-                            notificationTitleLabel.setForeground(Color.BLUE);
-                        }
-
-                        notificationTitleLabel.setBounds(
-                                10, 10, 270, 20
-                        );
-
-                        JLabel notificationMessageLabel =
-                                new JLabel(notificationMessage);
-
-                        notificationMessageLabel.setBounds(
-                                10, 35, 280, 20
-                        );
-
-                        notificationPanel.add(notificationTitleLabel);
-                        notificationPanel.add(notificationMessageLabel);
-
-                        // CLICK NOTIFICATION
-
-                        notificationPanel.addMouseListener(
-                                new MouseAdapter() {
-
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-
-                                openNotificationDetails(
-                                        notificationTitle,
-                                        notificationMessage
-                                );
-                            }
-                        });
-
-                        panel.add(notificationPanel);
-
-                        yPosition += 90;
-                    }
-                }
-
-                conn.close();
-
-                if (!notificationFound) {
-
-                    JLabel noNotificationLabel = new JLabel(
-                            "No notifications available."
-                    );
-
-                    noNotificationLabel.setBounds(
-                            85, 150, 250, 30
-                    );
-
-                    panel.add(noNotificationLabel);
-                }
-            }
-
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Unable to load notifications.\n" + e.getMessage(),
-                    "Database Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            e.printStackTrace();
+        if (user == null || notes.isEmpty()) {
+            put(Theme.label(user == null ? "Please log in to see your notifications." : "No notifications available.",
+                    Theme.BODY, Theme.GREY, SwingConstants.CENTER));
+            gap(20);
         }
-
-        // =========================
-        // BACK BUTTON
-        // =========================
-
-        JButton backButton = new JButton("Back");
-
-        backButton.setBounds(
-                140, 590, 100, 35
-        );
-
-        backButton.setBackground(Color.BLACK);
-        backButton.setForeground(Color.WHITE);
-        backButton.setFocusPainted(false);
-
-        backButton.setFont(
-                new Font("Arial", Font.BOLD, 14)
-        );
-
-        panel.add(backButton);
-
-        backButton.addActionListener(e -> {
-
-            Settings_Page page = new Settings_Page();
-
-            page.showGui();
-            page.setSize(425, 917);
-            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            page.setLocationRelativeTo(null);
-            page.setVisible(true);
-
-            this.dispose();
-        });
-
-        JScrollPane scrollPane = new JScrollPane(panel);
-
-        add(scrollPane);
+        for (NotificationStore.Note note : notes) {
+            put(card(note));
+            gap(10);
+        }
+        if (user != null && !notes.isEmpty()) {
+            JButton markAll = put(new Theme.Btn("Mark all as read", Theme.NAVY));
+            markAll.addActionListener(e -> {
+                NotificationStore.markAllRead(user);
+                go(new NotificationPage(this.fromDashboard));
+            });
+            gap(8);
+        }
+        JButton backButton = put(new Theme.Btn("Back", Theme.GREY));
+        backButton.addActionListener(e -> back());
 
         setVisible(true);
     }
 
-    // ==================================================
-    // NOTIFICATION DETAILS
-    // ==================================================
-
-    private void openNotificationDetails(
-            String title,
-            String message) {
-
-        JFrame detailsFrame =
-                new JFrame("Notification Details");
-
-        detailsFrame.setSize(400, 500);
-
-        detailsFrame.setDefaultCloseOperation(
-                JFrame.DISPOSE_ON_CLOSE
-        );
-
-        detailsFrame.setLocationRelativeTo(this);
-
-        JPanel detailsPanel = new JPanel();
-
-        detailsPanel.setLayout(null);
-        detailsPanel.setBackground(Color.WHITE);
-
-        JLabel heading = new JLabel(title);
-
-        heading.setFont(
-                new Font("Arial", Font.BOLD, 22)
-        );
-
-        heading.setBounds(
-                30, 40, 330, 40
-        );
-
-        detailsPanel.add(heading);
-
-        JTextArea messageArea = new JTextArea(message);
-
-        messageArea.setFont(
-                new Font("Arial", Font.PLAIN, 16)
-        );
-
-        messageArea.setLineWrap(true);
-        messageArea.setWrapStyleWord(true);
-        messageArea.setEditable(false);
-        messageArea.setBackground(Color.WHITE);
-
-        JScrollPane messageScroll =
-                new JScrollPane(messageArea);
-
-        messageScroll.setBounds(
-                30, 100, 330, 200
-        );
-
-        detailsPanel.add(messageScroll);
-
-        JButton detailsBackButton = new JButton("Back");
-
-        detailsBackButton.setBounds(
-                140, 340, 100, 35
-        );
-
-        detailsBackButton.setBackground(Color.BLACK);
-        detailsBackButton.setForeground(Color.WHITE);
-        detailsBackButton.setFocusPainted(false);
-
-        detailsPanel.add(detailsBackButton);
-
-        detailsBackButton.addActionListener(
-                e -> detailsFrame.dispose()
-        );
-
-        detailsFrame.add(detailsPanel);
-
-        detailsFrame.setVisible(true);
+    private void back() {
+        if (fromDashboard) AppHooks.toDashboard(this);
+        else AppHooks.toSettings(this);
     }
 
- 
+    private JComponent card(NotificationStore.Note note) {
+        UiKit.Card card = new UiKit.Card(new BorderLayout(0, 4), colourFor(note));
+        JPanel top = new JPanel(new BorderLayout());
+        top.setOpaque(false);
+        top.add(Theme.label(note.title.toUpperCase(), Theme.BOLD, colourFor(note), SwingConstants.LEFT), BorderLayout.CENTER);
+        if (note.unread()) {
+            JLabel badge = Theme.label(" NEW ", Theme.SMALL.deriveFont(Font.BOLD, 10f), Color.WHITE, SwingConstants.CENTER);
+            badge.setOpaque(true);
+            badge.setBackground(Theme.BLUE);
+            top.add(badge, BorderLayout.EAST);
+        }
+        card.add(top, BorderLayout.NORTH);
+        String shortText = note.message.length() > 90 ? note.message.substring(0, 90) + "..." : note.message;
+        card.add(Theme.label(UiKit.html(shortText, 290), Theme.BODY.deriveFont(13f), Theme.INK, SwingConstants.LEFT), BorderLayout.CENTER);
+        card.add(Theme.label(note.category + "   |   " + note.created, Theme.SMALL.deriveFont(11f), Theme.GREY, SwingConstants.LEFT), BorderLayout.SOUTH);
+        card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        card.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                NotificationStore.markRead(note.id);
+                openDetails(note);
+                go(new NotificationPage(fromDashboard));   // reload so the NEW badge disappears
+            }
+        });
+        return card;
+    }
+
+    // Colours: the original five titles keep their colours, admin-sent ones are coloured by category
+    private Color colourFor(NotificationStore.Note n) {
+        String t = n.title;
+        if (t.equalsIgnoreCase("Drought Alert")) return Color.RED;
+        if (t.equalsIgnoreCase("Loadshedding Update")) return new Color(230, 140, 0);
+        if (t.equalsIgnoreCase("Usage Warning")) return Color.BLUE;
+        if (t.equalsIgnoreCase("Payment Reminder")) return new Color(0, 153, 0);
+        if (t.equalsIgnoreCase("System Update")) return Color.BLUE;
+        switch (n.category) {
+            case "WATER": return new Color(0, 120, 200);
+            case "ELECTRICITY": return new Color(230, 140, 0);
+            case "ACCOUNT": return new Color(103, 80, 164);
+            case "PAYMENT": return new Color(0, 153, 0);
+            default: return Color.DARK_GRAY;
+        }
+    }
+
+    // FIX: the details used to open as a second window; it is now a dialog that keeps the same app size.
+    private void openDetails(NotificationStore.Note note) {
+        JPanel p = new JPanel(new BorderLayout(0, 8));
+        p.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        p.add(Theme.label(note.title, Theme.TITLE.deriveFont(18f), colourFor(note), SwingConstants.LEFT), BorderLayout.NORTH);
+        p.add(Theme.label(UiKit.html(note.message, 300), Theme.BODY, Theme.INK, SwingConstants.LEFT), BorderLayout.CENTER);
+        p.add(Theme.label(note.category + "   |   " + note.created + "   |   from " + note.sentBy,
+                Theme.SMALL.deriveFont(11f), Theme.GREY, SwingConstants.LEFT), BorderLayout.SOUTH);
+        JOptionPane.showMessageDialog(this, p, "Notification", JOptionPane.PLAIN_MESSAGE);
+    }
 }

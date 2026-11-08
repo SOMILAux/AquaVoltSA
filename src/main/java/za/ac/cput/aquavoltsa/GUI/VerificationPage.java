@@ -89,7 +89,8 @@ public class VerificationPage extends BasePage {
                 Theme.bad(otpErr, otpField, "Incorrect OTP, please try again");
             } else {
                 countdown.stop();
-                go(new HomePage(this.user));
+                Session.customer = this.user;   // remember who is logged in (used by every page)
+                go(new DashboardFrame());        // connected: open the group's dashboard instead of the demo home page
             }
         });
 

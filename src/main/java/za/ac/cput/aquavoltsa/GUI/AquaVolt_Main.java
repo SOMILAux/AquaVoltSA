@@ -1,3 +1,4 @@
+
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.JFrame;
@@ -18,3 +19,5 @@ public class AquaVolt_Main {
         page.setVisible(true);
     }
 }
+    
+

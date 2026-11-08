@@ -1,4 +1,19 @@
 package za.ac.cput.aquavoltsa.GUI;
+//This class allows users to select and save their preferred language.
+/**
+ *
+ * @author Sbahle
+ */
+import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;  
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 //This class allows users to select and save their preferred language.
 /**
