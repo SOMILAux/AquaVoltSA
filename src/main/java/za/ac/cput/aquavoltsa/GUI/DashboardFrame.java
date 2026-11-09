@@ -17,7 +17,7 @@ import org.kordamp.ikonli.swing.FontIcon;
 
 
 /**
- *
+ * Home page
  * @author Shuma
  */
 public class DashboardFrame extends JFrame {

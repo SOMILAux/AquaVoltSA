@@ -8,7 +8,7 @@ import za.ac.cput.aquavoltsa.GUI.DashboardFrame;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * Home page
  * @author Shuma
  */
 public class Main {

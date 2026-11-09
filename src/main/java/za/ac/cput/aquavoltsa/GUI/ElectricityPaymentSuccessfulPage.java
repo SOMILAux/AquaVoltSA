@@ -31,7 +31,8 @@ import org.kordamp.ikonli.swing.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
 /**
- *Student Number: 251239853
+ * In Setting page
+ * Student Number: 251239853
  * @author Aphelele Shange
  */
 public class ElectricityPaymentSuccessfulPage extends JFrame{

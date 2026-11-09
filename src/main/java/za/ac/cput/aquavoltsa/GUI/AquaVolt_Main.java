@@ -1,11 +1,13 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package za.ac.cput.aquavoltsa.GUI;
 
-import javax.swing.JFrame;
 import za.ac.cput.aquavoltsa.GUI.Settings_Page;
 
 /**
- *
+ * Settings page
  * @author INATHI SHWALAKE
  */
 public class AquaVolt_Main {
@@ -14,8 +16,8 @@ public class AquaVolt_Main {
         Settings_Page page = new Settings_Page();
         page.showGui();
         page.setSize(425, 917);
-        page.setLocationRelativeTo(null);
-        page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //page.setLocationRelativeTo(null);
+        page.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         page.setVisible(true);
     }
 }
