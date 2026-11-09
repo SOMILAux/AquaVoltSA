@@ -13,9 +13,7 @@ import org.kordamp.ikonli.swing.FontIcon;
 
 /**
  *
- * @author Shuma
- * CONNECTED by Oyama: opens after login, shows the logged-in username, links to Profile, Settings
- * and Notifications, and the Exit button logs out.
+ * @author Shuma.
  */
 public class DashboardFrame extends JFrame {
     public DashboardFrame() {
