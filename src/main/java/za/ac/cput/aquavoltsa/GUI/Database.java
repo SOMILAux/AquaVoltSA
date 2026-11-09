@@ -158,8 +158,8 @@ public final class Database {
         showing = true;
         JOptionPane.showMessageDialog(null,
                 "Cannot use the AquaVolt database.\n\n" + e.getMessage() + "\n\nCheck that:\n"
-                + "1. The Derby driver is in your pom.xml\n"
-                + "2. You have write permissions in the project folder.",
+                + "1. The Derby driver is in your pom if not then...yeah neh.xml\n"
+                + "2. You have uBhuti's permissions to write in the project folder.",
                 "Database problem", JOptionPane.ERROR_MESSAGE);
         showing = false;
     }
