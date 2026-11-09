@@ -9,16 +9,6 @@ import java.awt.event.*;
 import java.sql.*;
 
 //Within Profile page (Inathi)
-//
-// FIXED/CONNECTED by Oyama:
-//  1. The red error: this file used "DBConnection" without importing it. It no longer needs it - it now uses the
-//     same AquaVoltDB database as the rest of the app (Database.connect()).
-//  2. It changes the password of the customer who is LOGGED IN (Session.customer) in the CUSTOMERS table, instead of
-//     the old "users" table with userId = 1. The password is stored with the same SHA-256 hash the login page checks
-//     (UserStore.hash), so the new password really works at the next login. (The PBKDF2 code was removed because the
-//     login page could not read that format.)
-//  3. The lock type is saved in a small LOCK_PREFERENCES table that this page creates by itself. The old
-//     "ON DUPLICATE KEY UPDATE" is MySQL-only and does not work on Derby.
 
 public class Change_Password_Page extends JFrame {
 
