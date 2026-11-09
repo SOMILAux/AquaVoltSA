@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -15,199 +11,190 @@ import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 import org.kordamp.ikonli.swing.FontIcon;
 
-
 /**
  *
  * @author Shuma
  * CONNECTED by Oyama: opens after login, shows the logged-in username, links to Profile, Settings
- * and Notifications, and the Exit button logs out. (The old commented-out code at the bottom of the
- * original file was left out - it did nothing.)
+ * and Notifications, and the Exit button logs out.
  */
 public class DashboardFrame extends JFrame {
- public DashboardFrame(){
+    public DashboardFrame() {
         
-    setTitle("AquaVoltSA Homepage"); 
-    setSize(425, 917);
-    setLocationRelativeTo(null);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setResizable(false);
-    setLayout(new BorderLayout());
+        setTitle("AquaVoltSA Homepage"); 
+        setSize(425, 917);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setLayout(new BorderLayout());
 
-    //Content Panel
-    JPanel contentPanel = new JPanel(new BorderLayout());
-    
-    //header banner
-       ImageIcon logoheader = new ImageIcon("image 8.png");
-       JLabel imageHeader = new JLabel(logoheader);
-       imageHeader.setHorizontalAlignment(SwingConstants.CENTER); // ALIGN: centre the banner
-       contentPanel.add(imageHeader, BorderLayout.NORTH);
+        //Content Panel
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        
+        //header banner
+        ImageIcon logoheader = new ImageIcon("image 8.png");
+        JLabel imageHeader = new JLabel(logoheader);
+        imageHeader.setHorizontalAlignment(SwingConstants.CENTER); 
+        contentPanel.add(imageHeader, BorderLayout.NORTH);
        
-      //middlePanel 
-       JPanel middlePanel = new JPanel();
-       middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
-       middlePanel.setBackground(Color.WHITE);
+        //middlePanel 
+        JPanel middlePanel = new JPanel();
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        middlePanel.setBackground(Color.WHITE);
        
-    //profile
-       JPanel userProfile = new JPanel(new BorderLayout());
-       userProfile.setBackground(Color.WHITE);
-       userProfile.setMaximumSize(new Dimension(420,50));
-       userProfile.setPreferredSize(new Dimension(400,50));
-       userProfile.setAlignmentX(Component.CENTER_ALIGNMENT); // ALIGN: same centre line as the gauges
+        //profile
+        JPanel userProfile = new JPanel(new BorderLayout());
+        userProfile.setBackground(Color.WHITE);
+        userProfile.setMaximumSize(new Dimension(420,50));
+        userProfile.setPreferredSize(new Dimension(400,50));
+        userProfile.setAlignmentX(Component.CENTER_ALIGNMENT); 
        
-       // FIX: this was an absolute path on Shuma's computer ("C:/Users/Shuma/..."), so it failed on every
-       // other PC. It now loads "user 1.png" from the project folder like the other pictures.
-       ImageIcon profileIcon = new ImageIcon("user 1.png");
-       Image scaledProfile = profileIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon profileIcon = new ImageIcon("user 1.png");
+        Image scaledProfile = profileIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 
-       // CONNECTED: shows the username of whoever logged in (it said "Username" before)
-       String shownName = Session.customer == null ? "Username" : Session.customer.username;
-       JButton profileButton = new JButton(shownName, new ImageIcon(scaledProfile));
-       profileButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-       profileButton.setBorderPainted(false);
-       profileButton.setContentAreaFilled(false);
-       profileButton.setFocusPainted(false);
-       profileButton.setHorizontalAlignment(SwingConstants.LEFT);
+        String shownName = Session.customer == null ? "Username" : Session.customer.username;
+        JButton profileButton = new JButton(shownName, new ImageIcon(scaledProfile));
+        profileButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        profileButton.setBorderPainted(false);
+        profileButton.setContentAreaFilled(false);
+        profileButton.setFocusPainted(false);
+        profileButton.setHorizontalAlignment(SwingConstants.LEFT);
        
-       // CONNECTED: opens the profile page (it used to show a "User profile selected" message)
-       profileButton.addActionListener(e -> {
-           Profile_Page2 profile = new Profile_Page2();
-           profile.setVisible(true);
-           this.dispose();
-       });
-       userProfile.add(profileButton,BorderLayout.WEST);
+        profileButton.addActionListener(e -> {
+            Profile_Page2 profile = new Profile_Page2();
+            profile.setVisible(true);
+            this.dispose();
+        });
+        userProfile.add(profileButton,BorderLayout.WEST);
        
-    //Notifications + Settings buttons (right side)
-       FontIcon settings = FontIcon.of(Material2MZ.SETTINGS, 30, Color.BLACK);
+        //Notifications + Settings buttons (right side)
+        FontIcon settings = FontIcon.of(Material2MZ.SETTINGS, 30, Color.BLACK);
        
-       JButton settingsButton = new JButton();
-       settingsButton.setIcon(settings);
-       settingsButton.setBorderPainted(false);
-       settingsButton.setContentAreaFilled(false);
-       settingsButton.setFocusPainted(false);
+        JButton settingsButton = new JButton();
+        settingsButton.setIcon(settings);
+        settingsButton.setBorderPainted(false);
+        settingsButton.setContentAreaFilled(false);
+        settingsButton.setFocusPainted(false);
        
-       // CONNECTED: opens the settings page (same steps as AquaVolt_Main uses)
-       settingsButton.addActionListener(e-> {
-           Settings_Page page = new Settings_Page();
-           page.showGui();
-           page.setSize(425, 917);
-           page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-           page.setVisible(true);
-           this.dispose();
-       });
+        settingsButton.addActionListener(e-> {
+            Settings_Page page = new Settings_Page();
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setVisible(true);
+            this.dispose();
+        });
 
-       // CONNECTED (new): notification button with the number of unread notifications from the database
-       int unread = NotificationStore.unread(Session.username());
-       JButton alertsButton = new JButton(unread > 0 ? "Alerts (" + unread + ")" : "Alerts");
-       alertsButton.setFont(new Font("SansSerif", unread > 0 ? Font.BOLD : Font.PLAIN, 13));
-       alertsButton.setForeground(unread > 0 ? new Color(211, 47, 47) : Color.DARK_GRAY);
-       alertsButton.setBorderPainted(false);
-       alertsButton.setContentAreaFilled(false);
-       alertsButton.setFocusPainted(false);
-       alertsButton.addActionListener(e -> {
-           new NotificationPage(true).setVisible(true);
-           this.dispose();
-       });
+        int unread = NotificationStore.unread(Session.username());
+        JButton alertsButton = new JButton(unread > 0 ? "Alerts (" + unread + ")" : "Alerts");
+        alertsButton.setFont(new Font("SansSerif", unread > 0 ? Font.BOLD : Font.PLAIN, 13));
+        alertsButton.setForeground(unread > 0 ? new Color(211, 47, 47) : Color.DARK_GRAY);
+        alertsButton.setBorderPainted(false);
+        alertsButton.setContentAreaFilled(false);
+        alertsButton.setFocusPainted(false);
+        alertsButton.addActionListener(e -> {
+            new NotificationPage(true).setVisible(true);
+            this.dispose();
+        });
 
-       JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
-       rightButtons.setOpaque(false);
-       rightButtons.add(alertsButton);
-       rightButtons.add(settingsButton);
-       userProfile.add(rightButtons, BorderLayout.EAST);
+        JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+        rightButtons.setOpaque(false);
+        rightButtons.add(alertsButton);
+        rightButtons.add(settingsButton);
+        userProfile.add(rightButtons, BorderLayout.EAST);
        
-    //Water section
-       GaugePanel waterPanel = new GaugePanel(
-       "Water", new Color(0,180,90),true,
-       "1. Average", " Usage",
-       "2. 179L"," Used"," Today");
-       waterPanel.setAlignmentX(Component.CENTER_ALIGNMENT); // ALIGN
-    //water details
+        //Water section
+        GaugePanel waterPanel = new GaugePanel(
+        "Water", new Color(0,180,90),true,
+        "1. Average", " Usage",
+        "2. 179L"," Used"," Today");
+        waterPanel.setAlignmentX(Component.CENTER_ALIGNMENT); 
+        
+        //water details
         JPanel waterDetails = createDetailsPanel("Water Usage History", 
         new int[]{420,510,460,620},"Pay Water Bills","Water history");
         waterDetails.setVisible(false);
         
         waterPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         waterPanel.addMouseListener(new MouseAdapter(){
-        @Override
-        public void mouseClicked(MouseEvent e){
-            waterDetails.setVisible(!waterDetails.isVisible());
-             middlePanel.revalidate();
-             middlePanel.repaint();
-             SwingUtilities.invokeLater(() ->{ middlePanel.revalidate(); middlePanel.repaint();});
-        }
+            @Override
+            public void mouseClicked(MouseEvent e){
+                waterDetails.setVisible(!waterDetails.isVisible());
+                middlePanel.revalidate();
+                middlePanel.repaint();
+                SwingUtilities.invokeLater(() ->{ middlePanel.revalidate(); middlePanel.repaint();});
+            }
         });
       
-    //Electricity section 
-       GaugePanel electricityPanel = new GaugePanel(
-       "Electricity", new Color(225,195,0), false,
-       "1. Running"," low",
-       "2. 29kWh"," Used"," today");
-       electricityPanel.setAlignmentX(Component.CENTER_ALIGNMENT); // ALIGN
-    //Electricity details
-    JPanel electricityDetails = createDetailsPanel(
-    "Electricity Usage History", new int[]{620,580,650,610},
-    "Buy Electricity","Electricity history");
-    electricityDetails.setVisible(false);
-    electricityPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        //Electricity section 
+        GaugePanel electricityPanel = new GaugePanel(
+        "Electricity", new Color(225,195,0), false,
+        "1. Running"," low",
+        "2. 29kWh"," Used"," today");
+        electricityPanel.setAlignmentX(Component.CENTER_ALIGNMENT); 
+        
+        //Electricity details
+        JPanel electricityDetails = createDetailsPanel(
+        "Electricity Usage History", new int[]{620,580,650,610},
+        "Buy Electricity","Electricity history");
+        electricityDetails.setVisible(false);
+        electricityPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     
-    electricityPanel.addMouseListener(new MouseAdapter(){
-     @Override
-     public void mouseClicked(MouseEvent e){
-     electricityDetails.setVisible(!electricityDetails.isVisible());
-     middlePanel.revalidate();
-     middlePanel.repaint();
-     SwingUtilities.invokeLater(() ->{ middlePanel.revalidate(); middlePanel.repaint();});
-     }
-    });
+        electricityPanel.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                electricityDetails.setVisible(!electricityDetails.isVisible());
+                middlePanel.revalidate();
+                middlePanel.repaint();
+                SwingUtilities.invokeLater(() ->{ middlePanel.revalidate(); middlePanel.repaint();});
+            }
+        });
  
-       JButton exitButton = new JButton("Exit");
-       exitButton.setFont(new Font("Arial", Font.BOLD, 20));
-       exitButton.setForeground(Color.WHITE);
-       exitButton.setBackground(new Color(76, 153, 223));
-       exitButton.setFocusPainted(false);
-       exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-       exitButton.setMaximumSize(new Dimension(100,36));
-       // CONNECTED: Exit now logs the customer out properly before going back to the login page
-       exitButton.addActionListener(e ->{
-           Session.clear();
-           new LoginSignupPage().setVisible(true);
-           this.dispose();
-       });
+        JButton exitButton = new JButton("Exit");
+        exitButton.setFont(new Font("Arial", Font.BOLD, 20));
+        exitButton.setForeground(Color.WHITE);
+        exitButton.setBackground(new Color(76, 153, 223));
+        exitButton.setFocusPainted(false);
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exitButton.setMaximumSize(new Dimension(100,36));
+        
+        exitButton.addActionListener(e ->{
+            Session.clear();
+            new LoginSignupPage().setVisible(true);
+            this.dispose();
+        });
        
-     
-      middlePanel.add(userProfile);
-      middlePanel.add(waterPanel);
-      middlePanel.add(waterDetails);
-      middlePanel.add(electricityPanel);
-      middlePanel.add(electricityDetails);
-      middlePanel.add(Box.createVerticalStrut(10));
-      middlePanel.add(exitButton);
-      middlePanel.add(Box.createVerticalStrut(15));
+        middlePanel.add(userProfile);
+        middlePanel.add(waterPanel);
+        middlePanel.add(waterDetails);
+        middlePanel.add(electricityPanel);
+        middlePanel.add(electricityDetails);
+        middlePanel.add(Box.createVerticalStrut(10));
+        middlePanel.add(exitButton);
+        middlePanel.add(Box.createVerticalStrut(15));
       
-   //Scrollbarsection   
-      JScrollPane scrollPane = new JScrollPane(middlePanel);
-      scrollPane.setBorder(BorderFactory.createEmptyBorder());
-      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-      scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-      contentPanel.add(scrollPane, BorderLayout.CENTER);
+        //Scrollbarsection   
+        JScrollPane scrollPane = new JScrollPane(middlePanel);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
       
-       
-       setContentPane(contentPanel);
-       setLocationRelativeTo(null);
+        setContentPane(contentPanel);
+        setLocationRelativeTo(null);
      
-       JPanel footerPanel = new JPanel(new BorderLayout());
-       footerPanel.setBackground(Color.WHITE);
-       // FIX: absolute path on Shuma's computer replaced with a file in the project folder
-       ImageIcon logofooter = new ImageIcon("image 1.png");
-       Image scaledImage = logofooter.getImage().getScaledInstance(412,120, Image.SCALE_SMOOTH);
-       logofooter = new ImageIcon(scaledImage);
-       JLabel imageFooter = new JLabel(logofooter);
-       imageFooter.setHorizontalAlignment(SwingConstants.CENTER); // ALIGN: centre the footer picture
-       contentPanel.add(imageFooter, BorderLayout.SOUTH);
+        JPanel footerPanel = new JPanel(new BorderLayout());
+        footerPanel.setBackground(Color.WHITE);
+        
+        ImageIcon logofooter = new ImageIcon("image 1.png");
+        Image scaledImage = logofooter.getImage().getScaledInstance(412,120, Image.SCALE_SMOOTH);
+        logofooter = new ImageIcon(scaledImage);
+        JLabel imageFooter = new JLabel(logofooter);
+        imageFooter.setHorizontalAlignment(SwingConstants.CENTER); 
+        contentPanel.add(imageFooter, BorderLayout.SOUTH);
        
         setVisible(true);
     }
-
 
     private JPanel createDetailsPanel(String chartTitle, int[]monthlyValues, String paymentButtonText, String historyButtonText){
         JPanel detailsPanel = new JPanel();
@@ -266,6 +253,7 @@ public class DashboardFrame extends JFrame {
        detailsPanel.add(buttonPanel);
        return detailsPanel;
     }
+    
     private class UsageChartPanel extends JPanel{
         private final int[]values;
         public UsageChartPanel(int[]values){
@@ -294,23 +282,18 @@ public class DashboardFrame extends JFrame {
            g2.drawLine(10,chartBottom,290,chartBottom);
            
            for (int i = 0; i < values.length; i++){
-           int barHeight =(int)((values[i]/(double) maximumValue)* chartHeight);
-           int x = startX+ i * (barWidth + gap);
-           int y = chartBottom - barHeight;
-           
-           g2.setColor(new Color(36,112,145));
-           g2.fillRect(x, y, barWidth, barHeight);
-           g2.setColor(Color.BLACK);
-           g2.setFont(new Font("Arial", Font.PLAIN,10));
-           g2.drawString(months[i], x, chartBottom + 14);
-        }   
+               int barHeight =(int)((values[i]/(double) maximumValue)* chartHeight);
+               int x = startX+ i * (barWidth + gap);
+               int y = chartBottom - barHeight;
+               
+               g2.setColor(new Color(36,112,145));
+               g2.fillRect(x, y, barWidth, barHeight);
+               g2.setColor(Color.BLACK);
+               g2.setFont(new Font("Arial", Font.PLAIN,10));
+               g2.drawString(months[i], x, chartBottom + 14);
+           }   
        
-        g2.dispose();
-           
+           g2.dispose();
        }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ec7d8c4 (This is the Login-in pages done by Oyama)

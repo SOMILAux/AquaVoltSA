@@ -1,32 +1,18 @@
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
+import java.awt.*;
 
-/**
- * Terms and conditions opened from SETTINGS: Back returns to the settings page.
- * (Sign-up has its own copy, SignupTermsPage, which returns to sign-up page 3.)
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
- * CONNECTED: this page is opened from two places. From Settings its Back button goes to Settings (the
- * group's version). From the sign-up page (new TermsPage(true)) Back returns to the sign-up page and keeps
- * what was typed. Before, Back always went to Settings, even in the middle of signing up.
- */
 public class TermsPage extends BasePage {
 
     private final boolean fromSignup;
 
     public TermsPage() {
-<<<<<<< HEAD
-        super("Terms and Conditions", true);
-        setBack(() -> AppHooks.toSettings(this));
-        TermsText.addTo(this);
-        JButton backBtn = put(new Theme.Btn("Back", Theme.GREY));
-        backBtn.addActionListener(e -> AppHooks.toSettings(this));
-=======
         this(false);
     }
 
     public TermsPage(boolean fromSignup) {
+        super("Terms and Conditions"); // <--- FIXED: Added this line
         this.fromSignup = fromSignup;
         setTitle("AquaVolt SA - Terms and Conditions");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -100,7 +86,7 @@ public class TermsPage extends BasePage {
 
         backBtn.addActionListener(e -> {
             if (this.fromSignup) {
-                new SignupPage3().setVisible(true);   // back to the sign-up page (it restores what was typed)
+                new SignupPage3().setVisible(true);   
             } else {
                 Settings_Page page = new Settings_Page();
                 page.showGui();
@@ -111,6 +97,5 @@ public class TermsPage extends BasePage {
             }
             this.dispose();
         });
->>>>>>> ec7d8c4 (This is the Login-in pages done by Oyama)
     }
 }

@@ -43,6 +43,11 @@
             <artifactId>derbyclient</artifactId>
             <version>10.14.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.14.2.0</version>
+        </dependency>
         <!-- Source: https://mvnrepository.com/artifact/org.kordamp.ikonli/ikonli-materialdesign2-pack -->
     </dependencies>
 </project>
