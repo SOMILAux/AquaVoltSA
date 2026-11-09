@@ -1,5 +1,6 @@
  package za.ac.cput.aquavoltsa.GUI;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.*;
 import java.awt.event.*;
 import java.nio.charset.StandardCharsets;
@@ -87,6 +88,7 @@ public class LoginSignupPage extends BasePage {
     public static void main(String[] args) {
         AppHooks.install();   // constant 425 x 917 size + links between the group's pages
         SwingUtilities.invokeLater(() -> new SplashPage().setVisible(true));
+        FlatLightLaf.setup();
     }
 }
 
