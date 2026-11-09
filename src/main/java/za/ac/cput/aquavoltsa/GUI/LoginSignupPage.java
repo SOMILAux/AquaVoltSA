@@ -1,4 +1,4 @@
-package za.ac.cput.aquavoltsa.GUI;
+ package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -21,7 +21,7 @@ import javax.swing.text.JTextComponent;
 /**
  * @Student-Number 241028213
  * @author Oyama Sibunzi
- */
+ */ 
 public class LoginSignupPage extends BasePage {
     private final Theme.HintField usernameField = new Theme.HintField("Enter Username");
     private final Theme.HintPassword passwordField = new Theme.HintPassword("Password");
@@ -206,7 +206,6 @@ class HomePage extends BasePage {
         p.setPreferredSize(new Dimension(300, 30));
         put(p);
     }
-
     /** Animated circular gauge. */
     private static class Gauge extends JComponent {
         private final int target;
