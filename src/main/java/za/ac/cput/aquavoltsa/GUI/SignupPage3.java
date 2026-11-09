@@ -148,6 +148,10 @@ public class SignupPage3 extends BasePage {
         };
     }
 
+    void showGui() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     /** Android-style expandable section (tap the header to open/close). */
     private static class Collapsible extends JPanel {
         private final JPanel content = new JPanel();
