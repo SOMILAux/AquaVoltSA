@@ -14,8 +14,9 @@ import javax.swing.JOptionPane;
  * @author Oyama Sibunzi
  */
 public final class Database {
-    // ===== change these 3 lines if your database has a different name / login =====
-    static final String URL = "jdbc:derby://localhost:1527/AquaVoltDB";
+    // Embedded Derby URL. It creates the database in the project folder automatically.
+    static final String URL = "jdbc:derby:AquaVoltDB;create=true";
+    
     static final String USER = "app";
     static final String PASS = "app";
 
@@ -24,36 +25,58 @@ public final class Database {
     private Database() { }
 
     public static Connection connect() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
+        return DriverManager.getConnection(URL);
     }
 
-    /** Runs once while the loading page is showing: creates any missing tables and adds starter data. */
+    /** 
+     * Runs once while the loading page is showing. 
+     * Creates all the missing tables and adds starter data automatically.
+     */
     public static boolean init() {
         try (Connection c = connect(); Statement st = c.createStatement()) {
+            
+            // ==========================================
+            // 1. YOUR CUSTOMERS TABLE
+            // ==========================================
             create(st, "CREATE TABLE customers ("
                     + "id VARCHAR(12) PRIMARY KEY, full_name VARCHAR(100) NOT NULL, id_number VARCHAR(20) NOT NULL, "
                     + "username VARCHAR(30) NOT NULL UNIQUE, pass_hash VARCHAR(64) NOT NULL, email VARCHAR(100) NOT NULL, "
                     + "phone VARCHAR(20) NOT NULL, address VARCHAR(200), meter VARCHAR(30), serial VARCHAR(30), "
                     + "water_meter VARCHAR(30), account_no VARCHAR(30), status VARCHAR(10) NOT NULL DEFAULT 'PENDING', "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+            
+            // ==========================================
+            // 2. YOUR ADMINS TABLE
+            // ==========================================
             create(st, "CREATE TABLE admins ("
                     + "username VARCHAR(40) PRIMARY KEY, full_name VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL, "
                     + "phone VARCHAR(20) NOT NULL, pass_hash VARCHAR(64) NOT NULL, is_main CHAR(1) NOT NULL DEFAULT 'N', "
                     + "status VARCHAR(10) NOT NULL DEFAULT 'PENDING', requested_by VARCHAR(40), "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+            
+            // ==========================================
+            // 3. YOUR ACTIVITY LOG TABLE
+            // ==========================================
             create(st, "CREATE TABLE activity_log ("
                     + "log_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, admin_username VARCHAR(40) NOT NULL, "
                     + "activity VARCHAR(30) NOT NULL, details VARCHAR(100), "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+            
+            // ==========================================
+            // 4. OTHER REQUIRED TABLES FOR OUR APP SUCH AS THE NOTIFICATIONS YOU KNOW
+            // ==========================================
             create(st, "CREATE TABLE notifications ("
                     + "notif_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, customer_username VARCHAR(30) NOT NULL, "
                     + "category VARCHAR(20) NOT NULL, title VARCHAR(80) NOT NULL, message VARCHAR(500) NOT NULL, "
                     + "status VARCHAR(10) NOT NULL DEFAULT 'UNREAD', sent_by VARCHAR(40) NOT NULL, "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+            
             create(st, "CREATE TABLE transactions ("
                     + "txn_id VARCHAR(40) PRIMARY KEY, customer_username VARCHAR(30) NOT NULL, utility VARCHAR(12) NOT NULL, "
                     + "meter_no VARCHAR(30), amount DECIMAL(10,2) NOT NULL, fee DECIMAL(10,2) NOT NULL, method VARCHAR(40), "
                     + "status VARCHAR(15) NOT NULL, token VARCHAR(30), created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+            
+            // Add the starter data (demo users, etc.)
             seed(c);
             seedExtras(c);
             return true;
@@ -63,7 +86,7 @@ public final class Database {
         }
     }
 
-    // "table already exists" (X0Y32) is fine - it just means the table was made on an earlier run
+    // "table already exists" (X0Y32) is fine - it just means the table was made on an earlier run I HOPE
     private static void create(Statement st, String sql) throws SQLException {
         try {
             st.executeUpdate(sql);
@@ -135,9 +158,8 @@ public final class Database {
         showing = true;
         JOptionPane.showMessageDialog(null,
                 "Cannot use the AquaVolt database.\n\n" + e.getMessage() + "\n\nCheck that:\n"
-                + "1. The Java DB server is started (Services > Databases > Java DB > Start Server)\n"
-                + "2. The database AquaVoltDB exists\n"
-                + "3. The Derby client driver (Java DB Driver) is added to the project Libraries",
+                + "1. The Derby driver is in your pom.xml\n"
+                + "2. You have write permissions in the project folder.",
                 "Database problem", JOptionPane.ERROR_MESSAGE);
         showing = false;
     }
