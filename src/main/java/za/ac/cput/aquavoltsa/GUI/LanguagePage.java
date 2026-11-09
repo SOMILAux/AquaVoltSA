@@ -1,4 +1,5 @@
 package za.ac.cput.aquavoltsa.GUI;
+
 //This class allows users to select and save their preferred language.
 /**
  *
@@ -15,20 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
-
-/**
- * In Settings page
- * @author Sbahle
- */
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;  
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
 public class LanguagePage extends JFrame {
 
     private JLabel titleLabel;
@@ -39,6 +26,8 @@ public class LanguagePage extends JFrame {
     private static String selectedLanguage = "English";
 
     private Map<String, String[]> translations;
+    
+    
 
     public LanguagePage() {
 
@@ -241,9 +230,16 @@ public class LanguagePage extends JFrame {
 
         mainPanel.add(backButton);
 
-        backButton.addActionListener(
-                e -> dispose()
-        );
+        backButton.addActionListener(  e -> {
+            Settings_Page  page = new Settings_Page();
+            page.showGui();
+            page.setSize(425, 917);
+            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
+
+            this.dispose();
+        });
 
         // =========================
         // SCROLL
@@ -485,13 +481,5 @@ public class LanguagePage extends JFrame {
 
             e.printStackTrace();
         }
-    }
-
-    // ==================================================
-    // MAIN
-    // ==================================================
-    public static void main(String[] args) {
-
-        new LanguagePage();
     }
 }

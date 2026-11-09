@@ -1,23 +1,18 @@
 package za.ac.cput.aquavoltsa.GUI;
 
-import com.formdev.flatlaf.FlatLightLaf;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import javax.swing.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -50,6 +45,10 @@ public class LoginSignupPage extends BasePage {
         JLabel or = new JLabel(Theme.icon("or1.png", 220, 25), SwingConstants.CENTER);
         put(or);
         JButton signupBtn = put(Theme.link("Sign Up"));
+        JButton roleBtn = put(Theme.link("Change user type"));
+        roleBtn.setFont(Theme.SMALL.deriveFont(12f));
+        roleBtn.setForeground(Theme.GREY);
+        roleBtn.addActionListener(e -> go(new RoleSelectPage()));
 
         getRootPane().setDefaultButton(enterBtn);
 
@@ -86,11 +85,17 @@ public class LoginSignupPage extends BasePage {
     }
 
     public static void main(String[] args) {
-        AdminServer.start();   // admin website: http://localhost:8080
+        AppHooks.install();   // constant 425 x 917 size + links between the group's pages
         SwingUtilities.invokeLater(() -> new SplashPage().setVisible(true));
     }
 }
 
+
+/**
+ * Loading screen shown when the app opens (like the Android app), then moves to the login page.
+ * @StudentNumber 241028213
+ * @author Oyama Sibunzi
+ */
 class SplashPage extends JFrame {
     private int progress = 0;
 
@@ -133,16 +138,20 @@ class SplashPage extends JFrame {
         pack();
         setLocationRelativeTo(null);
 
-        String[] steps = {"Starting AquaVolt SA...", "Connecting to municipality services...",
-            "Syncing Eskom tariffs...", "Almost ready..."};
+        String[] steps = {"Starting AquaVolt SA...", "Connecting to the database...",
+            "Checking tables...", "Almost ready..."};
         javax.swing.Timer t = new javax.swing.Timer(30, null);
         t.addActionListener(e -> {
             progress++;
             bar.setValue(progress);
             status.setText(steps[Math.min(steps.length - 1, progress / 26)]);
+            if (progress == 30 && !Database.init()) {   // creates the tables on the first run
+                t.stop();
+                System.exit(0);
+            }
             if (progress >= 100) {
                 t.stop();
-                new LoginSignupPage().setVisible(true);
+                new RoleSelectPage().setVisible(true);
                 dispose();
             }
         });
@@ -241,6 +250,7 @@ class HomePage extends BasePage {
 }
 
 /**
+ * Every page shares the Android layout: logo header on top, a scrolling body, "Partnered with" footer.
  * @StudentNumber 241028213
  * @author Oyama Sibunzi
  */
@@ -299,15 +309,22 @@ abstract class BasePage extends JFrame {
     }
 }
 
+/**
+ * Shared colours, fonts and small UI helpers so every page matches the Android app.
+ * @StudentNumber 241028213
+ * @author Oyama Sibunzi
+ */
 final class Theme {
     public static final Color BLUE = new Color(33, 150, 243), GREY = new Color(117, 117, 117),
             RED = new Color(211, 47, 47), PURPLE = new Color(103, 80, 164), BORDER = new Color(176, 176, 176),
-            INK = new Color(33, 33, 33), YELLOW = new Color(255, 193, 7);
+            INK = new Color(33, 33, 33), YELLOW = new Color(255, 193, 7),
+            NAVY = new Color(13, 71, 161);
     public static final Font TITLE = new Font("Segoe UI", Font.BOLD, 22), BODY = new Font("Segoe UI", Font.PLAIN, 14),
             BOLD = new Font("Segoe UI", Font.BOLD, 14), SMALL = new Font("Segoe UI", Font.PLAIN, 11);
 
     private Theme() { }
 
+    // ---------- images (same simple style: ImageIcon -> getImage -> getScaledInstance) ----------
     static ImageIcon icon(String file, int width, int height) {
         ImageIcon logo = new ImageIcon(file);
         Image logoIcon = logo.getImage();
@@ -319,6 +336,7 @@ final class Theme {
         return new ImageIcon(file).getImage();
     }
 
+    // ---------- header / footer used on every page ----------
     static JComponent header() {
         JLabel l = new JLabel(icon("Logo1.png", 425, 246), SwingConstants.CENTER);
         l.setOpaque(true);
@@ -336,7 +354,7 @@ final class Theme {
         row.setOpaque(false);
         row.add(new JLabel(icon("national_logo1.png", 32, 40)));
         row.add(label("SA Municipality", SMALL.deriveFont(12f), INK, SwingConstants.LEFT));
-        row.add(new JLabel(icon("eskom1.png", 105, 60)));
+        row.add(new JLabel(icon("eskom_logo.png", 105, 27)));
         JPanel strip = new JPanel() {
             private final Image bg = image("bg1.png");
             @Override protected void paintComponent(Graphics g) {
@@ -586,13 +604,12 @@ final class Theme {
 }
 
 /**
- * The app's "database": a tab-separated text file (aquavolt_users.txt) in the project folder.
- * The Java app and the admin website (through AdminServer) both read and write through this class.
+ * Customer data access through JDBC. Everything is stored in the Java DB table CUSTOMERS.
+ * @StudentNumber 241028213
+ * @author Oyama Sibunzi
  */
 final class UserStore {
     public static final String PENDING = "PENDING", VERIFIED = "VERIFIED";
-    private static final Path FILE = Paths.get("aquavolt_users.txt");
-    private static final List<User> USERS = new ArrayList<>();
 
     /** Holds the sign-up details while the user moves between the sign-up pages. */
     public static User draft = new User();
@@ -602,112 +619,107 @@ final class UserStore {
                 address = "", meter = "", serial = "", waterMeter = "", accountNo = "", status = PENDING, created = "";
         /** Plain password, only kept in memory during sign-up (never saved). */
         public String rawPassword = "";
-
-        String[] arr() {
-            return new String[]{id, fullName, idNumber, username, passHash, email, phone, address, meter, serial,
-                waterMeter, accountNo, status, created};
-        }
-
-        static User of(String[] a) {
-            if (a.length < 14) return null;
-            User u = new User();
-            u.id = a[0]; u.fullName = a[1]; u.idNumber = a[2]; u.username = a[3]; u.passHash = a[4];
-            u.email = a[5]; u.phone = a[6]; u.address = a[7]; u.meter = a[8]; u.serial = a[9];
-            u.waterMeter = a[10]; u.accountNo = a[11]; u.status = a[12]; u.created = a[13];
-            return u;
-        }
     }
 
-    static {
-        load();
-    }
+    private static final String COLS = "id, full_name, id_number, username, pass_hash, email, phone, address, "
+            + "meter, serial, water_meter, account_no, status, created";
 
     private UserStore() { }
 
-    private static synchronized void load() {
-        boolean existed = Files.exists(FILE);
-        try {
-            if (existed) {
-                for (String line : Files.readAllLines(FILE, StandardCharsets.UTF_8)) {
-                    User u = User.of(line.split("\t", -1));
-                    if (u != null) USERS.add(u);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!existed) seed();
+    private static String s(String v) {
+        return v == null ? "" : v;
     }
 
-    //These are my Demo names in my admin
-    private static void seed() {
-        demo("Cheese Mokoena", "9001015800086", "Cheese", "Cheese@123", "cheese@mail.co.za", "0821234567",
-                "12 Long Street, Cape Town", "MTR-44821", "SN-77120", "WTR-1024", "ACC-9981", VERIFIED);
-        demo("Thando Nkosi", "9505055800083", "Thando", "Thando@123", "thando@gmail.com", "0735550142",
-                "8 Vilakazi Street, Soweto", "MTR-10977", "SN-30551", "", "", PENDING);
-        demo("Naledi Dlamini", "0001015800087", "Naledi", "Naledi@123", "naledi@outlook.com", "0614449087",
-                "45 Berea Road, Durban", "", "", "WTR-5521", "ACC-1207", PENDING);
-        demo("Sipho Khumalo", "8812125800085", "Sipho", "Sipho@123", "sipho.k@mail.com", "0794447712",
-                "3 Church Street, Pretoria", "MTR-88231", "SN-12089", "WTR-7710", "ACC-3345", VERIFIED);
+    private static String cut(String v, int max) {
+        v = s(v);
+        return v.length() > max ? v.substring(0, max) : v;
     }
 
-    private static void demo(String name, String idNo, String user, String pass, String mail, String phone,
-                             String addr, String meter, String serial, String water, String acc, String status) {
+    private static User row(ResultSet r) throws SQLException {
         User u = new User();
-        u.fullName = name; u.idNumber = idNo; u.username = user; u.passHash = hash(pass); u.email = mail;
-        u.phone = phone; u.address = addr; u.meter = meter; u.serial = serial; u.waterMeter = water;
-        u.accountNo = acc; u.status = status;
-        add(u);
+        u.id = s(r.getString("id"));
+        u.fullName = s(r.getString("full_name"));
+        u.idNumber = s(r.getString("id_number"));
+        u.username = s(r.getString("username"));
+        u.passHash = s(r.getString("pass_hash"));
+        u.email = s(r.getString("email"));
+        u.phone = s(r.getString("phone"));
+        u.address = s(r.getString("address"));
+        u.meter = s(r.getString("meter"));
+        u.serial = s(r.getString("serial"));
+        u.waterMeter = s(r.getString("water_meter"));
+        u.accountNo = s(r.getString("account_no"));
+        u.status = s(r.getString("status"));
+        Timestamp t = r.getTimestamp("created");
+        u.created = t == null ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t);
+        return u;
     }
 
-    private static void save() {
-        StringBuilder sb = new StringBuilder();
-        for (User u : USERS) {
-            String[] a = u.arr();
-            for (int i = 0; i < a.length; i++) {
-                if (i > 0) sb.append('\t');
-                sb.append(a[i] == null ? "" : a[i].replaceAll("[\\t\\r\\n]", " "));
+    public static List<User> all() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT " + COLS + " FROM customers ORDER BY created DESC";
+        try (Connection c = Database.connect(); Statement st = c.createStatement(); ResultSet r = st.executeQuery(sql)) {
+            while (r.next()) list.add(row(r));
+        } catch (SQLException e) {
+            Database.report(e);
+        }
+        return list;
+    }
+
+    public static User find(String username) {
+        String sql = "SELECT " + COLS + " FROM customers WHERE LOWER(username) = LOWER(?)";
+        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+            p.setString(1, username);
+            try (ResultSet r = p.executeQuery()) {
+                if (r.next()) return row(r);
             }
-            sb.append('\n');
+        } catch (SQLException e) {
+            Database.report(e);
         }
-        try {
-            Files.write(FILE, sb.toString().getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static synchronized List<User> all() {
-        return new ArrayList<>(USERS);
-    }
-
-    public static synchronized User find(String username) {
-        for (User u : USERS) if (u.username.equalsIgnoreCase(username)) return u;
         return null;
     }
 
-    public static synchronized boolean exists(String username) {
+    public static boolean exists(String username) {
         return find(username) != null;
     }
 
-    public static synchronized void add(User u) {
+    /** New customers always start as PENDING until an admin accepts them. */
+    public static void add(User u) {
         u.id = "U" + UUID.randomUUID().toString().substring(0, 8);
-        u.created = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-        USERS.add(u);
-        save();
-    }
-
-    public static synchronized boolean setStatus(String id, String status) {
-        for (User u : USERS) {
-            if (u.id.equals(id)) { u.status = status; save(); return true; }
+        String sql = "INSERT INTO customers (id, full_name, id_number, username, pass_hash, email, phone, address, "
+                + "meter, serial, water_meter, account_no, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+            String[] v = {u.id, cut(u.fullName, 100), cut(u.idNumber, 20), cut(u.username, 30), u.passHash,
+                cut(u.email, 100), cut(u.phone, 20), cut(u.address, 200), cut(u.meter, 30), cut(u.serial, 30),
+                cut(u.waterMeter, 30), cut(u.accountNo, 30), u.status};
+            for (int i = 0; i < v.length; i++) p.setString(i + 1, v[i]);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            Database.report(e);
         }
-        return false;
     }
 
-    public static synchronized boolean delete(String id) {
-        boolean removed = USERS.removeIf(u -> u.id.equals(id));
-        if (removed) save();
-        return removed;
+    public static boolean setStatus(String id, String status) {
+        try (Connection c = Database.connect();
+             PreparedStatement p = c.prepareStatement("UPDATE customers SET status = ? WHERE id = ?")) {
+            p.setString(1, status);
+            p.setString(2, id);
+            return p.executeUpdate() > 0;
+        } catch (SQLException e) {
+            Database.report(e);
+            return false;
+        }
+    }
+
+    public static boolean delete(String id) {
+        try (Connection c = Database.connect();
+             PreparedStatement p = c.prepareStatement("DELETE FROM customers WHERE id = ?")) {
+            p.setString(1, id);
+            return p.executeUpdate() > 0;
+        } catch (SQLException e) {
+            Database.report(e);
+            return false;
+        }
     }
 
     public static String hash(String s) {
@@ -718,105 +730,6 @@ final class UserStore {
             return sb.toString();
         } catch (Exception e) {
             return s;
-        }
-    }
-
-    private static String esc(String s) {
-        return s == null ? "" : s.replace("\\", "\\\\").replace("\"", "\\\"");
-    }
-
-    /** JSON for the admin website (password hashes are never sent). */
-    public static synchronized String json() {
-        String[] k = {"id", "fullName", "idNumber", "username", "email", "phone", "address", "meter", "serial",
-            "waterMeter", "accountNo", "status", "created"};
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < USERS.size(); i++) {
-            User u = USERS.get(i);
-            String[] v = {u.id, u.fullName, u.idNumber, u.username, u.email, u.phone, u.address, u.meter, u.serial,
-                u.waterMeter, u.accountNo, u.status, u.created};
-            sb.append(i > 0 ? "," : "").append('{');
-            for (int j = 0; j < k.length; j++) {
-                sb.append(j > 0 ? "," : "").append('"').append(k[j]).append("\":\"").append(esc(v[j])).append('"');
-            }
-            sb.append('}');
-        }
-        return sb.append(']').toString();
-    }
-}
-
-/**
- * Runs inside the Java app (no extra libraries). Open http://localhost:8080 while the app is running
- * to reach the admin website, which reads the same user database as the app.
- */
-final class AdminServer {
-    private static final String KEY = "admin12304";
-    private static final Path SITE = Paths.get("admin-website").toAbsolutePath().normalize();
-
-    private AdminServer() { }
-
-    public static void start() {
-        try {
-            HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 8080), 0);
-            server.createContext("/", AdminServer::files);
-            server.createContext("/api/", AdminServer::api);
-            server.setExecutor(null);
-            server.start();
-            System.out.println("AquaVolt admin website: http://localhost:8080");
-        } catch (Exception e) {
-            System.err.println("Admin server not started: " + e.getMessage());
-        }
-    }
-
-    private static void api(HttpExchange x) throws IOException {
-        String q = x.getRequestURI().getRawQuery() == null ? "" : x.getRequestURI().getRawQuery();
-        String path = x.getRequestURI().getPath();
-        int code = 200;
-        String out;
-        if (!q.contains("k=" + KEY)) {
-            code = 401;
-            out = "{\"error\":\"unauthorised\"}";
-        } else if (path.equals("/api/users")) {
-            out = UserStore.json();
-        } else if (path.equals("/api/approve")) {
-            out = "{\"ok\":" + UserStore.setStatus(param(q, "id"), UserStore.VERIFIED) + "}";
-        } else if (path.equals("/api/pending")) {
-            out = "{\"ok\":" + UserStore.setStatus(param(q, "id"), UserStore.PENDING) + "}";
-        } else if (path.equals("/api/delete")) {
-            out = "{\"ok\":" + UserStore.delete(param(q, "id")) + "}";
-        } else {
-            code = 404;
-            out = "{\"error\":\"not found\"}";
-        }
-        send(x, code, "application/json; charset=utf-8", out.getBytes(StandardCharsets.UTF_8));
-    }
-
-    private static void files(HttpExchange x) throws IOException {
-        String p = x.getRequestURI().getPath();
-        if (p.equals("/")) p = "/index.html";
-        Path f = SITE.resolve(p.substring(1)).normalize();
-        if (!f.startsWith(SITE) || !Files.isRegularFile(f)) {
-            send(x, 404, "text/plain", "Not found".getBytes(StandardCharsets.UTF_8));
-            return;
-        }
-        String n = f.toString().toLowerCase();
-        String type = n.endsWith(".html") ? "text/html; charset=utf-8" : n.endsWith(".png") ? "image/png"
-                : n.endsWith(".css") ? "text/css" : n.endsWith(".js") ? "text/javascript" : "application/octet-stream";
-        send(x, 200, type, Files.readAllBytes(f));
-    }
-
-    private static String param(String q, String name) {
-        for (String kv : q.split("&")) {
-            if (kv.startsWith(name + "=")) return kv.substring(name.length() + 1);
-        }
-        return "";
-    }
-
-    private static void send(HttpExchange x, int code, String type, byte[] data) throws IOException {
-        x.getResponseHeaders().add("Content-Type", type);
-        x.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-        x.sendResponseHeaders(code, data.length);
-        try (OutputStream o = x.getResponseBody()) {
-            o.write(data);
         }
     }
 }

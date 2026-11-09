@@ -6,12 +6,18 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.util.Base64;
-import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
+
+//Within Profile page (Inathi)
+//
+// FIXED/CONNECTED by Oyama:
+//  1. The red error: this file used "DBConnection" without importing it. It no longer needs it - it now uses the
+//     same AquaVoltDB database as the rest of the app (Database.connect()).
+//  2. It changes the password of the customer who is LOGGED IN (Session.customer) in the CUSTOMERS table, instead of
+//     the old "users" table with userId = 1. The password is stored with the same SHA-256 hash the login page checks
+//     (UserStore.hash), so the new password really works at the next login. (The PBKDF2 code was removed because the
+//     login page could not read that format.)
+//  3. The lock type is saved in a small LOCK_PREFERENCES table that this page creates by itself. The old
+//     "ON DUPLICATE KEY UPDATE" is MySQL-only and does not work on Derby.
 
 public class Change_Password_Page extends JFrame {
 
@@ -35,15 +41,13 @@ public class Change_Password_Page extends JFrame {
     private JLabel lblLength, lblUppercase, lblNumber, lblSpecial;
     private JPanel checklistPanel;
 
-    private static final String ICON_VALID
-            = "<html><font color='green'><b>\u2713</b></font> ";
+    private static final String ICON_VALID =
+            "<html><font color='green'><b>\u2713</b></font> ";
 
-    private static final String ICON_INVALID
-            = "<html><font color='red'><b>\u2717</b></font> ";
+    private static final String ICON_INVALID =
+            "<html><font color='red'><b>\u2717</b></font> ";
 
-    private final int userId = 1;
-
-    public Change_Password_Page() {
+    public Change_Password_Page () {
 
         lbSet_Password = new JLabel("Create Your Password");
         lbConfirm_Password = new JLabel("Confirm_Password");
@@ -81,13 +85,13 @@ public class Change_Password_Page extends JFrame {
         // Lock icon and heading
         lockIcon = new ImageIcon(getClass().getResource("/icons/lock.png"));
         Image image = lockIcon.getImage().getScaledInstance(
-                85, 85, Image.SCALE_SMOOTH);
+                90, 90, Image.SCALE_SMOOTH);
 
         lbJust_blank.setIcon(new ImageIcon(image));
         lbJust_blank.setHorizontalAlignment(JLabel.CENTER);
         lbJust_blank.setVerticalAlignment(JLabel.CENTER);
 
-        lbHeading.setFont(new Font("Arial", Font.BOLD, 22));
+        lbHeading.setFont(new Font("Arial", Font.BOLD, 24));
         lbHeading.setHorizontalAlignment(JLabel.CENTER);
         lbHeading.setVerticalAlignment(JLabel.CENTER);
 
@@ -95,19 +99,18 @@ public class Change_Password_Page extends JFrame {
         lbJust_blank.setFont(new Font("Arial", Font.BOLD, 30));
         pre_panel_3.add(lbJust_blank);
         pre_panel_3.setLayout(new GridLayout(2, 1));
-        Color gold = new Color(218, 165, 32);
-        pre_panel_3.setBackground(Color.LIGHT_GRAY);
+        pre_panel_3.setBackground(Color.orange);
         add(pre_panel_3);
 
         // Eye icon
         eyeIcon = new ImageIcon(getClass().getResource("/icons/eye.png"));
         Image eyeImage = eyeIcon.getImage().getScaledInstance(
-                25, 25, Image.SCALE_SMOOTH);
+                30, 30, Image.SCALE_SMOOTH);
         ImageIcon resizedEyeIcon = new ImageIcon(eyeImage);
 
         btShow_Password = new JButton(resizedEyeIcon);
-        btShow_Password.addActionListener(e
-                -> togglePassword(txtSet_Password));
+        btShow_Password.addActionListener(e ->
+                togglePassword(txtSet_Password));
         styleEyeButton(btShow_Password);
 
         password_panel = new JPanel(new BorderLayout());
@@ -115,8 +118,8 @@ public class Change_Password_Page extends JFrame {
         password_panel.add(btShow_Password, BorderLayout.EAST);
 
         btConfirm_Password = new JButton(resizedEyeIcon);
-        btConfirm_Password.addActionListener(e
-                -> togglePassword(txtConfirm_Password));
+        btConfirm_Password.addActionListener(e ->
+                togglePassword(txtConfirm_Password));
         styleEyeButton(btConfirm_Password);
 
         Confirm_Panel = new JPanel(new BorderLayout());
@@ -124,35 +127,34 @@ public class Change_Password_Page extends JFrame {
         Confirm_Panel.add(btConfirm_Password, BorderLayout.EAST);
 
         // Existing password fields and panel layout
-        lbSet_Password.setFont(new Font("Arial", Font.BOLD, 16));
-        lbCurrent_password.setFont(new Font("Arial", Font.BOLD, 18));
+        lbSet_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        lbCurrent_password.setFont(new Font("Arial", Font.BOLD, 20));
 
         panel_1.add(lbCurrent_password);
-        panel_1.setBackground(Color.LIGHT_GRAY);
-        txtCurrent_password.setBackground(Color.LIGHT_GRAY);
+        txtCurrent_password.setBackground(Color.orange);
         panel_1.add(txtCurrent_password);
 
         panel_1.add(lbSet_Password);
-        txtSet_Password.setFont(new Font("Arial", Font.BOLD, 16));
-        txtSet_Password.setBackground(Color.LIGHT_GRAY);
-        password_panel.setBackground(Color.LIGHT_GRAY);
+        txtSet_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        txtSet_Password.setBackground(Color.orange);
+        password_panel.setBackground(Color.orange);
         panel_1.add(password_panel);
 
         panel_1.add(lbConfirm_Password);
-        lbConfirm_Password.setFont(new Font("Arial", Font.BOLD, 16));
-        txtConfirm_Password.setFont(new Font("Arial", Font.BOLD, 16));
-        txtConfirm_Password.setBackground(Color.LIGHT_GRAY);
-        Confirm_Panel.setBackground(Color.LIGHT_GRAY);
+        lbConfirm_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        txtConfirm_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        txtConfirm_Password.setBackground(Color.orange);
+        Confirm_Panel.setBackground(Color.orange);
         panel_1.add(Confirm_Panel);
 
         panel_1.add(lbAnother_blank);
-        panel_1.setBackground(Color.LIGHT_GRAY);
+        panel_1.setBackground(Color.orange);
         panel_1.setLayout(new GridLayout(6, 1));
         add(panel_1);
 
         // Existing password checklist
         checklistPanel = new JPanel(new GridLayout(4, 1));
-        checklistPanel.setBackground(Color.LIGHT_GRAY);
+        checklistPanel.setBackground(Color.orange);
         checklistPanel.setBorder(
                 BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
@@ -172,23 +174,23 @@ public class Change_Password_Page extends JFrame {
         setupPasswordListener();
 
         // Existing buttons and lock-type control
-        btSave_Password.setFont(new Font("Arial", Font.BOLD, 16));
-        btSave_Password.setBackground( Color.orange);
+        btSave_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        btSave_Password.setBackground(new Color(173, 216, 230));
         btSave_Password.addActionListener(e -> savePassword());
 
-        btBack.setFont(new Font("Arial", Font.BOLD, 16));
-        btBack.setBackground(new  Color(173, 216, 230));
+        btBack.setFont(new Font("Arial", Font.BOLD, 20));
+        btBack.setBackground(Color.gray);
         btBack.addActionListener(e -> {
-            Profile_Page2 profile = new Profile_Page2();
-            profile.setSize(425, 917);
-            profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            profile.setLocationRelativeTo(null);
-            profile.setVisible(true);
+            Settings_Page page = new Settings_Page();
+            page.showGui();
+            page.setSize(425, 917);
+            page.setLocationRelativeTo(null);
+            page.setVisible(true);
             this.dispose();
         });
 
         panel_2.setLayout(new GridBagLayout());
-        panel_2.setBackground(Color.LIGHT_GRAY);
+        panel_2.setBackground(Color.orange);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -207,25 +209,25 @@ public class Change_Password_Page extends JFrame {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
 
-        //rbChange_Lock_Type.setBackground(gold);
-        //rbChange_Lock_Type.addActionListener(e -> changeLockType());
-        //panel_2.add(rbChange_Lock_Type, gbc);
+        rbChange_Lock_Type.setBackground(Color.orange);
+        rbChange_Lock_Type.addActionListener(e -> changeLockType());
+        panel_2.add(rbChange_Lock_Type, gbc);
 
         add(panel_2);
 
         // Existing logo
         logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
         Image logoImage = logoIcon.getImage().getScaledInstance(
-                125, 125, Image.SCALE_SMOOTH);
+                130, 130, Image.SCALE_SMOOTH);
         lbJust_blank2.setIcon(new ImageIcon(logoImage));
         lbJust_blank2.setHorizontalAlignment(JLabel.CENTER);
         lbJust_blank2.setVerticalAlignment(JLabel.CENTER);
 
-        panel_4.setBackground(Color.LIGHT_GRAY);
+        panel_4.setBackground(Color.orange);
         panel_4.add(lbJust_blank2);
         add(panel_4);
 
-        //loadLockType();
+        loadLockType();
         revalidate();
         repaint();
     }
@@ -279,8 +281,8 @@ public class Change_Password_Page extends JFrame {
         boolean lengthOK = password.length() >= 8;
         boolean uppercaseOK = password.matches(".*[A-Z].*");
         boolean numberOK = password.matches(".*[0-9].*");
-        boolean specialOK
-                = password.matches(".*[!@#$%^&*(),.?\"{}|<>].*");
+        boolean specialOK =
+                password.matches(".*[!@#$%^&*(),.?\"{}|<>].*");
 
         updateRule(lblLength, "At least 8 characters", lengthOK);
         updateRule(lblUppercase,
@@ -302,14 +304,17 @@ public class Change_Password_Page extends JFrame {
         }
     }
 
+    // CONNECTED: changes the password of the logged-in customer in the CUSTOMERS table
     private void savePassword() {
-        char[] currentChars = txtCurrent_password.getPassword();
-        char[] newChars = txtSet_Password.getPassword();
-        char[] confirmChars = txtConfirm_Password.getPassword();
+        if (Session.customer == null) {
+            JOptionPane.showMessageDialog(
+                    this, "Please log in first - no customer is logged in.");
+            return;
+        }
 
-        String currentPassword = new String(currentChars);
-        String newPassword = new String(newChars);
-        String confirmPassword = new String(confirmChars);
+        String currentPassword = new String(txtCurrent_password.getPassword());
+        String newPassword = new String(txtSet_Password.getPassword());
+        String confirmPassword = new String(txtConfirm_Password.getPassword());
 
         if (currentPassword.isEmpty()
                 || newPassword.isEmpty()
@@ -338,134 +343,62 @@ public class Change_Password_Page extends JFrame {
             return;
         }
 
-        String selectSQL
-                = "SELECT password_hash FROM users WHERE user_id = ?";
+        // the current password must match what is saved for this customer
+        if (!UserStore.hash(currentPassword).equals(Session.customer.passHash)) {
+            JOptionPane.showMessageDialog(
+                    this, "Your current password is incorrect.");
+            return;
+        }
 
-        try (Connection connection
-                = DBConnection.getConnection()) {
+        String newHash = UserStore.hash(newPassword);
 
-            if (connection == null) {
+        try (Connection connection = Database.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                     "UPDATE customers SET pass_hash = ? WHERE id = ?")) {
+
+            statement.setString(1, newHash);
+            statement.setString(2, Session.customer.id);
+
+            if (statement.executeUpdate() > 0) {
+                Session.customer.passHash = newHash;   // keep the logged-in copy up to date
                 JOptionPane.showMessageDialog(
-                        this, "Database connection failed.");
-                return;
-            }
-
-            String storedPassword;
-
-            try (PreparedStatement statement
-                    = connection.prepareStatement(selectSQL)) {
-                statement.setInt(1, userId);
-
-                try (ResultSet result = statement.executeQuery()) {
-                    if (!result.next()) {
-                        JOptionPane.showMessageDialog(
-                                this, "User account was not found.");
-                        return;
-                    }
-                    storedPassword = result.getString("password_hash");
-                }
-            }
-
-            if (!passwordMatches(currentPassword, storedPassword)) {
+                        this, "Password updated successfully!");
+                txtCurrent_password.setText("");
+                txtSet_Password.setText("");
+                txtConfirm_Password.setText("");
+                resetChecklist();
+            } else {
                 JOptionPane.showMessageDialog(
-                        this, "Your current password is incorrect.");
-                return;
+                        this, "Password could not be updated.");
             }
 
-            String hashedPassword = hashPassword(newPassword);
-
-            String updateSQL
-                    = "UPDATE users SET password_hash = ? WHERE user_id = ?";
-
-            try (PreparedStatement statement
-                    = connection.prepareStatement(updateSQL)) {
-                statement.setString(1, hashedPassword);
-                statement.setInt(2, userId);
-
-                int updated = statement.executeUpdate();
-
-                if (updated > 0) {
-                    JOptionPane.showMessageDialog(
-                            this, "Password updated successfully!");
-                    txtCurrent_password.setText("");
-                    txtSet_Password.setText("");
-                    txtConfirm_Password.setText("");
-                    resetChecklist();
-                } else {
-                    JOptionPane.showMessageDialog(
-                            this, "Password could not be updated.");
-                }
-            }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(
                     this, "Could not update password:\n" + e.getMessage());
         }
     }
 
-    // Supports the old plain-text test value and the new PBKDF2 hashes.
-    private boolean passwordMatches(String password, String stored)
-            throws Exception {
-
-        if (stored == null) {
-            return false;
-        }
-
-        if (stored.startsWith("PBKDF2$")) {
-            String[] parts = stored.split("\\$");
-
-            if (parts.length != 4) {
-                return false;
+    // The lock type (Password / PIN / Pattern) is saved per customer in LOCK_PREFERENCES.
+    // The table is created here the first time it is needed (X0Y32 = "table already exists", which is fine).
+    private void ensureLockTable(Connection connection) throws SQLException {
+        try (Statement st = connection.createStatement()) {
+            st.executeUpdate("CREATE TABLE lock_preferences ("
+                    + "customer_username VARCHAR(30) PRIMARY KEY, "
+                    + "lock_type VARCHAR(10) NOT NULL)");
+        } catch (SQLException e) {
+            if (!"X0Y32".equals(e.getSQLState())) {
+                throw e;
             }
-
-            int iterations = Integer.parseInt(parts[1]);
-            byte[] salt = Base64.getDecoder().decode(parts[2]);
-            byte[] expected = Base64.getDecoder().decode(parts[3]);
-
-            PBEKeySpec spec = new PBEKeySpec(
-                    password.toCharArray(), salt, iterations, 256);
-
-            byte[] actual;
-            try {
-                SecretKeyFactory factory
-                        = SecretKeyFactory.getInstance(
-                                "PBKDF2WithHmacSHA256");
-                actual = factory.generateSecret(spec).getEncoded();
-            } finally {
-                spec.clearPassword();
-            }
-
-            return java.security.MessageDigest.isEqual(expected, actual);
         }
-
-        // Temporary compatibility for the existing test account.
-        return password.equals(stored);
     }
 
-    private String hashPassword(String password) throws Exception {
-        int iterations = 120000;
-        byte[] salt = new byte[16];
-        new SecureRandom().nextBytes(salt);
-
-        PBEKeySpec spec = new PBEKeySpec(
-                password.toCharArray(), salt, iterations, 256);
-
-        byte[] hash;
-        try {
-            SecretKeyFactory factory
-                    = SecretKeyFactory.getInstance(
-                            "PBKDF2WithHmacSHA256");
-            hash = factory.generateSecret(spec).getEncoded();
-        } finally {
-            spec.clearPassword();
-        }
-
-        return "PBKDF2$" + iterations + "$"
-                + Base64.getEncoder().encodeToString(salt) + "$"
-                + Base64.getEncoder().encodeToString(hash);
-    }
-/*
     private void changeLockType() {
+        if (Session.customer == null) {
+            JOptionPane.showMessageDialog(this, "Please log in first.");
+            rbChange_Lock_Type.setSelected(false);
+            return;
+        }
+
         String[] options = {"Password", "PIN", "Pattern"};
 
         String selected = (String) JOptionPane.showInputDialog(
@@ -482,25 +415,24 @@ public class Change_Password_Page extends JFrame {
             return;
         }
 
-        String sql
-                = "INSERT INTO user_lock_preferences (user_id, lock_type) "
-                + "VALUES (?, ?) ON DUPLICATE KEY UPDATE "
-                + "lock_type = VALUES(lock_type)";
+        try (Connection connection = Database.connect()) {
+            ensureLockTable(connection);
 
-        try (Connection connection
-                = DBConnection.getConnection()) {
-
-            if (connection == null) {
-                //JOptionPane.showMessageDialog(
-                        //this, "Database connection failed.");
-                return;
+            // Derby has no "ON DUPLICATE KEY UPDATE": try UPDATE first, INSERT if nothing was updated
+            int updated;
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE lock_preferences SET lock_type = ? WHERE customer_username = ?")) {
+                statement.setString(1, selected);
+                statement.setString(2, Session.customer.username);
+                updated = statement.executeUpdate();
             }
-
-            try (PreparedStatement statement
-                    = connection.prepareStatement(sql)) {
-                statement.setInt(1, userId);
-                statement.setString(2, selected);
-                statement.executeUpdate();
+            if (updated == 0) {
+                try (PreparedStatement statement = connection.prepareStatement(
+                        "INSERT INTO lock_preferences (customer_username, lock_type) VALUES (?, ?)")) {
+                    statement.setString(1, Session.customer.username);
+                    statement.setString(2, selected);
+                    statement.executeUpdate();
+                }
             }
 
             rbChange_Lock_Type.setText("Lock Type: " + selected);
@@ -516,38 +448,41 @@ public class Change_Password_Page extends JFrame {
     }
 
     private String getCurrentLockType() {
-        String sql
-                = "SELECT lock_type FROM user_lock_preferences "
-                + "WHERE user_id = ?";
+        if (Session.customer == null) {
+            return "Password";
+        }
 
-        try (Connection connection
-                = DBConnection.getConnection()) {
+        try (Connection connection = Database.connect()) {
+            ensureLockTable(connection);
 
-            if (connection != null) {
-                try (PreparedStatement statement
-                        = connection.prepareStatement(sql)) {
-                    statement.setInt(1, userId);
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT lock_type FROM lock_preferences WHERE customer_username = ?")) {
+                statement.setString(1, Session.customer.username);
 
-                    try (ResultSet result = statement.executeQuery()) {
-                        if (result.next()) {
-                            return result.getString("lock_type");
-                        }
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        return result.getString("lock_type");
                     }
                 }
             }
         } catch (SQLException e) {
-            //System.out.println("Could not read lock type: "
-                    //+ e.getMessage());
+            System.out.println("Could not read lock type: "
+                    + e.getMessage());
         }
 
         return "Password";
-        
     }
 
     private void loadLockType() {
         rbChange_Lock_Type.setText(
                 "Change_Lock_Type (" + getCurrentLockType() + ")");
     }
-*/
-}
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Change_Password_Page page = new Change_Password_Page();
+            page.setVisible(true);
+        });
+    }
+
+}
