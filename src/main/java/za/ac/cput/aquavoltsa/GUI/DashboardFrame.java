@@ -46,15 +46,24 @@ public class DashboardFrame extends JFrame {
         userProfile.setPreferredSize(new Dimension(400,50));
         userProfile.setAlignmentX(Component.CENTER_ALIGNMENT); 
         
-        //Added Icon [A.P]
-        FontIcon Profile = FontIcon.of(FontAwesomeSolid.USER_CIRCLE, 40, Color.BLACK);
-       
-        /*ImageIcon profileIcon = new ImageIcon("user 1.png");
-        Image scaledProfile = profileIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);*/
-
         String shownName = Session.customer == null ? "Username" : Session.customer.username;
         JButton profileButton = new JButton(shownName);
-        profileButton.setIcon(Profile);
+        
+        // ==========================================
+        // LOAD CUSTOM PICTURE OR DEFAULT ICON
+        // ==========================================
+        String username = Session.customer == null ? "guest" : Session.customer.username;
+        ImageIcon customPic = ProfilePics.circle("c", username, 40);
+        
+        if (customPic != null) {
+            profileButton.setIcon(customPic);
+        } else {
+            // Default icon if no picture is saved
+            FontIcon defaultIcon = FontIcon.of(FontAwesomeSolid.USER_CIRCLE, 40, Color.BLACK);
+            profileButton.setIcon(defaultIcon);
+        }
+        // ==========================================
+
         profileButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
         profileButton.setBorderPainted(false);
         profileButton.setContentAreaFilled(false);
