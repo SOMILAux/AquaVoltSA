@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
-import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
 public class Profile_Page2 extends JFrame {
 
@@ -211,12 +210,11 @@ public class Profile_Page2 extends JFrame {
                 String username = Session.customer != null ? Session.customer.username : "guest";
                 String name = Session.customer != null ? Session.customer.fullName : "Guest";
                 
-                // Open the same camera/gallery dialog the admin uses ("c" = customer)
                 ProfilePictureDialog dialog = new ProfilePictureDialog(Profile_Page2.this, "c", username, name);
                 dialog.setVisible(true);
                 
                 if (dialog.changed) {
-                    updateProfilePicture(); // Reload the image immediately
+                    updateProfilePicture();
                 }
             }
         });
@@ -322,19 +320,10 @@ public class Profile_Page2 extends JFrame {
         lbAccount_status.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String sql = "SELECT account_status FROM user_profiles WHERE user_id = ?";
-                try (Connection connection = DBConnection.getConnection();
-                     PreparedStatement statement = connection.prepareStatement(sql)) {
-                    statement.setInt(1, 1);
-                    ResultSet result = statement.executeQuery();
-                    if (result.next()) {
-                        String status = result.getString("account_status");
-                        JOptionPane.showMessageDialog(Profile_Page2.this, "Account Status: " + status);
-                    } else {
-                        JOptionPane.showMessageDialog(Profile_Page2.this, "Account status not found.");
-                    }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(Profile_Page2.this, "Could not load account status.");
+                if (Session.customer != null) {
+                    JOptionPane.showMessageDialog(Profile_Page2.this, "Account Status: " + Session.customer.status);
+                } else {
+                    JOptionPane.showMessageDialog(Profile_Page2.this, "No customer logged in.");
                 }
             }
         });
@@ -365,6 +354,11 @@ public class Profile_Page2 extends JFrame {
         panel_5.add(btCancel);
 
         btSave_Changes.addActionListener(e -> {
+            if (Session.customer == null) {
+                JOptionPane.showMessageDialog(Profile_Page2.this, "No customer logged in.");
+                return;
+            }
+
             String fullName = txtFull_Name.getText().trim();
             String username = txtUsername.getText().trim();
             String email = txtEmail.getText().trim();
@@ -372,8 +366,6 @@ public class Profile_Page2 extends JFrame {
             String address = txtHome.getText().trim();
 
             String selectedGender = (String) cbG.getSelectedItem();
-            
-            // FIXED: Renamed 'verification' to 'verificationMethod' to avoid duplicate variable error
             String verificationMethod = (String) cbGender.getSelectedItem(); 
 
             String day = cbDay.getSelectedItem().toString();
@@ -417,47 +409,54 @@ public class Profile_Page2 extends JFrame {
                     return;
             }
 
-            String dateOfBirth = String.format("%04d-%02d-%02d", Integer.parseInt(year), monthNumber, Integer.parseInt(day));
-            String updateUserSql = "UPDATE users SET username = ?, email = ? WHERE user_id = ?";
-            String profileSql = "INSERT INTO user_profiles (user_id, full_name, phone_number, home_address, "
-                    + "gender, data_of_birth, verification_method) VALUES (?, ?, ?, ?, ?, ?, ?) "
-                    + "ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), phone_number = VALUES(phone_number), "
-                    + "home_address = VALUES(home_address), gender = VALUES(gender), data_of_birth = VALUES(data_of_birth), "
-                    + "verification_method = VALUES(verification_method)";
+            // Update the database using the correct table (customers) and ID
+            String updateCustomerSql = "UPDATE customers SET full_name = ?, username = ?, email = ?, phone = ?, address = ? WHERE id = ?";
 
-            try (Connection connection = DBConnection.getConnection()) {
+            try (Connection connection = Database.connect()) {
                 if (connection == null) {
                     JOptionPane.showMessageDialog(Profile_Page2.this, "Database connection failed.");
                     return;
                 }
                 connection.setAutoCommit(false);
                 try {
-                    try (PreparedStatement userStatement = connection.prepareStatement(updateUserSql)) {
-                        userStatement.setString(1, username);
-                        userStatement.setString(2, email);
-                        userStatement.setInt(3, 1);
-                        if (userStatement.executeUpdate() == 0) {
-                            throw new SQLException("No user found with user_id = 1.");
+                    try (PreparedStatement statement = connection.prepareStatement(updateCustomerSql)) {
+                        statement.setString(1, fullName);
+                        statement.setString(2, username);
+                        statement.setString(3, email);
+                        statement.setString(4, phone);
+                        statement.setString(5, address);
+                        statement.setString(6, Session.customer.id);
+                        
+                        if (statement.executeUpdate() == 0) {
+                            throw new SQLException("Could not find the customer record to update.");
                         }
                     }
-                    try (PreparedStatement profileStatement = connection.prepareStatement(profileSql)) {
-                        profileStatement.setInt(1, 1);
-                        profileStatement.setString(2, fullName);
-                        profileStatement.setString(3, phone);
-                        profileStatement.setString(4, address);
-                        profileStatement.setString(5, selectedGender);
-                        profileStatement.setDate(6, java.sql.Date.valueOf(dateOfBirth));
-                        profileStatement.setString(7, verificationMethod); // FIXED: Using renamed variable
-                        profileStatement.executeUpdate();
-                    }
+                    
                     connection.commit();
+                    
+                    // Update the session object so the rest of the app sees the changes immediately
+                    Session.customer.fullName = fullName;
+                    Session.customer.username = username;
+                    Session.customer.email = email;
+                    Session.customer.phone = phone;
+                    Session.customer.address = address;
+                    
+                    // Update the UI labels
                     lbFull_Name.setText(fullName);
                     lbUsername.setText(username);
                     lbEmail_Adress.setText(email);
                     lbPhone_Number.setText(phone);
                     lbHome_Adress.setText(address);
+                    
+                    // Hide the text fields again
+                    txtFull_Name.setVisible(false);
+                    txtUsername.setVisible(false);
+                    txtEmail.setVisible(false);
+                    txtPhone_Number.setVisible(false);
+                    txtHome.setVisible(false);
+                    
                     JOptionPane.showMessageDialog(Profile_Page2.this, "Profile saved successfully!");
-                } catch (SQLException | IllegalArgumentException ex) {
+                } catch (SQLException ex) {
                     connection.rollback();
                     JOptionPane.showMessageDialog(Profile_Page2.this, "Could not save profile: " + ex.getMessage());
                 } finally {
@@ -475,6 +474,7 @@ public class Profile_Page2 extends JFrame {
             txtPhone_Number.setVisible(false);
             txtHome.setVisible(false);
             JOptionPane.showMessageDialog(Profile_Page2.this, "Changes cancelled. Saved details restored.");
+            loadProfile(); // Reload the original saved values
         });
 
         panel_5.setBackground(new Color(173, 216, 230));
@@ -492,6 +492,9 @@ public class Profile_Page2 extends JFrame {
         this.panel_6.add(lbLogo);
         panel_6.setBackground(new Color(173, 216, 230));
         this.add(panel_6);
+
+        // Load the details from the logged-in user immediately
+        loadProfile();
     }
 
     private void updateProfilePicture() {
@@ -510,64 +513,24 @@ public class Profile_Page2 extends JFrame {
     }
 
     private void loadProfile() {
-        // (Your existing loadProfile method)
-        String userSql = "SELECT username, email FROM users WHERE user_id = ?";
-        String profileSql = "SELECT full_name, phone_number, home_address, gender, "
-                + "data_of_birth, verification_method FROM user_profiles WHERE user_id = ?";
-
-        try (Connection connection = DBConnection.getConnection()) {
-            if (connection == null) {
-                JOptionPane.showMessageDialog(this, "Database connection failed.");
-                return;
-            }
-            try (PreparedStatement statement = connection.prepareStatement(userSql)) {
-                statement.setInt(1, 1);
-                try (ResultSet result = statement.executeQuery()) {
-                    if (result.next()) {
-                        String username = result.getString("username");
-                        String email = result.getString("email");
-                        txtUsername.setText(username == null ? "" : username);
-                        txtEmail.setText(email == null ? "" : email);
-                        lbUsername.setText(username == null ? "Username" : username);
-                        lbEmail_Adress.setText(email == null ? "Email" : email);
-                    }
-                }
-            }
-            try (PreparedStatement statement = connection.prepareStatement(profileSql)) {
-                statement.setInt(1, 1);
-                try (ResultSet result = statement.executeQuery()) {
-                    if (result.next()) {
-                        String fullName = result.getString("full_name");
-                        String phone = result.getString("phone_number");
-                        String address = result.getString("home_address");
-
-                        txtFull_Name.setText(fullName == null ? "" : fullName);
-                        txtPhone_Number.setText(phone == null ? "" : phone);
-                        txtHome.setText(address == null ? "" : address);
-
-                        lbFull_Name.setText(fullName == null ? "Full Name" : fullName);
-                        lbPhone_Number.setText(phone == null ? "Phone Number" : phone);
-                        lbHome_Adress.setText(address == null ? "Home Adress" : address);
-
-                        String gender = result.getString("gender");
-                        if (gender != null) cbG.setSelectedItem(gender);
-
-                        String verification = result.getString("verification_method");
-                        if (verification != null) cbGender.setSelectedItem(verification);
-
-                        java.sql.Date dob = result.getDate("data_of_birth");
-                        if (dob != null) {
-                            cbDay.setSelectedItem(String.valueOf(dob.toLocalDate().getDayOfMonth()));
-                            String monthName = dob.toLocalDate().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH);
-                            if (monthName.equals("February")) monthName = "Febuary";
-                            cbMonth.setSelectedItem(monthName);
-                            cbYear.setSelectedItem(String.valueOf(dob.toLocalDate().getYear()));
-                        }
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Could not load profile: " + ex.getMessage());
+        if (Session.customer == null) {
+            return; // No one logged in, do nothing
         }
+
+        UserStore.User u = Session.customer;
+
+        // Populate TextFields (hidden by default, used for editing)
+        txtFull_Name.setText(u.fullName.isEmpty() ? "Edit" : u.fullName);
+        txtUsername.setText(u.username.isEmpty() ? "Edit" : u.username);
+        txtEmail.setText(u.email.isEmpty() ? "Edit" : u.email);
+        txtPhone_Number.setText(u.phone.isEmpty() ? "Edit" : u.phone);
+        txtHome.setText(u.address.isEmpty() ? "Home Adress" : u.address);
+
+        // Populate Labels (what the user actually sees on screen)
+        lbFull_Name.setText(u.fullName.isEmpty() ? "Full Name" : u.fullName);
+        lbUsername.setText(u.username.isEmpty() ? "Username" : u.username);
+        lbEmail_Adress.setText(u.email.isEmpty() ? "Email" : u.email);
+        lbPhone_Number.setText(u.phone.isEmpty() ? "Phone Number" : u.phone);
+        lbHome_Adress.setText(u.address.isEmpty() ? "Home Adress" : u.address);
     }
 }
