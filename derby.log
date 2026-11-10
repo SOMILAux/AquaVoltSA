@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Nov 10 01:15:27 SAST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-01a1-c298-5a50-000005dda848 
+on database directory C:\PROGRAMMING\JAVA\Activities\AquaVoltSA\AquaVoltDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
+Loaded from file:/C:/Users/Lenovo/.m2/repository/org/apache/derby/derby/10.17.1.0/derby-10.17.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=25.0.2+10-LTS-69
+user.dir=C:\PROGRAMMING\JAVA\Activities\AquaVoltSA
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
