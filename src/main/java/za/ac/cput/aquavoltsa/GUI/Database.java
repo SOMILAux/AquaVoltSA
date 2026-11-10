@@ -1,5 +1,6 @@
 package za.ac.cput.aquavoltsa.GUI;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,30 +15,58 @@ import javax.swing.JOptionPane;
  * @author Oyama Sibunzi
  */
 public final class Database {
-    // Embedded Derby URL. It creates the database in the project folder automatically.
     static final String URL = "jdbc:derby:AquaVoltDB;create=true";
-    
     static final String USER = "app";
     static final String PASS = "app";
 
     private static boolean showing = false;
 
+    static {
+        try {
+            // Force the embedded driver to load (Fixes Java 17 ClassLoader errors)
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Derby driver not found! Ensure 'derby' is in pom.xml");
+        }
+
+        // Automatically close the database gracefully when the app exits
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                DriverManager.getConnection("jdbc:derby:AquaVoltDB;shutdown=true");
+            } catch (SQLException ignored) {
+                // Derby always throws an exception on successful shutdown. Ignore it.
+            }
+        }));
+    }
+
     private Database() { }
 
     public static Connection connect() throws SQLException {
-        return DriverManager.getConnection(URL);
+        try {
+            return DriverManager.getConnection(URL);
+        } catch (SQLException e) {
+            // XJ040 / XJ004 / XSDB6 means the database is locked or already booted
+            String state = e.getSQLState();
+            if ("XJ040".equals(state) || "XJ004".equals(state) || "XSDB6".equals(state)) {
+                try {
+                    // Force delete the lock file
+                    File lockFile = new File("AquaVoltDB/db.lck");
+                    if (lockFile.exists()) {
+                        lockFile.delete();
+                    }
+                    // Try connecting one more time
+                    return DriverManager.getConnection(URL);
+                } catch (Exception ex) {
+                    throw e; // If it still fails, throw the original error
+                }
+            }
+            throw e;
+        }
     }
 
-    /** 
-     * Runs once while the loading page is showing. 
-     * Creates all the missing tables and adds starter data automatically.
-     */
     public static boolean init() {
         try (Connection c = connect(); Statement st = c.createStatement()) {
             
-            // ==========================================
-            // 1. YOUR CUSTOMERS TABLE
-            // ==========================================
             create(st, "CREATE TABLE customers ("
                     + "id VARCHAR(12) PRIMARY KEY, full_name VARCHAR(100) NOT NULL, id_number VARCHAR(20) NOT NULL, "
                     + "username VARCHAR(30) NOT NULL UNIQUE, pass_hash VARCHAR(64) NOT NULL, email VARCHAR(100) NOT NULL, "
@@ -45,26 +74,17 @@ public final class Database {
                     + "water_meter VARCHAR(30), account_no VARCHAR(30), status VARCHAR(10) NOT NULL DEFAULT 'PENDING', "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
             
-            // ==========================================
-            // 2. YOUR ADMINS TABLE
-            // ==========================================
             create(st, "CREATE TABLE admins ("
                     + "username VARCHAR(40) PRIMARY KEY, full_name VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL, "
                     + "phone VARCHAR(20) NOT NULL, pass_hash VARCHAR(64) NOT NULL, is_main CHAR(1) NOT NULL DEFAULT 'N', "
                     + "status VARCHAR(10) NOT NULL DEFAULT 'PENDING', requested_by VARCHAR(40), "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
             
-            // ==========================================
-            // 3. YOUR ACTIVITY LOG TABLE
-            // ==========================================
             create(st, "CREATE TABLE activity_log ("
                     + "log_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, admin_username VARCHAR(40) NOT NULL, "
                     + "activity VARCHAR(30) NOT NULL, details VARCHAR(100), "
                     + "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
             
-            // ==========================================
-            // 4. OTHER REQUIRED TABLES FOR OUR APP SUCH AS THE NOTIFICATIONS YOU KNOW
-            // ==========================================
             create(st, "CREATE TABLE notifications ("
                     + "notif_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, customer_username VARCHAR(30) NOT NULL, "
                     + "category VARCHAR(20) NOT NULL, title VARCHAR(80) NOT NULL, message VARCHAR(500) NOT NULL, "
@@ -76,7 +96,6 @@ public final class Database {
                     + "meter_no VARCHAR(30), amount DECIMAL(10,2) NOT NULL, fee DECIMAL(10,2) NOT NULL, method VARCHAR(40), "
                     + "status VARCHAR(15) NOT NULL, token VARCHAR(30), created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
             
-            // Add the starter data (demo users, etc.)
             seed(c);
             seedExtras(c);
             return true;
@@ -86,12 +105,11 @@ public final class Database {
         }
     }
 
-    // "table already exists" (X0Y32) is fine - it just means the table was made on an earlier run I HOPE
     private static void create(Statement st, String sql) throws SQLException {
         try {
             st.executeUpdate(sql);
         } catch (SQLException e) {
-            if (!"X0Y32".equals(e.getSQLState())) throw e;
+            if (!"X0Y32".equals(e.getSQLState())) throw e; // Ignore "table already exists"
         }
     }
 
@@ -103,7 +121,7 @@ public final class Database {
     }
 
     private static void seed(Connection c) throws SQLException {
-        if (count(c, "admins") == 0) {   // the main administrator: admin12304 / admin12304
+        if (count(c, "admins") == 0) {
             try (PreparedStatement p = c.prepareStatement("INSERT INTO admins (username, full_name, email, phone, "
                     + "pass_hash, is_main, status, requested_by) VALUES (?, ?, ?, ?, ?, 'Y', 'APPROVED', 'system')")) {
                 p.setString(1, AdminStore.MAIN);
@@ -114,7 +132,7 @@ public final class Database {
                 p.executeUpdate();
             }
         }
-        if (count(c, "customers") == 0) {   // demo customers so the admin dashboard is not empty
+        if (count(c, "customers") == 0) {
             demo("Cheese Mokoena", "9001015800086", "Cheese", "Cheese@123", "cheese@mail.co.za", "0821234567",
                     "12 Long Street, Cape Town", "MTR-44821", "SN-77120", "WTR-1024", "ACC-9981", UserStore.VERIFIED);
             demo("Thando Nkosi", "9505055800083", "Thando", "Thando@123", "thando@gmail.com", "0735550142",
@@ -126,7 +144,6 @@ public final class Database {
         }
     }
 
-    /** Starter notifications and payments so the customer and admin screens are not empty. */
     private static void seedExtras(Connection c) throws SQLException {
         if (count(c, "notifications") == 0 && UserStore.find("Cheese") != null) {
             NotificationStore.send("Cheese", "WATER", "Drought Alert", "Water restrictions are in place in your area. Please use water sparingly.", "system");
@@ -151,15 +168,14 @@ public final class Database {
         UserStore.add(u);
     }
 
-    /** Shows one clear message when the database cannot be reached. */
     static void report(SQLException e) {
         e.printStackTrace();
         if (showing) return;
         showing = true;
         JOptionPane.showMessageDialog(null,
                 "Cannot use the AquaVolt database.\n\n" + e.getMessage() + "\n\nCheck that:\n"
-                + "1. The Derby driver is in your pom if not then...yeah neh.xml\n"
-                + "2. You have any issues please contact Ta Yama.",
+                + "1. The Derby driver is in your pom.xml\n"
+                + "2. There are no other Java applications running in the background.",
                 "Database problem", JOptionPane.ERROR_MESSAGE);
         showing = false;
     }
