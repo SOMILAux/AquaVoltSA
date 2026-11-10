@@ -346,8 +346,20 @@ public class PaymentPageForWater extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-
+        
+        //=============================
         //Functionality for the buttons
+        //=============================
+        
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                buyWaterPage AquaVoltSA = new buyWaterPage();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
+        
         payBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -368,19 +380,22 @@ public class PaymentPageForWater extends JFrame {
                     int utilityID = 202; //When purchasing water the utility id will always be 202
 
                     //==================================
-                    //Getting the purchase Date and Time                    
+                    //Getting the purchase Date and Time
+                    //==================================
                     LocalDate date = LocalDate.now();
                     LocalTime time = LocalTime.now();
 
-                    //==================================
+                    //================
                     //Creating payment
+                    //================
                     Payment payment = new Payment(userID, utilityID, amount, fee, paymentMethod, date, time, "Succesful");
                     int paymentID = DAO.addPayment(payment);
 
                     payment.setPaymentID(paymentID);
 
-                    //==================================
+                    //==========================
                     //Creating my Transaction ID
+                    //==========================
                     Date date2 = new Date();
                     SimpleDateFormat format = new SimpleDateFormat("'WTR'-yyyy-MM-dd-HH-mm-ss");
 
