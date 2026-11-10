@@ -383,6 +383,15 @@ public class buyElectricityPage extends JFrame {
             }
 
         });
+        
+        backBtn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
 
     }
 
