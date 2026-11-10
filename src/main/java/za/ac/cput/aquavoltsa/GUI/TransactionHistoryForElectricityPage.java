@@ -41,11 +41,12 @@ import org.kordamp.ikonli.swing.FontIcon;
 import za.ac.cput.aquavoltsa.DAO.DAO;
 
 /**
- *Student Number: 251239853
+ * Student Number: 251239853
+ *
  * @author Aphelele Shange
  */
-public class TransactionHistoryForElectricityPage extends JFrame{
-    
+public class TransactionHistoryForElectricityPage extends JFrame {
+
     JPanel backgroundPanel, topPanel, headerPanel, toggleBtnPanel, centerPanel, midPanel, footerPanel, searchPanel, totalSpentGrid, totalTransactionGrid, totalPanel, historyPanel;
     JLabel transactionHistoryLabel, circleLabel, searchIconLabel, totalSpentLabel, spentLabel, totalTransactionLabel, transactionLabel, recentLabel, secureLabel, securetext;
     JButton backArrowBtn, homeIconBtn;
@@ -55,24 +56,23 @@ public class TransactionHistoryForElectricityPage extends JFrame{
     JSeparator separator;
     JTextField searchField;
     JScrollPane scrollpane;
-    
-    public TransactionHistoryForElectricityPage(){
-        
+
+    public TransactionHistoryForElectricityPage() {
+
         this.setTitle("Transaction History for Electricity");
         this.setSize(425, 917);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setResizable(false);
         this.setFocusable(true);
-        
+
         //=========================
         //ICON SECTION
         //=========================
-        
         FontIcon backIcon = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
         FontIcon homeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
         FontIcon searchIcon = FontIcon.of(Material2MZ.SEARCH, 30, Color.GRAY);
-        
+
         //searchIcon = new ImageIcon("search.png");
         secureIcon = new ImageIcon("secure.png");
 
@@ -80,7 +80,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         Image circle = circleIcon.getImage();
         Image Circle = circle.getScaledInstance(484, 83, Image.SCALE_SMOOTH);
         ImageIcon whiteCircleIcon = new ImageIcon(Circle);
-        
+
         backgroundPanel = new JPanel() {
 
             @Override
@@ -101,7 +101,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
 
         };
         backgroundPanel.setLayout(new BorderLayout());
-        
+
         backArrowBtn = new JButton();
         backArrowBtn.setIcon(backIcon);
         backArrowBtn.setBorderPainted(false);
@@ -113,12 +113,11 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         homeIconBtn.setBorderPainted(false);
         homeIconBtn.setContentAreaFilled(false);
         homeIconBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
 
         transactionHistoryLabel = new JLabel("Transaction History");
         transactionHistoryLabel.setFont(new Font("Inter", Font.BOLD, 18));
         transactionHistoryLabel.setForeground(Color.WHITE);
-        
+
         topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         topPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -140,7 +139,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
 
         headerPanel.add(topPanel);
         headerPanel.add(circleLabel);
-        
+
         electricityBtn = new JToggleButton("Electricity");
         electricityBtn.setFont(new Font("Inter", Font.BOLD, 17));
         electricityBtn.putClientProperty(FlatClientProperties.STYLE, "selectedBackground : #FFB300; foreground : #FFB300 ; selectedForeground : #FFFFFF");
@@ -150,7 +149,6 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         waterBtn.setFont(new Font("Inter", Font.BOLD, 17));
         waterBtn.setForeground(Color.decode("#00C6FF"));
         waterBtn.putClientProperty(FlatClientProperties.STYLE, "selectedBackground : #00C6FF; foreground : #00C6FF ; selectedForeground : #FFFFFF");
-
 
         group = new ButtonGroup();
 
@@ -162,7 +160,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
 
         toggleBtnPanel.add(electricityBtn);
         toggleBtnPanel.add(waterBtn);
-        
+
         centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.decode("#F8F8FF"));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 25, 10, 25));
@@ -177,7 +175,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search by ID");
 
         searchIconLabel = new JLabel(searchIcon);
-        
+
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 1));
         searchPanel.setBackground(Color.decode("#FFFFFF"));
         searchPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -203,7 +201,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
 
         totalSpentGrid.add(totalSpentLabel);
         totalSpentGrid.add(spentLabel);
-        
+
         totalTransactionGrid = new JPanel(new GridLayout(2, 1));
         totalTransactionGrid.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 5));
         totalTransactionGrid.setBackground(Color.decode("#FFFFFF"));
@@ -224,7 +222,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         recentLabel.setFont(new Font("Inter", Font.BOLD, 16));
         recentLabel.setForeground(Color.BLACK);
         recentLabel.setAlignmentX(LEFT_ALIGNMENT);
-        
+
         historyPanel = new JPanel();
         historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
         historyPanel.setBackground(Color.WHITE);
@@ -247,7 +245,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.Y_AXIS));
         midPanel.setOpaque(false);
-        
+
         midPanel.add(Box.createVerticalStrut(7));
         midPanel.add(separator);
         midPanel.add(Box.createVerticalStrut(15));
@@ -258,10 +256,7 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         midPanel.add(recentLabel);
         midPanel.add(Box.createVerticalStrut(10));
         midPanel.add(scrollpane);
-        
-        
-        
-        
+
         centerPanel.add(toggleBtnPanel, BorderLayout.NORTH);
         centerPanel.add(midPanel, BorderLayout.CENTER);
         centerPanel.add(footerPanel, BorderLayout.SOUTH);
@@ -270,8 +265,38 @@ public class TransactionHistoryForElectricityPage extends JFrame{
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-        
+
+        //=============
+        //Functionality
+        //=============
+        backArrowBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Enter code here
+            }
+        });
+
+        homeIconBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Enter code here
+            }
+        });
+
+        waterBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TransactionHistoryForWaterPage AquaVoltSA = new TransactionHistoryForWaterPage();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
+
     }
+
+    //=============
+    //Method that retrieves the history from the database
+    //=============
     
     public void getTransactionHistory() {
 
@@ -314,11 +339,11 @@ public class TransactionHistoryForElectricityPage extends JFrame{
 
                 historyPanel.add(transactionPanel, 0);
                 historyPanel.add(Box.createVerticalStrut(5), 1);
-                
+
                 amountSpent += amount + 2.5;
                 transactions += 1;
-                
-                spentLabel.setText("R"+String.valueOf(amountSpent));
+
+                spentLabel.setText("R" + String.valueOf(amountSpent));
                 transactionLabel.setText(String.valueOf(transactions));
 
             }

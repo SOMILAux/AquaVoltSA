@@ -333,8 +333,20 @@ public class paymentPageForElectricity extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-
+        
+        //=============================
         //Functionality for the buttons
+        //=============================
+        
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                buyElectricityPage AquaVoltSA = new buyElectricityPage();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
+        
         payBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -360,17 +372,17 @@ public class paymentPageForElectricity extends JFrame {
                     LocalDate date = LocalDate.now();
                     LocalTime time = LocalTime.now();
 
-                    //==================================
+                    //================
                     //Creating payment
-                    //==================================
+                    //================
                     Payment payment = new Payment(userID, utilityID, amount, 2.50, paymentMethod, date, time, "Succesful");
                     int paymentID = DAO.addPayment(payment);
 
                     payment.setPaymentID(paymentID);
 
-                    //==================================
+                    //==========================
                     //Creating my Transaction ID
-                    //==================================
+                    //==========================
                     Date date2 = new Date();
                     SimpleDateFormat format = new SimpleDateFormat("'ELE'-yyyy-MM-dd-HH-mm-ss");
 
@@ -379,9 +391,9 @@ public class paymentPageForElectricity extends JFrame {
                     Transaction tr = new Transaction(TransactionId, paymentID, utilityID);
                     DAO.addTransaction(tr);
 
-                    //==================================
+                    //============================================
                     //Adding the token information to the database
-                    //==================================
+                    //============================================
                     rand = new Random();
                     int numbers[] = new int[4];
 

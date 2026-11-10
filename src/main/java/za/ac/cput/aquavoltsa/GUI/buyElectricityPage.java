@@ -277,8 +277,11 @@ public class buyElectricityPage extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-
-        //Adding Functionality             
+        
+        //====================
+        //Adding Functionality
+        //====================
+        
         firstAmount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent I) {
@@ -334,7 +337,13 @@ public class buyElectricityPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String meterNumber = meterNumberField.getText();
                 String Amount = customAmountField.getText();
-
+                long meter = 0;
+                boolean converted = false;
+                
+                //===========================================
+                //Converting the amount from String to an Int
+                //===========================================
+                
                 if (customAmount.isSelected() && !Amount.isEmpty()) {
                     try {
                         amount = Integer.parseInt(Amount);
@@ -342,9 +351,23 @@ public class buyElectricityPage extends JFrame {
                         JOptionPane.showMessageDialog(null, "Amount should contain only Digits");
                     }
                 }
+                //===========================================
+                //Converting the Meter Number from String to a Long
+                //===========================================
+                
+                if (!meterNumber.isEmpty()) {
+                    try {
+                        meter = Long.parseLong(meterNumber);
+                        converted = true;
+                    } catch (NumberFormatException n) {
+                        //The if statement provides the error message
+                    }
+                }
 
                 if (meterNumber.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your Meter Number", "Meter number field is empty", JOptionPane.OK_OPTION);
+                } else if (!converted) {
+                    JOptionPane.showMessageDialog(null, "Meter Number should contain only Digits!");
                 } else if (!firstAmount.isSelected() && !secondAmount.isSelected() && !thirdAmount.isSelected() && !customAmount.isSelected()) {
                     JOptionPane.showMessageDialog(null, "Choose or enter your Amount!", "Select one Toggle Button", JOptionPane.OK_OPTION);
                 } else if (customAmount.isSelected() && Amount.strip().isEmpty()) {
@@ -352,13 +375,6 @@ public class buyElectricityPage extends JFrame {
                 } else if (amount < 50) {
                     JOptionPane.showMessageDialog(null, "Minimum purchase is R50", "Amount cannot be less than R50", JOptionPane.ERROR_MESSAGE);
                 } else {
-
-                    long meter = 0;
-                    try {
-                        meter = Long.parseLong(meterNumber);
-                    } catch (NumberFormatException n) {
-                        JOptionPane.showMessageDialog(null, "Meter Number should contain only Digits!");
-                    }
 
                     paymentPageForElectricity page = new paymentPageForElectricity(meter, "Aphelele Shange", amount);
                     page.setVisible(true);

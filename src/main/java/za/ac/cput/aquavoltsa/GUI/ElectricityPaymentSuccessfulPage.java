@@ -13,6 +13,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -25,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
@@ -203,7 +206,9 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
             numbers[i] = rand.nextInt(1000, 9999);
         }
         
-        token = new JLabel(String.valueOf(numbers[0]) + " " + String.valueOf(numbers[1]) + " " + String.valueOf(numbers[2]) + " " + String.valueOf(numbers[3]) + " ");
+        String tokenText = String.valueOf(numbers[0]) + " " + String.valueOf(numbers[1]) + " " + String.valueOf(numbers[2]) + " " + String.valueOf(numbers[3]) + " ";
+        
+        token = new JLabel(tokenText);
         token.setFont(new Font("Roboto", Font.BOLD, 24));
         token.setForeground(Color.decode("#FFB300"));
         
@@ -281,9 +286,33 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         add(backgroundPanel);
         
         
-        //========================
+        //=============
         //Functionality
-        //========================
+        //=============
+        
+        homeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                //Enter code here
+            }
+        });
+        
+        HomeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                //Enter code here
+            }
+        });
+        
+        copyBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                StringSelection selection = new StringSelection(tokenText);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+                JOptionPane.showMessageDialog(null, "Token was copied successfully");
+            }
+        });
         
         historyBtn.addActionListener(new ActionListener() {
             @Override
