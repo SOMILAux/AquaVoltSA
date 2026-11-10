@@ -45,7 +45,7 @@ import za.ac.cput.aquavoltsa.DAO.DAO;
 public class buyWaterPage extends JFrame {
 
     ImageIcon logo, circle;
-    JLabel logoLabel, circleLabel, meterNumberLabel, addressLabel, selectAmountLabel, currencyLabel, iconLabel, iconLabel1;
+    JLabel logoLabel, circleLabel, meterNumberLabel, addressLabel, selectAmountLabel, currencyLabel, iconLabel, iconLabel1, nextLabel, backLabel;
     JPanel backgroundPanel, headerPanel, centerPanel, buttonPanel, customPanel;
     JTextField meterNumberField, addressField, customAmountField;
     JSeparator separator;
@@ -75,6 +75,9 @@ public class buyWaterPage extends JFrame {
 
         iconLabel = new JLabel(tint);
         iconLabel1 = new JLabel(tint1);
+        
+        nextLabel = new JLabel(next);
+        backLabel = new JLabel(back);
 
         backgroundPanel = new JPanel() {
 
@@ -209,6 +212,7 @@ public class buyWaterPage extends JFrame {
         customPanel.setOpaque(false);
 
         continueBtn = new JButton("CONTINUE");
+        continueBtn.setLayout(new BorderLayout());
         continueBtn.setBorderPainted(false);
         continueBtn.setFocusPainted(false);
         continueBtn.setAlignmentX(LEFT_ALIGNMENT);
@@ -216,8 +220,10 @@ public class buyWaterPage extends JFrame {
         continueBtn.setFont(new Font("Inter", Font.BOLD, 18));
         continueBtn.putClientProperty(FlatClientProperties.STYLE,
                 "arc : 30; background : #00C6FF; Foreground : #FFFFFF");
+        continueBtn.add(nextLabel, BorderLayout.EAST);
 
         backBtn = new JButton("BACK");
+        backBtn.setLayout(new BorderLayout());
         backBtn.setBorderPainted(false);
         backBtn.setFocusPainted(false);
         backBtn.setAlignmentX(LEFT_ALIGNMENT);
@@ -225,6 +231,7 @@ public class buyWaterPage extends JFrame {
         backBtn.setFont(new Font("Inter", Font.BOLD, 18));
         backBtn.putClientProperty(FlatClientProperties.STYLE,
                 "arc : 30; background : #00C6FF; Foreground : #FFFFFF");
+        backBtn.add(backLabel, BorderLayout.WEST);
 
         customPanel.add(currencyLabel, BorderLayout.WEST);
         customPanel.add(customAmountField, BorderLayout.CENTER);
@@ -296,7 +303,12 @@ public class buyWaterPage extends JFrame {
                 String meterNumber = meterNumberField.getText();
                 String address = addressField.getText();
                 String Amount = customAmountField.getText();
+                long meter = 0;
+                boolean converted = false;
 
+                //===========================================
+                //Converting the amount from String to an Int
+                //===========================================
                 if (customAmount.isSelected() && !Amount.isEmpty()) {
                     try {
                         amount = Integer.parseInt(Amount);
@@ -305,8 +317,24 @@ public class buyWaterPage extends JFrame {
                     }
                 }
 
+                //=================================================
+                //Converting the Meter Number from String to a Long
+                //=================================================
+                if (!meterNumber.isEmpty()) {
+
+                    try {
+                        meter = Long.parseLong(meterNumber);
+                        converted = true;
+                    } catch (NumberFormatException n) {
+                        //The if statement provides the error message
+                    }
+
+                }
+
                 if (meterNumber.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your Meter Number", "Meter number field is empty", JOptionPane.OK_OPTION);
+                } else if (!converted) {
+                    JOptionPane.showMessageDialog(null, "Meter Number should contain only Digits!");
                 } else if (address.strip().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter your Address", "Address field is empty", JOptionPane.OK_OPTION);
                 } else if (!firstAmount.isSelected() && !customAmount.isSelected()) {
@@ -317,19 +345,21 @@ public class buyWaterPage extends JFrame {
                     JOptionPane.showMessageDialog(null, "Minimum purchase is R50", "Amount cannot be less than R50", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    long meter = 0;
-                    try {
-                        meter = Long.parseLong(meterNumber);
-                    } catch (NumberFormatException n) {
-                        JOptionPane.showMessageDialog(null, "Cannot convert Meter Number");
-                    }
-
                     PaymentPageForWater page = new PaymentPageForWater(meter, "Aphelele Shange", address, amount, 2.50);
                     page.setVisible(true);
                     dispose();
                 }
             }
 
+        });
+        
+        backBtn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
         });
 
     }
