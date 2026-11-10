@@ -20,35 +20,6 @@ import za.ac.cput.aquavoltsa.Domain.Transaction;
  */
 public class DAO {
 
-    public static void createCustomerTable() {
-
-        String SQL = """
-                     CREATE TABLE CUSTOMERS(
-                     USER_ID INTEGER GENERATED ALWAYS AS IDENTITY(
-                     START WITH 1, INCREMENT BY 1)
-                     PRIMARY KEY,
-                     FIRST_NAME VARCHAR(100),
-                     LAST_NAME VARCHAR(100),
-                     USERNAME VARCHAR(100),
-                     PASSWORD VARCHAR(255),
-                     PHONE_NUMBER VARCHAR(50),
-                     EMAIL_ADDRESS VARCHAR(100),
-                     HOME_ADDRESS VARCHAR(100)
-                     )
-                     """;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement(SQL);
-
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Table 'CUSTOMERS' has been created successfully.");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-
-    }
-
     public static void createPaymentTable() {
 
         String SQL = """
