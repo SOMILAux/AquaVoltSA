@@ -35,6 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
@@ -67,11 +69,10 @@ public class TransactionHistoryForWaterPage extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setResizable(false);
         this.setFocusable(true);
-        
+
         //=========================
         //ICON SECTION
         //=========================
-        
         FontIcon backIcon = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
         FontIcon homeIcon = FontIcon.of(Material2AL.HOME, 35, Color.BLACK);
         FontIcon searchIcon = FontIcon.of(Material2MZ.SEARCH, 30, Color.GRAY);
@@ -153,7 +154,7 @@ public class TransactionHistoryForWaterPage extends JFrame {
         waterBtn.setForeground(Color.decode("#00C6FF"));
         waterBtn.putClientProperty(FlatClientProperties.STYLE, "selectedBackground : #00C6FF; foreground : #00C6FF ; selectedForeground : #FFFFFF");
         waterBtn.setSelected(true);
-        
+
         group = new ButtonGroup();
 
         group.add(electricityBtn);
@@ -269,7 +270,7 @@ public class TransactionHistoryForWaterPage extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-        
+
         //=============
         //Functionality
         //=============
@@ -290,7 +291,7 @@ public class TransactionHistoryForWaterPage extends JFrame {
                 dispose();
             }
         });
-        
+
         electricityBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -299,10 +300,31 @@ public class TransactionHistoryForWaterPage extends JFrame {
                 dispose();
             }
         });
+        
+        //==============================================================
+        //updates as you enter a value, delete a value or change a value
+        //==============================================================
+        
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchTransactions();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchTransactions();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                searchTransactions();
+            }
+
+        });
 
     }
-    
-    
 
     public void getTransactionHistory() {
 
@@ -340,15 +362,17 @@ public class TransactionHistoryForWaterPage extends JFrame {
                 transactionPanel.putClientProperty(FlatClientProperties.STYLE, "arc : 20");
                 transactionPanel.setAlignmentX(LEFT_ALIGNMENT);
 
+                transactionPanel.putClientProperty("transactionID", transactionID);
+
                 transactionPanel.add(new JLabel(electricityIcon), BorderLayout.WEST);
                 transactionPanel.add(detailsPanel, BorderLayout.CENTER);
 
                 historyPanel.add(transactionPanel, 0);
                 historyPanel.add(Box.createVerticalStrut(5), 1);
-                
+
                 amountSpent += amount + 2.5;
                 transactions += 1;
-                
+
                 spentLabel.setText(String.valueOf(amountSpent));
                 transactionLabel.setText(String.valueOf(transactions));
 
@@ -356,6 +380,39 @@ public class TransactionHistoryForWaterPage extends JFrame {
         } catch (SQLException ex) {
             ex.getMessage();
         }
+
+    }
+    
+    //===============================================
+    //method for searching for a specific transaction
+    //===============================================
+
+    public void searchTransactions() {
+
+        String searchText = searchField.getText().toLowerCase();
+
+        for (java.awt.Component component : historyPanel.getComponents()) {
+
+            if (component instanceof JPanel) {
+
+                JPanel panel = (JPanel) component;
+
+                String transactionID = (String) panel.getClientProperty("transactionID");
+
+                if (transactionID != null) {
+
+                    if (transactionID.toLowerCase().contains(searchText)) {
+                        panel.setVisible(true);
+                    } else {
+                        panel.setVisible(false);
+                    }
+
+                }
+            }
+        }
+
+        historyPanel.revalidate();
+        historyPanel.repaint();
 
     }
 
