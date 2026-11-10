@@ -272,14 +272,18 @@ public class TransactionHistoryForElectricityPage extends JFrame {
         backArrowBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Enter code here
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
             }
         });
 
         homeIconBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Enter code here
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
             }
         });
 

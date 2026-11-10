@@ -206,7 +206,7 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
             numbers[i] = rand.nextInt(1000, 9999);
         }
         
-        String tokenText = String.valueOf(numbers[0]) + " " + String.valueOf(numbers[1]) + " " + String.valueOf(numbers[2]) + " " + String.valueOf(numbers[3]) + " ";
+        String tokenText = String.valueOf(numbers[0]) + " " + String.valueOf(numbers[1]) + " " + String.valueOf(numbers[2]) + " " + String.valueOf(numbers[3]);
         
         token = new JLabel(tokenText);
         token.setFont(new Font("Roboto", Font.BOLD, 24));
@@ -293,14 +293,18 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         homeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                //Enter code here
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
             }
         });
         
         HomeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                //Enter code here
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
             }
         });
         
