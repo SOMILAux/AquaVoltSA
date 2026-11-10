@@ -16,8 +16,7 @@ import za.ac.cput.aquavoltsa.Domain.Transaction;
 /**
  * Student Number: 251239853
  *
- * @author Aphelele Shange
- * Last push == 14:05pm
+ * @author Aphelele Shange Last push == 14:05pm
  */
 public class DAO {
 
@@ -49,7 +48,7 @@ public class DAO {
         }
 
     }
-    
+
     public static void createPaymentTable() {
 
         String SQL = """
@@ -84,9 +83,9 @@ public class DAO {
         }
 
     }
-    
-    public static void createTransactionTable(){
-        
+
+    public static void createTransactionTable() {
+
         String SQL = """
                      CREATE TABLE TRANSACTIONS(
                      TRANSACTION_ID VARCHAR(100) PRIMARY KEY,
@@ -99,42 +98,42 @@ public class DAO {
                      REFERENCES UTILITY(UTILITY_ID)
                      )
                      """;
-        
-        try{
+
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Table 'TRANSACTIONS' has been created successfully.");
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             //JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        
+
     }
-    
-    public static void createUtilityTable(){
-        
+
+    public static void createUtilityTable() {
+
         String SQL = """
                      CREATE TABLE UTILITY(
                      UTILITY_ID INTEGER PRIMARY KEY,
                      UTILITY_NAME VARCHAR(25) NOT NULL
                      )
                      """;
-        
-        try{
+
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Table 'UTILITY' has been created successfully.");
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             //JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        
+
     }
-    
-    public static void createElectricityTokenTable(){
-        
+
+    public static void createElectricityTokenTable() {
+
         String SQL = """
                      CREATE TABLE ELECTRICITY_TOKEN(
                      TOKEN_ID INTEGER GENERATED ALWAYS AS IDENTITY
@@ -149,28 +148,26 @@ public class DAO {
                      REFERENCES PAYMENT(PAYMENT_ID)
                      )
                      """;
-        try{
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Table 'TOKEN' has been created successfully.");
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        
-        
+
     }
-    
-    public static int addPayment(Payment payment){
-        
+
+    public static int addPayment(Payment payment) {
+
         String SQL = "INSERT INTO PAYMENT(USER_ID, UTILITY_ID, AMOUNT, SERVICE_FEE, PAYMENT_METHOD, PAYMENT_DATE, PAYMENT_TIME, PAYMENT_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        try{
+
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            
-            
+
             ps.setInt(1, payment.getUserID());
             ps.setInt(2, payment.getUtilityID());
             ps.setDouble(3, payment.getAmount());
@@ -179,68 +176,66 @@ public class DAO {
             ps.setDate(6, Date.valueOf(payment.getPaymentDate()));
             ps.setTime(7, Time.valueOf(payment.getPaymentTime()));
             ps.setString(8, payment.getPaymentStatus());
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Your payment was successful.");
-            
+
             ResultSet rs = ps.getGeneratedKeys();
-            
-            if (rs.next()){
+
+            if (rs.next()) {
                 return rs.getInt(1);
             }
-            
-            }catch(SQLException ex){
+
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-                     
-                     
+
         return -1;
     }
-    
-    public static void addTransaction(Transaction transaction){
-        
+
+    public static void addTransaction(Transaction transaction) {
+
         String SQL = "INSERT INTO TRANSACTIONS VALUES(?, ?, ?)";
-        
-        try{
+
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
-            
+
             ps.setString(1, transaction.getTransactionID());
             ps.setInt(2, transaction.getPaymentID());
             ps.setInt(3, transaction.getUtilityID());
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "New Transaction created.");
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        
+
     }
-    
-    public static void addToken(ElectricityToken token){
-        
+
+    public static void addToken(ElectricityToken token) {
+
         String SQL = "INSERT INTO ELECTRICITY_TOKEN (PAYMENT_ID, TOKEN_CODE, UNITS, EXPIRY_DATE) VALUES(?, ?, ?, ?)";
-        
-         
-        try{
+
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
-            
+
             ps.setInt(1, token.getPaymentID());
             ps.setString(2, token.getTokenCode());
             ps.setDouble(3, token.getUnits());
             ps.setDate(4, Date.valueOf(token.getExpiryDate()));
-            
+
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Token created");
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        
+
     }
-    
-    public static ResultSet getTransactionHistoryforWater(){
-        
+
+    public static ResultSet getTransactionHistoryforWater() {
+
         String SQL = """
                      SELECT U.UTILITY_NAME, T.TRANSACTION_ID, P.PAYMENT_DATE, P.PAYMENT_TIME, P.AMOUNT 
                                           FROM 
@@ -254,23 +249,23 @@ public class DAO {
                                           P.UTILITY_ID =  U.UTILITY_ID
                                           WHERE 
                                           U.UTILITY_ID = 202
-                     """;  
-        
-        try{
+                     """;
+
+        try {
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
-            
+
             return ps.executeQuery();
-            
-        }catch(SQLException ex){
+
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        
+
         return null;
     }
-    
-    public static ResultSet getTransactionHistoryforElectricity(){
-        
+
+    public static ResultSet getTransactionHistoryforElectricity() {
+
         String SQL = """
                      SELECT U.UTILITY_NAME, T.TRANSACTION_ID, P.PAYMENT_DATE, P.PAYMENT_TIME, P.AMOUNT 
                                           FROM 
@@ -284,20 +279,82 @@ public class DAO {
                                           P.UTILITY_ID =  U.UTILITY_ID
                                           WHERE 
                                           U.UTILITY_ID = 101
-                     """;  
+                     """;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(SQL);
+
+            return ps.executeQuery();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+        return null;
+
+    }
+
+    public static void createElectricityView() {
+
+        String SQL = """
+                     CREATE VIEW ELECTRICITY_VIEW AS 
+        SELECT U.UTILITY_NAME, T.TRANSACTION_ID, P.PAYMENT_DATE, P.PAYMENT_TIME, P.AMOUNT 
+                                          FROM 
+                                          TRANSACTIONS T 
+                                          INNER JOIN PAYMENT P 
+                                          ON 
+                                          T.PAYMENT_ID = P.PAYMENT_ID 
+                                          INNER JOIN 
+                                          UTILITY U 
+                                          ON 
+                                          P.UTILITY_ID =  U.UTILITY_ID
+                                          WHERE 
+                                          U.UTILITY_ID = 101
+                """;
         
         try{
             Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
             
-            return ps.executeQuery();
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Electricity View created successfully");
             
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+
+    }
+    
+    public static void createWaterView() {
+
+        String SQL = """
+                     CREATE VIEW WATER_VIEW AS 
+        SELECT U.UTILITY_NAME, T.TRANSACTION_ID, P.PAYMENT_DATE, P.PAYMENT_TIME, P.AMOUNT 
+                                          FROM 
+                                          TRANSACTIONS T 
+                                          INNER JOIN PAYMENT P 
+                                          ON 
+                                          T.PAYMENT_ID = P.PAYMENT_ID 
+                                          INNER JOIN 
+                                          UTILITY U 
+                                          ON 
+                                          P.UTILITY_ID =  U.UTILITY_ID
+                                          WHERE 
+                                          U.UTILITY_ID = 202
+                """;
         
-        return null;
-        
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(SQL);
+            
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Water View created successfully");
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
     }
 
- }
+}
