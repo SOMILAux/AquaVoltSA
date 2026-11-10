@@ -14,6 +14,8 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -267,8 +269,40 @@ public class TransactionHistoryForWaterPage extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
+        
+        //=============
+        //Functionality
+        //=============
+        backArrowBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
+
+        homeIconBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DashboardFrame AquaVoltSA = new DashboardFrame();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
+        
+        electricityBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TransactionHistoryForElectricityPage AquaVoltSA = new TransactionHistoryForElectricityPage();
+                AquaVoltSA.setVisible(true);
+                dispose();
+            }
+        });
 
     }
+    
+    
 
     public void getTransactionHistory() {
 
