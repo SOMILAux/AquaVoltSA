@@ -4,9 +4,7 @@ package za.ac.cput.aquavoltsa.GUI;
 import javax.swing.*;
 
 /**
- * FIXED + RESTYLED by Oyama: the old file built its whole page inside the Back button's listener, so the
- * window opened blank. It is now a normal page in the same clean layout as the login pages, and the
- * Continue button runs the I Agree / I Disagree check.
+ * 
  */
 public class Terms_and_Conditions extends BasePage {
     private final JCheckBox cbI_Agree = Theme.check("I Agree");
