@@ -34,6 +34,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
@@ -296,12 +298,33 @@ public class TransactionHistoryForElectricityPage extends JFrame {
             }
         });
 
+        //==============================================================
+        //updates as you enter a value, delete a value or change a value
+        //==============================================================
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchTransactions();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchTransactions();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                searchTransactions();
+            }
+
+        });
+
     }
 
     //=============
     //Method that retrieves the history from the database
     //=============
-    
     public void getTransactionHistory() {
 
         ResultSet rs = DAO.getTransactionHistoryforElectricity();
@@ -338,6 +361,8 @@ public class TransactionHistoryForElectricityPage extends JFrame {
                 transactionPanel.putClientProperty(FlatClientProperties.STYLE, "arc : 20");
                 transactionPanel.setAlignmentX(LEFT_ALIGNMENT);
 
+                transactionPanel.putClientProperty("transactionID", transactionID);
+
                 transactionPanel.add(new JLabel(electricityIcon), BorderLayout.WEST);
                 transactionPanel.add(detailsPanel, BorderLayout.CENTER);
 
@@ -354,6 +379,37 @@ public class TransactionHistoryForElectricityPage extends JFrame {
         } catch (SQLException ex) {
             ex.getMessage();
         }
+    }
+    //===============================================
+    //method for searching for a specific transaction
+    //===============================================
+
+    public void searchTransactions() {
+
+        String searchText = searchField.getText().toLowerCase();
+
+        for (java.awt.Component component : historyPanel.getComponents()) {
+
+            if (component instanceof JPanel) {
+
+                JPanel panel = (JPanel) component;
+
+                String transactionID = (String) panel.getClientProperty("transactionID");
+
+                if (transactionID != null) {
+
+                    if (transactionID.toLowerCase().contains(searchText)) {
+                        panel.setVisible(true);
+                    } else {
+                        panel.setVisible(false);
+                    }
+
+                }
+            }
+        }
+
+        historyPanel.revalidate();
+        historyPanel.repaint();
 
     }
 
