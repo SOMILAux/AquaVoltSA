@@ -86,9 +86,9 @@ public class LoginSignupPage extends BasePage {
     }
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
         AppHooks.install();   // constant 425 x 917 size + links between the group's pages
         SwingUtilities.invokeLater(() -> new SplashPage().setVisible(true));
-        FlatLightLaf.setup();
     }
 }
 
