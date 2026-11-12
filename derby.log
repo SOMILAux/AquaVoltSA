@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Nov 10 20:20:12 SAST 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-01a1-c6b0-6881-00000ecf2c00 
+Wed Nov 11 20:02:18 SAST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-01a1-cbc6-61e4-00000eca4e48 
 on database directory C:\Users\yamas\OneDrive\Desktop\School\2026\PROJECT 2\AquaVoltSA\AquaVoltDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
 Loaded from file:/C:/Users/yamas/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
@@ -12,5 +12,5 @@ os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue Nov 10 20:21:22 SAST 2026:
-Shutting down instance a816c00e-01a1-c6b0-6881-00000ecf2c00 on database directory C:\Users\yamas\OneDrive\Desktop\School\2026\PROJECT 2\AquaVoltSA\AquaVoltDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Wed Nov 11 20:35:37 SAST 2026:
+Shutting down instance a816c00e-01a1-cbc6-61e4-00000eca4e48 on database directory C:\Users\yamas\OneDrive\Desktop\School\2026\PROJECT 2\AquaVoltSA\AquaVoltDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
