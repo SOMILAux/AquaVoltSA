@@ -1,46 +1,31 @@
+//Final update done by Oyama and Aphelele
 package za.ac.cput.aquavoltsa.DBConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 /**
- * Student Number: 251239853
+ * THE one and only connection class for the whole AquaVolt SA project.
+ * Every class must go through this so all teammates work on the SAME database.
  *
- * @author Aphelele Shange
+ * Team setup on each computer (do this once):
+ *   1. NetBeans ▸ Services ▸ Databases ▸ Java DB ▸ Start Server
+ *   2. Right-click Java DB ▸ Create Database:
+ *          URL      : jdbc:derby://localhost:1527/AquaVoltDB;create=true
+ *          User     : app
+ *          Password : app
+ *   3. Run the app – DAO.init() creates every table automatically.
  */
 public class DBConnection {
 
-    public static Connection getConnection() {
+    private static final String URL  = "jdbc:derby://localhost:1527/AquaVoltDB;create=true";
+    private static final String USER = "app";
+    private static final String PASS = "app";
 
-        String username = "Aqua";
-        String password = "VoltSA";
-        String databaseURL = "jdbc:derby://localhost:1527/AquaVoltSA";
+    private DBConnection() { }
 
-        Connection con = null;
-
-        System.out.println("Hello");
-        System.out.println("===============");
-        System.out.println("Requesting connection...");
-
-        try {
-
-            con = DriverManager.getConnection(databaseURL, username, password);
-            
-            System.out.println("===============");
-            System.out.println("Connected!");
-
-        } catch (SQLException ex) {
-            
-            System.out.println("===============");
-            System.out.println("Connection Failed!");
-            
-            //JOptionPane.showMessageDialog(null, ex.getMessage());
-
-        }
-
-        return con;
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASS);
     }
-
 }
