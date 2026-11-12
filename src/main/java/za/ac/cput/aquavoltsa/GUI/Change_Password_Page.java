@@ -371,7 +371,7 @@ public class Change_Password_Page extends JFrame {
         }
     }
 
-    // Create lock preference table if it does not exist
+    
     private void ensureLockTable(Connection connection) throws SQLException {
         try (Statement st = connection.createStatement()) {
             st.executeUpdate("CREATE TABLE lock_preferences ("

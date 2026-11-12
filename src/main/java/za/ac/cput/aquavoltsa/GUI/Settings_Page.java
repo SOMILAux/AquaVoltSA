@@ -63,7 +63,7 @@ public class Settings_Page extends JFrame implements ActionListener {
         
         //showGui();
     }
-
+     //In this method i am setting up my panels and thier layout
     public void showGui() {
         this.setLayout(new GridLayout(6, 1));
         
