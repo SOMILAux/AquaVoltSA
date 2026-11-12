@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import za.ac.cput.aquavoltsa.DAO.Database;
 
 /**
  * Data access for the ADMINS and ACTIVITY_LOG tables.
