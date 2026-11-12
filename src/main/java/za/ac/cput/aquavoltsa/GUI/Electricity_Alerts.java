@@ -1,8 +1,8 @@
 
 
+
 package za.ac.cput.aquavoltsa.GUI;
 
-import za.ac.cput.aquavoltsa.GUI.Settings_Page;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
@@ -11,15 +11,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
+
 public class Electricity_Alerts extends JFrame {
 
     private final Color ORANGE = new Color(255, 140, 0);
     private final Color BLUE = new Color(173, 216, 230);
+
     private ImageIcon logoIcon;
     private JLabel lbJust_blank2;
-   
 
-    // Test user ID. Connect this to the logged-in user later.
     private final int userId = 1;
 
     private JCheckBox cbPowerOutage;
@@ -34,13 +36,11 @@ public class Electricity_Alerts extends JFrame {
         setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+
         lbJust_blank2 = new JLabel(" ");
-       
 
         createInterface();
         loadPreferences();
-        
-        
     }
 
     private void createInterface() {
@@ -55,10 +55,16 @@ public class Electricity_Alerts extends JFrame {
         JPanel topPanel = new JPanel(
                 new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(gold);
-        
 
         JButton btBack = new JButton("Back");
+
+        FontIcon backIcon = FontIcon.of(
+                FontAwesomeSolid.ARROW_LEFT, 18, Color.BLACK);
+
+        btBack.setIcon(backIcon);
         btBack.setBackground(Color.orange);
+        btBack.setForeground(Color.BLACK);
+
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
@@ -78,23 +84,14 @@ public class Electricity_Alerts extends JFrame {
         contentPanel.setLayout(
                 new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-        // Centered electricity icon
+        // Large black electricity icon
         JLabel lblElectricityIcon = new JLabel();
+
+        FontIcon electricityIcon = FontIcon.of(
+                FontAwesomeSolid.BOLT, 100, Color.BLACK);
+
+        lblElectricityIcon.setIcon(electricityIcon);
         lblElectricityIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        java.net.URL iconURL =
-                getClass().getResource("/icons/electricity.png");
-
-        if (iconURL != null) {
-            ImageIcon icon = new ImageIcon(iconURL);
-            Image image = icon.getImage().getScaledInstance(
-                    100, 100, Image.SCALE_SMOOTH);
-            lblElectricityIcon.setIcon(new ImageIcon(image));
-        } else {
-            lblElectricityIcon.setText("ELECTRICITY");
-            lblElectricityIcon.setFont(
-                    new Font("Arial", Font.BOLD, 22));
-        }
 
         // Centered title
         JLabel lblTitle = new JLabel("Electricity Alerts");
@@ -110,10 +107,13 @@ public class Electricity_Alerts extends JFrame {
 
         cbPowerOutage =
                 createCheckbox("Power Outage Alerts");
+
         cbHighUsage =
                 createCheckbox("High Electricity Usage Notifications");
+
         cbPowerRestoration =
                 createCheckbox("Power Restoration Alerts");
+
         cbMeterAlerts =
                 createCheckbox("Electricity Meter Alerts");
 
@@ -143,14 +143,26 @@ public class Electricity_Alerts extends JFrame {
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btSave = new JButton("Save Preference");
+
+        FontIcon saveIcon = FontIcon.of(
+                FontAwesomeSolid.SAVE, 18, Color.BLACK);
+
+        btSave.setIcon(saveIcon);
         btSave.setBackground(BLUE);
         btSave.setForeground(Color.BLACK);
         btSave.setFocusPainted(false);
         btSave.addActionListener(e -> savePreferences());
 
         JButton btReset = new JButton("Reset");
+
+        FontIcon resetIcon = FontIcon.of(
+                FontAwesomeSolid.REDO, 18, Color.BLACK);
+
+        btReset.setIcon(resetIcon);
         btReset.setFocusPainted(false);
         btReset.setBackground(Color.LIGHT_GRAY);
+        btReset.setForeground(Color.BLACK);
+
         btReset.addActionListener(e -> {
             cbPowerOutage.setSelected(false);
             cbHighUsage.setSelected(false);
@@ -182,36 +194,40 @@ public class Electricity_Alerts extends JFrame {
         contentPanel.add(cbDeliveryMethod);
         contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(buttonPanel);
-        
-        contentPanel.add(Box.createVerticalStrut(10)); 
 
-        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
-        Image logoImage = logoIcon.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+        contentPanel.add(Box.createVerticalStrut(10));
+
+        // Existing logo
+        logoIcon = new ImageIcon(
+                getClass().getResource("/icons/plain_logo.png"));
+
+        Image logoImage = logoIcon.getImage().getScaledInstance(
+                125, 125, Image.SCALE_SMOOTH);
 
         lbJust_blank2.setIcon(new ImageIcon(logoImage));
 
+        JPanel logoPanel = new JPanel(
+                new FlowLayout(FlowLayout.CENTER));
 
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         logoPanel.setBackground(gold);
         logoPanel.add(lbJust_blank2);
 
         contentPanel.add(logoPanel);
-        
-        
-
-        contentPanel.add(lbJust_blank2); 
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         setContentPane(mainPanel);
-           
     }
 
     private JCheckBox createCheckbox(String text) {
         JCheckBox checkbox = new JCheckBox(text);
+
         checkbox.setFont(
                 new Font("Arial", Font.PLAIN, 16));
+
         checkbox.setBackground(Color.orange);
+        checkbox.setForeground(Color.BLACK);
         checkbox.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         return checkbox;
     }
 
@@ -226,7 +242,6 @@ public class Electricity_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                //JOptionPane.showMessageDialog(this,"Could not connect to the database. " + "Preferences could not be loaded.");
                 return;
             }
 
@@ -240,28 +255,36 @@ public class Electricity_Alerts extends JFrame {
                 statement.setString(5, "ELECTRICITY_METER");
 
                 try (ResultSet result = statement.executeQuery()) {
+
                     while (result.next()) {
 
                         String type =
                                 result.getString("alert_type");
+
                         boolean enabled =
                                 result.getBoolean("enabled");
+
                         String method =
                                 result.getString("delivery_method");
 
                         switch (type) {
+
                             case "POWER_OUTAGE":
                                 cbPowerOutage.setSelected(enabled);
                                 break;
+
                             case "HIGH_ELECTRICITY_USAGE":
                                 cbHighUsage.setSelected(enabled);
                                 break;
+
                             case "POWER_RESTORED":
                                 cbPowerRestoration.setSelected(enabled);
                                 break;
+
                             case "ELECTRICITY_METER":
                                 cbMeterAlerts.setSelected(enabled);
                                 break;
+
                             default:
                                 break;
                         }
@@ -274,7 +297,7 @@ public class Electricity_Alerts extends JFrame {
             }
 
         } catch (SQLException e) {
-            //JOptionPane.showMessageDialog( this,"Could not load electricity preferences:\n" + e.getMessage());
+            // Preferences could not be loaded.
         }
     }
 
@@ -292,9 +315,11 @@ public class Electricity_Alerts extends JFrame {
         if (anySelected
                 && (method == null
                 || method.equals("Select Method"))) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Please select a delivery method.");
+
             return;
         }
 
@@ -314,7 +339,6 @@ public class Electricity_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                //JOptionPane.showMessageDialog(this,"Database connection failed.");
                 return;
             }
 
@@ -341,7 +365,7 @@ public class Electricity_Alerts extends JFrame {
                     "Electricity alert preferences saved successfully!");
 
         } catch (SQLException e) {
-            //JOptionPane.showMessageDialog(this, "Could not save electricity preferences:\n" + e.getMessage());
+            // Preferences could not be saved.
         }
     }
 
@@ -355,12 +379,7 @@ public class Electricity_Alerts extends JFrame {
         statement.setString(2, alertType);
         statement.setBoolean(3, enabled);
         statement.setString(4, method);
+
         statement.addBatch();
     }
-    
-        
 }
-
-
-    
-

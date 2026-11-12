@@ -1,7 +1,6 @@
 
 package za.ac.cput.aquavoltsa.GUI;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
@@ -10,11 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
 
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
+
 public class Water_Alerts extends JFrame {
 
     private final Color BLUE = new Color(173, 216, 230);
     private final Color ORANGE = new Color(255, 140, 0);
     private final int userId = 1;
+
     private ImageIcon logoIcon;
     private JLabel lbJust_blank2;
 
@@ -30,6 +33,7 @@ public class Water_Alerts extends JFrame {
         setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+
         lbJust_blank2 = new JLabel(" ");
 
         createInterface();
@@ -44,12 +48,20 @@ public class Water_Alerts extends JFrame {
                 BorderFactory.createEmptyBorder(15, 25, 25, 25));
 
         // TOP LEFT: Back button
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel topPanel = new JPanel(
+                new FlowLayout(FlowLayout.LEFT));
+
         topPanel.setBackground(BLUE);
 
         JButton btBack = new JButton("Back");
-        Color gold = new Color(218, 165, 32);
+
+        FontIcon backIcon = FontIcon.of(
+                FontAwesomeSolid.ARROW_LEFT, 18, Color.BLACK);
+
+        btBack.setIcon(backIcon);
         btBack.setBackground(Color.LIGHT_GRAY);
+        btBack.setForeground(Color.BLACK);
+
         btBack.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
@@ -65,53 +77,54 @@ public class Water_Alerts extends JFrame {
 
         // CENTER: Icon, title, checkboxes, combo box and buttons
         JPanel contentPanel = new JPanel();
+
         contentPanel.setBackground(BLUE);
         contentPanel.setLayout(
                 new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-        // Centered water icon
+        // Large black water icon
         JLabel lblWaterIcon = new JLabel();
+
+        FontIcon waterIcon = FontIcon.of(
+                FontAwesomeSolid.TINT, 100, Color.BLACK);
+
+        lblWaterIcon.setIcon(waterIcon);
         lblWaterIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        java.net.URL iconURL =
-                getClass().getResource("/icons/water.png");
-
-        if (iconURL != null) {
-            ImageIcon icon = new ImageIcon(iconURL);
-            Image image = icon.getImage().getScaledInstance(
-                    100, 100, Image.SCALE_SMOOTH);
-            lblWaterIcon.setIcon(new ImageIcon(image));
-        } else {
-            lblWaterIcon.setText("WATER");
-            lblWaterIcon.setFont(
-                    new Font("Arial", Font.BOLD, 24));
-        }
 
         // Centered Water Alerts title
         JLabel lblTitle = new JLabel("Water Alerts");
+
         lblTitle.setFont(
                 new Font("Arial", Font.BOLD, 26));
+
         lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblInstruction = new JLabel(
                 "Select the water alerts you want to receive:");
+
         lblInstruction.setFont(
                 new Font("Arial", Font.PLAIN, 15));
+
         lblInstruction.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         cbWaterOutages =
                 createCheckbox("Water Supply Outages");
+
         cbWaterLeaks =
                 createCheckbox("Water Leak Alerts");
+
         cbWaterUsage =
                 createCheckbox("Water Usage Notifications");
+
         cbLowPressure =
                 createCheckbox("Low Water Pressure Alerts");
 
         JLabel lblMethod = new JLabel(
                 "How do you want to receive the alert?");
+
         lblMethod.setFont(
                 new Font("Arial", Font.BOLD, 15));
+
         lblMethod.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         String[] methods = {
@@ -123,25 +136,41 @@ public class Water_Alerts extends JFrame {
         };
 
         cbDeliveryMethod = new JComboBox<>(methods);
+
         cbDeliveryMethod.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, 35));
+
         cbDeliveryMethod.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Buttons side by side under the combo box
         JPanel buttonPanel = new JPanel(
                 new FlowLayout(FlowLayout.CENTER, 15, 5));
+
         buttonPanel.setBackground(BLUE);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btSave = new JButton("Save Preferences");
+
+        FontIcon saveIcon = FontIcon.of(
+                FontAwesomeSolid.SAVE, 18, Color.BLACK);
+
+        btSave.setIcon(saveIcon);
         btSave.setBackground(Color.orange);
         btSave.setForeground(Color.BLACK);
         btSave.setFocusPainted(false);
+
         btSave.addActionListener(e -> savePreferences());
 
         JButton btReset = new JButton("Reset");
+
+        FontIcon resetIcon = FontIcon.of(
+                FontAwesomeSolid.REDO, 18, Color.BLACK);
+
+        btReset.setIcon(resetIcon);
         btReset.setBackground(Color.LIGHT_GRAY);
+        btReset.setForeground(Color.BLACK);
         btReset.setFocusPainted(false);
+
         btReset.addActionListener(e -> {
             cbWaterOutages.setSelected(false);
             cbWaterLeaks.setSelected(false);
@@ -174,31 +203,42 @@ public class Water_Alerts extends JFrame {
         contentPanel.add(cbDeliveryMethod);
         contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(buttonPanel);
-        
-        contentPanel.add(Box.createVerticalStrut(10)); 
-        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
-        Image logoImage = logoIcon.getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+
+        contentPanel.add(Box.createVerticalStrut(10));
+
+        // Existing logo
+        logoIcon = new ImageIcon(
+                getClass().getResource("/icons/plain_logo.png"));
+
+        Image logoImage = logoIcon.getImage().getScaledInstance(
+                125, 125, Image.SCALE_SMOOTH);
+
         lbJust_blank2.setIcon(new ImageIcon(logoImage));
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        JPanel logoPanel = new JPanel(
+                new FlowLayout(FlowLayout.CENTER));
+
         logoPanel.setBackground(BLUE);
         logoPanel.add(lbJust_blank2);
 
         contentPanel.add(logoPanel);
-        
-        
-
-        
 
         mainPanel.add(contentPanel, BorderLayout.CENTER);
+
         setContentPane(mainPanel);
     }
 
     private JCheckBox createCheckbox(String text) {
+
         JCheckBox checkbox = new JCheckBox(text);
+
         checkbox.setFont(
                 new Font("Arial", Font.PLAIN, 16));
+
         checkbox.setBackground(BLUE);
+        checkbox.setForeground(Color.BLACK);
         checkbox.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         return checkbox;
     }
 
@@ -213,7 +253,6 @@ public class Water_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-                //JOptionPane.showMessageDialog(this, "Could not connect to the database. " + "Preferences could not be loaded.");
                 return;
             }
 
@@ -227,28 +266,36 @@ public class Water_Alerts extends JFrame {
                 statement.setString(5, "LOW_WATER_PRESSURE");
 
                 try (ResultSet result = statement.executeQuery()) {
+
                     while (result.next()) {
 
                         String type =
                                 result.getString("alert_type");
+
                         boolean enabled =
                                 result.getBoolean("enabled");
+
                         String method =
                                 result.getString("delivery_method");
 
                         switch (type) {
+
                             case "WATER_OUTAGE":
                                 cbWaterOutages.setSelected(enabled);
                                 break;
+
                             case "WATER_LEAK":
                                 cbWaterLeaks.setSelected(enabled);
                                 break;
+
                             case "WATER_USAGE":
                                 cbWaterUsage.setSelected(enabled);
                                 break;
+
                             case "LOW_WATER_PRESSURE":
                                 cbLowPressure.setSelected(enabled);
                                 break;
+
                             default:
                                 break;
                         }
@@ -282,9 +329,11 @@ public class Water_Alerts extends JFrame {
         if (anySelected
                 && (method == null
                 || method.equals("Select Method"))) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Please select a delivery method.");
+
             return;
         }
 
@@ -304,7 +353,6 @@ public class Water_Alerts extends JFrame {
                      DBConnection.getConnection()) {
 
             if (connection == null) {
-               // JOptionPane.showMessageDialog( this, "Database connection failed.");
                 return;
             }
 
@@ -348,8 +396,7 @@ public class Water_Alerts extends JFrame {
         statement.setString(2, alertType);
         statement.setBoolean(3, enabled);
         statement.setString(4, method);
+
         statement.addBatch();
     }
-
-    
 }

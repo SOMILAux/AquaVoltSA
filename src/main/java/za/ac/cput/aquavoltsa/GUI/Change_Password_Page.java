@@ -1,15 +1,15 @@
-package za.ac.cput.aquavoltsa.GUI;
 
+package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.*;
 import java.sql.*;
-import za.ac.cput.aquavoltsa.DAO.Database;
 
-//Within Profile page (Inathi)
+import za.ac.cput.aquavoltsa.DAO.Database;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
 
 public class Change_Password_Page extends JFrame {
 
@@ -23,9 +23,10 @@ public class Change_Password_Page extends JFrame {
     private JButton btSave_Password, btBack,
             btShow_Password, btConfirm_Password;
 
-    private ImageIcon lockIcon, eyeIcon, logoIcon;
+    private FontIcon lockIcon, eyeIcon;
+    private ImageIcon logoIcon;
 
-    private JPanel before_panel, panel_1, panel_2, pre_panel_3,
+    private JPanel panel_1, panel_2, pre_panel_3,
             panel_4, password_panel, Confirm_Panel;
 
     private JRadioButton rbChange_Lock_Type;
@@ -39,7 +40,7 @@ public class Change_Password_Page extends JFrame {
     private static final String ICON_INVALID =
             "<html><font color='red'><b>\u2717</b></font> ";
 
-    public Change_Password_Page () {
+    public Change_Password_Page() {
 
         lbSet_Password = new JLabel("Create Your Password");
         lbConfirm_Password = new JLabel("Confirm_Password");
@@ -66,7 +67,6 @@ public class Change_Password_Page extends JFrame {
         panel_2 = new JPanel();
         pre_panel_3 = new JPanel();
         panel_4 = new JPanel();
-        before_panel = new JPanel();
 
         setTitle("Change Password");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -74,12 +74,10 @@ public class Change_Password_Page extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new GridLayout(5, 1));
 
-        // Lock icon and heading
-        lockIcon = new ImageIcon(getClass().getResource("/icons/lock.png"));
-        Image image = lockIcon.getImage().getScaledInstance(
-                90, 90, Image.SCALE_SMOOTH);
+        // Large black lock icon
+        lockIcon = FontIcon.of(FontAwesomeSolid.LOCK, 82, Color.BLACK);
 
-        lbJust_blank.setIcon(new ImageIcon(image));
+        lbJust_blank.setIcon(lockIcon);
         lbJust_blank.setHorizontalAlignment(JLabel.CENTER);
         lbJust_blank.setVerticalAlignment(JLabel.CENTER);
 
@@ -91,16 +89,13 @@ public class Change_Password_Page extends JFrame {
         lbJust_blank.setFont(new Font("Arial", Font.BOLD, 30));
         pre_panel_3.add(lbJust_blank);
         pre_panel_3.setLayout(new GridLayout(2, 1));
-        pre_panel_3.setBackground(Color.orange);
+        pre_panel_3.setBackground(Color.LIGHT_GRAY);
         add(pre_panel_3);
 
-        // Eye icon
-        eyeIcon = new ImageIcon(getClass().getResource("/icons/eye.png"));
-        Image eyeImage = eyeIcon.getImage().getScaledInstance(
-                30, 30, Image.SCALE_SMOOTH);
-        ImageIcon resizedEyeIcon = new ImageIcon(eyeImage);
+        // Black eye icons
+        eyeIcon = FontIcon.of(FontAwesomeSolid.EYE, 25, Color.BLACK);
 
-        btShow_Password = new JButton(resizedEyeIcon);
+        btShow_Password = new JButton(eyeIcon);
         btShow_Password.addActionListener(e ->
                 togglePassword(txtSet_Password));
         styleEyeButton(btShow_Password);
@@ -109,7 +104,7 @@ public class Change_Password_Page extends JFrame {
         password_panel.add(txtSet_Password, BorderLayout.CENTER);
         password_panel.add(btShow_Password, BorderLayout.EAST);
 
-        btConfirm_Password = new JButton(resizedEyeIcon);
+        btConfirm_Password = new JButton(eyeIcon);
         btConfirm_Password.addActionListener(e ->
                 togglePassword(txtConfirm_Password));
         styleEyeButton(btConfirm_Password);
@@ -118,35 +113,35 @@ public class Change_Password_Page extends JFrame {
         Confirm_Panel.add(txtConfirm_Password, BorderLayout.CENTER);
         Confirm_Panel.add(btConfirm_Password, BorderLayout.EAST);
 
-        // Existing password fields and panel layout
-        lbSet_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        lbCurrent_password.setFont(new Font("Arial", Font.BOLD, 20));
+        // Password fields and layout
+        lbSet_Password.setFont(new Font("Arial", Font.BOLD, 16));
+        lbCurrent_password.setFont(new Font("Arial", Font.BOLD, 16));
 
         panel_1.add(lbCurrent_password);
-        txtCurrent_password.setBackground(Color.orange);
+        txtCurrent_password.setBackground(Color.LIGHT_GRAY);
         panel_1.add(txtCurrent_password);
 
         panel_1.add(lbSet_Password);
-        txtSet_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        txtSet_Password.setBackground(Color.orange);
-        password_panel.setBackground(Color.orange);
+        txtSet_Password.setFont(new Font("Arial", Font.BOLD, 16));
+        txtSet_Password.setBackground(Color.LIGHT_GRAY);
+        password_panel.setBackground(Color.LIGHT_GRAY);
         panel_1.add(password_panel);
 
         panel_1.add(lbConfirm_Password);
-        lbConfirm_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        txtConfirm_Password.setFont(new Font("Arial", Font.BOLD, 20));
-        txtConfirm_Password.setBackground(Color.orange);
-        Confirm_Panel.setBackground(Color.orange);
+        lbConfirm_Password.setFont(new Font("Arial", Font.BOLD, 16));
+        txtConfirm_Password.setFont(new Font("Arial", Font.BOLD, 16));
+        txtConfirm_Password.setBackground(Color.LIGHT_GRAY);
+        Confirm_Panel.setBackground(Color.LIGHT_GRAY);
         panel_1.add(Confirm_Panel);
 
         panel_1.add(lbAnother_blank);
-        panel_1.setBackground(Color.orange);
+        panel_1.setBackground(Color.LIGHT_GRAY);
         panel_1.setLayout(new GridLayout(6, 1));
         add(panel_1);
 
-        // Existing password checklist
+        // Password checklist
         checklistPanel = new JPanel(new GridLayout(4, 1));
-        checklistPanel.setBackground(Color.orange);
+        checklistPanel.setBackground(Color.LIGHT_GRAY);
         checklistPanel.setBorder(
                 BorderFactory.createEmptyBorder(0, 20, 0, 20));
 
@@ -165,24 +160,25 @@ public class Change_Password_Page extends JFrame {
         resetChecklist();
         setupPasswordListener();
 
-        // Existing buttons and lock-type control
-        btSave_Password.setFont(new Font("Arial", Font.BOLD, 20));
+        // Save button
+        btSave_Password.setFont(new Font("Arial", Font.BOLD,16));
         btSave_Password.setBackground(new Color(173, 216, 230));
         btSave_Password.addActionListener(e -> savePassword());
 
-        btBack.setFont(new Font("Arial", Font.BOLD, 20));
-        btBack.setBackground(Color.gray);
+        // Back button
+        btBack.setFont(new Font("Arial", Font.BOLD, 16));
+        btBack.setBackground(Color.GRAY);
         btBack.addActionListener(e -> {
-            Settings_Page page = new Settings_Page();
-            page.showGui();
-            page.setSize(425, 917);
-            page.setLocationRelativeTo(null);
-            page.setVisible(true);
+            Profile_Page2 profile = new Profile_Page2();
+            profile.setSize(425, 917);
+            profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            profile.setLocationRelativeTo(null);
+            profile.setVisible(true);
             this.dispose();
         });
 
         panel_2.setLayout(new GridBagLayout());
-        panel_2.setBackground(Color.orange);
+        panel_2.setBackground(Color.LIGHT_GRAY);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -201,21 +197,24 @@ public class Change_Password_Page extends JFrame {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
 
-        rbChange_Lock_Type.setBackground(Color.orange);
+        rbChange_Lock_Type.setBackground(Color.LIGHT_GRAY);
         rbChange_Lock_Type.addActionListener(e -> changeLockType());
-        panel_2.add(rbChange_Lock_Type, gbc);
+        //panel_2.add(rbChange_Lock_Type, gbc);
 
         add(panel_2);
 
         // Existing logo
-        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
+        logoIcon = new ImageIcon(
+                getClass().getResource("/icons/plain_logo.png"));
+
         Image logoImage = logoIcon.getImage().getScaledInstance(
                 130, 130, Image.SCALE_SMOOTH);
+
         lbJust_blank2.setIcon(new ImageIcon(logoImage));
         lbJust_blank2.setHorizontalAlignment(JLabel.CENTER);
         lbJust_blank2.setVerticalAlignment(JLabel.CENTER);
 
-        panel_4.setBackground(Color.orange);
+        panel_4.setBackground(Color.LIGHT_GRAY);
         panel_4.add(lbJust_blank2);
         add(panel_4);
 
@@ -296,7 +295,7 @@ public class Change_Password_Page extends JFrame {
         }
     }
 
-    // CONNECTED: changes the password of the logged-in customer in the CUSTOMERS table
+    // Update the logged-in customer's password
     private void savePassword() {
         if (Session.customer == null) {
             JOptionPane.showMessageDialog(
@@ -335,7 +334,6 @@ public class Change_Password_Page extends JFrame {
             return;
         }
 
-        // the current password must match what is saved for this customer
         if (!UserStore.hash(currentPassword).equals(Session.customer.passHash)) {
             JOptionPane.showMessageDialog(
                     this, "Your current password is incorrect.");
@@ -352,13 +350,16 @@ public class Change_Password_Page extends JFrame {
             statement.setString(2, Session.customer.id);
 
             if (statement.executeUpdate() > 0) {
-                Session.customer.passHash = newHash;   // keep the logged-in copy up to date
+                Session.customer.passHash = newHash;
+
                 JOptionPane.showMessageDialog(
                         this, "Password updated successfully!");
+
                 txtCurrent_password.setText("");
                 txtSet_Password.setText("");
                 txtConfirm_Password.setText("");
                 resetChecklist();
+
             } else {
                 JOptionPane.showMessageDialog(
                         this, "Password could not be updated.");
@@ -370,8 +371,7 @@ public class Change_Password_Page extends JFrame {
         }
     }
 
-    // The lock type (Password / PIN / Pattern) is saved per customer in LOCK_PREFERENCES.
-    // The table is created here the first time it is needed (X0Y32 = "table already exists", which is fine).
+    // Create lock preference table if it does not exist
     private void ensureLockTable(Connection connection) throws SQLException {
         try (Statement st = connection.createStatement()) {
             st.executeUpdate("CREATE TABLE lock_preferences ("
@@ -410,17 +410,20 @@ public class Change_Password_Page extends JFrame {
         try (Connection connection = Database.connect()) {
             ensureLockTable(connection);
 
-            // Derby has no "ON DUPLICATE KEY UPDATE": try UPDATE first, INSERT if nothing was updated
             int updated;
+
             try (PreparedStatement statement = connection.prepareStatement(
                     "UPDATE lock_preferences SET lock_type = ? WHERE customer_username = ?")) {
+
                 statement.setString(1, selected);
                 statement.setString(2, Session.customer.username);
                 updated = statement.executeUpdate();
             }
+
             if (updated == 0) {
                 try (PreparedStatement statement = connection.prepareStatement(
                         "INSERT INTO lock_preferences (customer_username, lock_type) VALUES (?, ?)")) {
+
                     statement.setString(1, Session.customer.username);
                     statement.setString(2, selected);
                     statement.executeUpdate();
@@ -449,6 +452,7 @@ public class Change_Password_Page extends JFrame {
 
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT lock_type FROM lock_preferences WHERE customer_username = ?")) {
+
                 statement.setString(1, Session.customer.username);
 
                 try (ResultSet result = statement.executeQuery()) {
@@ -457,6 +461,7 @@ public class Change_Password_Page extends JFrame {
                     }
                 }
             }
+
         } catch (SQLException e) {
             System.out.println("Could not read lock type: "
                     + e.getMessage());
@@ -470,11 +475,5 @@ public class Change_Password_Page extends JFrame {
                 "Change_Lock_Type (" + getCurrentLockType() + ")");
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Change_Password_Page page = new Change_Password_Page();
-            page.setVisible(true);
-        });
-    }
-
+ 
 }
