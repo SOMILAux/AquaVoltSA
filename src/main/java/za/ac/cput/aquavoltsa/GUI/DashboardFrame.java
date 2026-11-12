@@ -72,7 +72,9 @@ public class DashboardFrame extends JFrame {
        
         profileButton.addActionListener(e -> {
             Profile_Page2 profile = new Profile_Page2();
-            setLocationRelativeTo(null);
+            profile.setSize(425, 917);
+            profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            profile.setLocationRelativeTo(null);
             profile.setVisible(true);
             this.dispose();
         });

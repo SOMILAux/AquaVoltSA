@@ -100,9 +100,9 @@ public class Electricity_Alerts extends JFrame {
         lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblInstruction = new JLabel(
-                "Select the electricity alerts you want to receive:");
+                "Which alerts to receive ?");
         lblInstruction.setFont(
-                new Font("Arial", Font.PLAIN, 15));
+                new Font("Arial", Font.BOLD, 18));
         lblInstruction.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         cbPowerOutage =
@@ -118,9 +118,9 @@ public class Electricity_Alerts extends JFrame {
                 createCheckbox("Electricity Meter Alerts");
 
         JLabel lblMethod = new JLabel(
-                "How do you want to receive the alert?");
+                "Receive alerts Via?");
         lblMethod.setFont(
-                new Font("Arial", Font.BOLD, 15));
+                new Font("Arial", Font.BOLD, 18));
         lblMethod.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         String[] methods = {
@@ -222,7 +222,7 @@ public class Electricity_Alerts extends JFrame {
         JCheckBox checkbox = new JCheckBox(text);
 
         checkbox.setFont(
-                new Font("Arial", Font.PLAIN, 16));
+                new Font("Arial", Font.PLAIN, 14));
 
         checkbox.setBackground(Color.orange);
         checkbox.setForeground(Color.BLACK);

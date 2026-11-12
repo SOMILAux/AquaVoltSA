@@ -238,5 +238,15 @@ public class Settings_Page extends JFrame implements ActionListener {
                 this.dispose();
             }
         }
+        
+    }
+    public static void main(String[] args){
+        Settings_Page page = new Settings_Page();
+        page.setSize(425,917);
+        page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        page.setLocationRelativeTo(null);
+        page.showGui();
+        page.setVisible(true);
+        
     }
 }
