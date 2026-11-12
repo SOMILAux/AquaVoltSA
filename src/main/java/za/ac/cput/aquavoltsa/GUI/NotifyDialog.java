@@ -1,3 +1,4 @@
+//Final update done by Sbahle
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -7,8 +8,6 @@ import javax.swing.*;
 
 /**
  * Admin sends a notification (water, electricity, account, payment or system) to one customer or to everyone.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class NotifyDialog extends JDialog {
     private static final String ALL = "All customers";

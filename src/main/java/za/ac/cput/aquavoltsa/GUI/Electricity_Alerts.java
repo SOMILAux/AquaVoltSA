@@ -1,6 +1,4 @@
-
-
-
+//Final update done by Sbahle
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
@@ -9,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
+import za.ac.cput.aquavoltsa.DAO.DAO;
 
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
@@ -220,14 +218,11 @@ public class Electricity_Alerts extends JFrame {
 
     private JCheckBox createCheckbox(String text) {
         JCheckBox checkbox = new JCheckBox(text);
-
         checkbox.setFont(
                 new Font("Arial", Font.PLAIN, 14));
-
         checkbox.setBackground(Color.orange);
         checkbox.setForeground(Color.BLACK);
         checkbox.setAlignmentX(Component.LEFT_ALIGNMENT);
-
         return checkbox;
     }
 
@@ -238,8 +233,7 @@ public class Electricity_Alerts extends JFrame {
                 + "FROM alert_preferences WHERE user_id = ? "
                 + "AND alert_type IN (?, ?, ?, ?)";
 
-        try (Connection connection =
-                     DBConnection.getConnection()) {
+        try (Connection connection = DAO.connect()) {
 
             if (connection == null) {
                 return;
@@ -335,8 +329,7 @@ public class Electricity_Alerts extends JFrame {
                 + "enabled = VALUES(enabled), "
                 + "delivery_method = VALUES(delivery_method)";
 
-        try (Connection connection =
-                     DBConnection.getConnection()) {
+        try (Connection connection = DAO.connect()) {
 
             if (connection == null) {
                 return;

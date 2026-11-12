@@ -1,3 +1,4 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.io.BufferedReader;
@@ -7,10 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
-/**
- *Student Number: 251239853
- * @author Aphelele Shange
- */
 public class TransactionHistoryE {
     
     String title, meterNumber, date, time, amount, status;

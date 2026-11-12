@@ -1,3 +1,4 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.GUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -32,11 +33,6 @@ import javax.swing.JToggleButton;
 import org.kordamp.ikonli.swing.FontIcon;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
-/**
- * Student Number: 251239853
- *
- * @author Aphelele Shange
- */
 public class buyElectricityPage extends JFrame {
 
     JPanel backgroundPanel, headerPanel, centerPanel, buttonPanel, buttonPanel2, customPanel;
@@ -59,9 +55,6 @@ public class buyElectricityPage extends JFrame {
         this.setResizable(false);
         this.setFocusable(true);
 
-        //=========================
-        //ICON SECTION
-        //=========================
         FontIcon bolt = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
         FontIcon bolt1 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
         FontIcon bolt2 = FontIcon.of(FontAwesomeSolid.BOLT, 25, Color.ORANGE);
@@ -71,23 +64,17 @@ public class buyElectricityPage extends JFrame {
         FontIcon back = FontIcon.of(FontAwesomeSolid.LONG_ARROW_ALT_LEFT, 30, Color.BLACK);
 
         backgroundPanel = new JPanel() {
-
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
                 Color firstElectricityColor = Color.decode("#FFB300");
                 Color secondElectricityColor = Color.decode("#FFFFFF");
-
                 GradientPaint gp = new GradientPaint(0, 0, firstElectricityColor, getWidth(), getHeight(), secondElectricityColor);
-
                 g2d.setPaint(gp);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
-
         };
 
         backgroundPanel.setLayout(new BorderLayout());
@@ -122,13 +109,12 @@ public class buyElectricityPage extends JFrame {
         headerPanel.add(Box.createVerticalStrut(-60));
         headerPanel.add(circleLabel);
 
-        //Initialising the content Panel
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 50));
 
-        meterNumberLabel = new JLabel("Meter Number");
+        meterNumberLabel = new JLabel(Translations.get("meter_number"));
         meterNumberLabel.setFont(new Font("Arial", Font.BOLD, 20));
         meterNumberLabel.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -137,7 +123,7 @@ public class buyElectricityPage extends JFrame {
         meterNumberField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         meterNumberField.setAlignmentX(LEFT_ALIGNMENT);
         meterNumberField.putClientProperty(FlatClientProperties.STYLE, "arc: 20");
-        meterNumberField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your Meter Number");
+        meterNumberField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, Translations.get("enter_meter"));
         meterNumberField.setMargin(new Insets(0, 10, 0, 5));
 
         separator = new JSeparator();
@@ -145,7 +131,7 @@ public class buyElectricityPage extends JFrame {
         separator.setForeground(Color.decode("#FFFFFF"));
         separator.setAlignmentX(LEFT_ALIGNMENT);
 
-        selectAmountLabel = new JLabel("Select Amount");
+        selectAmountLabel = new JLabel(Translations.get("select_amount"));
         selectAmountLabel.setFont(new Font("Arial", Font.BOLD, 20));
         selectAmountLabel.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -176,7 +162,7 @@ public class buyElectricityPage extends JFrame {
         thirdAmount.putClientProperty(FlatClientProperties.STYLE, "arc: 30; selectedBackground: #FFB300; selectedForeground: #FFFFFF");
         thirdAmount.add(sideLabel2, BorderLayout.WEST);
 
-        customAmount = new JToggleButton("CUSTOM");
+        customAmount = new JToggleButton(Translations.get("custom"));
         customAmount.setLayout(new BorderLayout());
         customAmount.setBorderPainted(false);
         customAmount.setFocusPainted(false);
@@ -219,7 +205,7 @@ public class buyElectricityPage extends JFrame {
         customAmountField = new JTextField();
         customAmountField.setBorder(null);
         customAmountField.setFont(new Font("Arial", Font.PLAIN, 20));
-        customAmountField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Amount");
+        customAmountField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, Translations.get("enter_amount"));
         customAmountField.setOpaque(false);
 
         customPanel = new JPanel(new BorderLayout(5, 0));
@@ -233,26 +219,24 @@ public class buyElectricityPage extends JFrame {
         customPanel.add(currencyLabel, BorderLayout.WEST);
         customPanel.add(customAmountField, BorderLayout.CENTER);
 
-        continueBtn = new JButton("CONTINUE");
+        continueBtn = new JButton(Translations.get("continue"));
         continueBtn.setLayout(new BorderLayout());
         continueBtn.setBorderPainted(false);
         continueBtn.setFocusPainted(false);
         continueBtn.setAlignmentX(LEFT_ALIGNMENT);
         continueBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         continueBtn.setFont(new Font("Inter", Font.BOLD, 18));
-        continueBtn.putClientProperty(FlatClientProperties.STYLE,
-                "arc : 30; background : #FFB300; Foreground : #FFFFFF");
+        continueBtn.putClientProperty(FlatClientProperties.STYLE, "arc : 30; background : #FFB300; Foreground : #FFFFFF");
         continueBtn.add(nextLabel, BorderLayout.EAST);
 
-        backBtn = new JButton("BACK");
+        backBtn = new JButton(Translations.get("back"));
         backBtn.setLayout(new BorderLayout());
         backBtn.setBorderPainted(false);
         backBtn.setFocusPainted(false);
         backBtn.setAlignmentX(LEFT_ALIGNMENT);
         backBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         backBtn.setFont(new Font("Inter", Font.BOLD, 18));
-        backBtn.putClientProperty(FlatClientProperties.STYLE,
-                "arc : 30; background : #FFB300; Foreground : #FFFFFF");
+        backBtn.putClientProperty(FlatClientProperties.STYLE, "arc : 30; background : #FFB300; Foreground : #FFFFFF");
         backBtn.add(backLabel, BorderLayout.WEST);
 
         centerPanel.add(meterNumberLabel);
@@ -277,10 +261,6 @@ public class buyElectricityPage extends JFrame {
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
         add(backgroundPanel);
-        
-        //====================
-        //Adding Functionality
-        //====================
         
         firstAmount.addItemListener(new ItemListener() {
             @Override
@@ -340,48 +320,37 @@ public class buyElectricityPage extends JFrame {
                 long meter = 0;
                 boolean converted = false;
                 
-                //===========================================
-                //Converting the amount from String to an Int
-                //===========================================
-                
                 if (customAmount.isSelected() && !Amount.isEmpty()) {
                     try {
                         amount = Integer.parseInt(Amount);
                     } catch (NumberFormatException n) {
-                        JOptionPane.showMessageDialog(null, "Amount should contain only Digits");
+                        JOptionPane.showMessageDialog(null, Translations.get("amount_digits"));
                     }
                 }
-                //===========================================
-                //Converting the Meter Number from String to a Long
-                //===========================================
                 
                 if (!meterNumber.isEmpty()) {
                     try {
                         meter = Long.parseLong(meterNumber);
                         converted = true;
-                    } catch (NumberFormatException n) {
-                        //The if statement provides the error message
-                    }
+                    } catch (NumberFormatException n) { }
                 }
 
                 if (meterNumber.strip().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Enter your Meter Number", "Meter number field is empty", JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null, Translations.get("enter_meter"), Translations.get("meter_empty"), JOptionPane.OK_OPTION);
                 } else if (!converted) {
-                    JOptionPane.showMessageDialog(null, "Meter Number should contain only Digits!");
+                    JOptionPane.showMessageDialog(null, Translations.get("meter_digits"));
                 } else if (!firstAmount.isSelected() && !secondAmount.isSelected() && !thirdAmount.isSelected() && !customAmount.isSelected()) {
-                    JOptionPane.showMessageDialog(null, "Choose or enter your Amount!", "Select one Toggle Button", JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null, Translations.get("choose_amount"), Translations.get("select_one"), JOptionPane.OK_OPTION);
                 } else if (customAmount.isSelected() && Amount.strip().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Enter your amount", "Amount cannot be empty", JOptionPane.NO_OPTION);
+                    JOptionPane.showMessageDialog(null, Translations.get("enter_amount"), Translations.get("amount_empty"), JOptionPane.NO_OPTION);
                 } else if (amount < 50) {
-                    JOptionPane.showMessageDialog(null, "Minimum purchase is R50", "Amount cannot be less than R50", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, Translations.get("min_purchase"), Translations.get("amount_less"), JOptionPane.ERROR_MESSAGE);
                 } else {
-
                     paymentPageForElectricity page = new paymentPageForElectricity(meter, "Aphelele Shange", amount);
                     page.setVisible(true);
                     dispose();
                 }
             }
-
         });
         
         backBtn.addActionListener(new ActionListener(){
@@ -392,7 +361,5 @@ public class buyElectricityPage extends JFrame {
                 dispose();
             }
         });
-
     }
-
 }

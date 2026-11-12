@@ -1,3 +1,4 @@
+//Final update done by Oyama and Buhle
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -5,8 +6,6 @@ import javax.swing.*;
 
 /**
  * "Add new admin" form. The new admin is saved as PENDING; the main admin must accept it on the dashboard.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class AdminRequestDialog extends JDialog {
     private final Theme.HintField nameField = new Theme.HintField("Full name and surname");

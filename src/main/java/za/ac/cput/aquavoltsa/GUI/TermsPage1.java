@@ -1,3 +1,4 @@
+//Final update done by Sbahle and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 /*
@@ -5,10 +6,6 @@ package za.ac.cput.aquavoltsa.GUI;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-/**
- *
- * @author Sbahle
- */
 import javax.swing.*;
 import java.awt.*;
 

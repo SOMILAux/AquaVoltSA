@@ -1,3 +1,4 @@
+//Final update done by Inathi and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -11,8 +12,6 @@ import javax.swing.ImageIcon;
 /**
  * Profile pictures are saved as small square PNG files in the folder "profile_pictures" next to the project
  * (customers: c_username.png, admins: a_username.png) and shown as round pictures.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class ProfilePics {
     private static final File DIR = new File("profile_pictures");

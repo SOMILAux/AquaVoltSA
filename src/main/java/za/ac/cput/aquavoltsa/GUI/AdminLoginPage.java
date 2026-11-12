@@ -1,11 +1,10 @@
+//Final update done by Oyama and Buhle
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
 
 /**
  * Administrator login (main admin: admin12304 / admin12304).
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class AdminLoginPage extends BasePage {
     private final Theme.HintField usernameField = new Theme.HintField("Admin username");

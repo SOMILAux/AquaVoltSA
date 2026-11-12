@@ -1,3 +1,4 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -6,8 +7,6 @@ import javax.swing.*;
 
 /**
  * "Forgot Login" page. Same look as the Login / Sign-up pages.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class ForgotLoginPage extends BasePage {
     private static final int ID_LENGTH = 13;      // South African ID numbers have 13 digits (same as sign-up)

@@ -1,3 +1,4 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.GUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -33,11 +34,6 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 
-/**
- * In Setting page
- * Student Number: 251239853
- * @author Aphelele Shange
- */
 public class ElectricityPaymentSuccessfulPage extends JFrame{
     
     JPanel backgroundPanel, headerPanel, topPanel, centerPanel, picturePanel, tokenPanel, tokenHolderPanel;
@@ -50,7 +46,7 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
     
     public ElectricityPaymentSuccessfulPage(){
         
-        this.setTitle("Electricity Payment Successful Page");
+        this.setTitle(Translations.get("payment_successful"));
         this.setSize(425, 917);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,12 +54,6 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         this.setFocusable(true);
         this.setVisible(true);
         
-        //=========================
-        //ICON SECTION
-        //=========================
-        
-        
-        //FontIcon homeIcon = FontIcon.of(FontAwesomeSolid.HOME, 25, Color.BLACK);
         FontIcon copyIcon = FontIcon.of(FontAwesomeSolid.COPY, 25, Color.BLACK);
         FontIcon electricityIcon = FontIcon.of(FontAwesomeSolid.BOLT, 30, Color.ORANGE);
         FontIcon historyIcon = FontIcon.of(FontAwesomeSolid.HISTORY, 30, Color.BLACK);
@@ -95,23 +85,17 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         ImageIcon light = new ImageIcon(Icon2);
         
         backgroundPanel = new JPanel() {
-
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
                 Color firstElectricityColor = Color.decode("#FFB300");
                 Color secondElectricityColor = Color.decode("#FFFFFF");
-
                 GradientPaint gp = new GradientPaint(0, 0, firstElectricityColor, getWidth(), getHeight(), secondElectricityColor);
-
                 g2d.setPaint(gp);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
-
         };
 
         backgroundPanel.setLayout(new BorderLayout());
@@ -123,7 +107,7 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         homeBtn.setContentAreaFilled(false);
         homeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        paymentSuccessfulLabel = new JLabel("Payment Successful");
+        paymentSuccessfulLabel = new JLabel(Translations.get("payment_successful"));
         paymentSuccessfulLabel.setFont(new Font("Arial", Font.BOLD, 18));
         paymentSuccessfulLabel.setBorder(BorderFactory.createEmptyBorder(0, 75, 0, 0));
 
@@ -167,7 +151,6 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         picturePanel.setOpaque(false);
         picturePanel.setLayout(null);
         picturePanel.setAlignmentX(LEFT_ALIGNMENT);
-        //picturePanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 80));
         picturePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 140));
 
         smallCircleLabel.setBounds(120, 0, 120, 120);
@@ -178,12 +161,12 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         picturePanel.add(lightLabel);
         picturePanel.add(smallCircleLabel);
         
-        paymentLabel = new JLabel("Payment Successful🎉");
+        paymentLabel = new JLabel(Translations.get("payment_successful") + "🎉");
         paymentLabel.setFont(new Font("Inter", Font.BOLD, 20));
         paymentLabel.setAlignmentX(LEFT_ALIGNMENT);
         paymentLabel.setBorder(BorderFactory.createEmptyBorder(0, 75, 0, 0));
 
-        purchaseText = new JLabel("Your purchase was successful");
+        purchaseText = new JLabel(Translations.get("purchase_successful"));
         purchaseText.setFont(new Font("Arial", Font.PLAIN, 14));
         purchaseText.setAlignmentX(LEFT_ALIGNMENT);
         purchaseText.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
@@ -194,11 +177,10 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
         tokenPanel.setMaximumSize(new Dimension(350, 180));
         tokenPanel.setAlignmentX(LEFT_ALIGNMENT);
 
-        tokenLabel = new JLabel("Your Token");
+        tokenLabel = new JLabel(Translations.get("your_token"));
         tokenLabel.setFont(new Font("Inter", Font.BOLD, 20));
         tokenLabel.setBorder(BorderFactory.createEmptyBorder(5, 110, 0, 0));
         
-        //Creating an array that will hold 4 numbers that will be used to create a token
         rand = new Random();
         int numbers [] = new int[4];
         
@@ -206,59 +188,47 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
             numbers[i] = rand.nextInt(1000, 9999);
         }
         
-        String tokenText = String.valueOf(numbers[0]) + " " + String.valueOf(numbers[1]) + " " + String.valueOf(numbers[2]) + " " + String.valueOf(numbers[3]);
+        String tokenText = numbers[0] + " " + numbers[1] + " " + numbers[2] + " " + numbers[3];
         
         token = new JLabel(tokenText);
         token.setFont(new Font("Roboto", Font.BOLD, 24));
         token.setForeground(Color.decode("#FFB300"));
         
         tokenHolderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        
         tokenHolderPanel.add(token);
-        tokenHolderPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));// moves the token from the top  to the middle of the panel
+        tokenHolderPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
         tokenHolderPanel.setOpaque(false);
         
         ElectricityLabel = new JLabel(electricityIcon);
         ElectricityLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        text = new JLabel("Thank you for using our services");
+        text = new JLabel(Translations.get("thank_you"));
         text.setFont(new Font("Arial", Font.PLAIN, 15));
         text.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
         
-        copyBtn = new JButton("Copy ID");
+        copyBtn = new JButton(Translations.get("copy_id"));
         copyBtn.setLayout(new BorderLayout());
         copyBtn.setFocusPainted(false);
         copyBtn.setBackground(Color.decode("#EAEAEA"));
         copyBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         copyBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        copyBtn.putClientProperty("FlatLaf.style",
-                "borderColor: #FFA500;"
-                + "arc: 30;"
-                + "borderWidth: 1");
+        copyBtn.putClientProperty("FlatLaf.style", "borderColor: #FFA500; arc: 30; borderWidth: 1");
         copyBtn.add(copyLabel, BorderLayout.WEST);
 
-        HomeBtn = new JButton("Back to Home");
+        HomeBtn = new JButton(Translations.get("back_home"));
         HomeBtn.setLayout(new BorderLayout());
         HomeBtn.setFocusPainted(false);
         HomeBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         HomeBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        HomeBtn.putClientProperty("FlatLaf.style",
-                "background: #FFB300;"
-                + "arc: 30;"
-                + "foreground : #FFFFFF;"
-                + "borderWidth : 0");
+        HomeBtn.putClientProperty("FlatLaf.style", "background: #FFB300; arc: 30; foreground : #FFFFFF; borderWidth : 0");
         HomeBtn.add(homeLabel, BorderLayout.WEST);
         
-        historyBtn = new JButton("Show History");
+        historyBtn = new JButton(Translations.get("view_history"));
         historyBtn.setLayout(new BorderLayout());
         historyBtn.setFocusPainted(false);
         historyBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         historyBtn.setFont(new Font("Inter", Font.BOLD, 16));
-        historyBtn.putClientProperty("FlatLaf.style",
-                "background: #FFB300;"
-                + "arc: 30;"
-                + "foreground : #FFFFFF;"
-                + "borderWidth : 0");
+        historyBtn.putClientProperty("FlatLaf.style", "background: #FFB300; arc: 30; foreground : #FFFFFF; borderWidth : 0");
         historyBtn.add(historyLabel, BorderLayout.WEST);
 
         tokenPanel.add(tokenLabel, BorderLayout.NORTH);
@@ -285,48 +255,25 @@ public class ElectricityPaymentSuccessfulPage extends JFrame{
 
         add(backgroundPanel);
         
-        
-        //=============
-        //Functionality
-        //=============
-        
-        homeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                DashboardFrame AquaVoltSA = new DashboardFrame();
-                AquaVoltSA.setVisible(true);
-                dispose();
-            }
+        homeBtn.addActionListener(e -> {
+            new DashboardFrame().setVisible(true);
+            dispose();
         });
         
-        HomeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                DashboardFrame AquaVoltSA = new DashboardFrame();
-                AquaVoltSA.setVisible(true);
-                dispose();
-            }
+        HomeBtn.addActionListener(e -> {
+            new DashboardFrame().setVisible(true);
+            dispose();
         });
         
-        copyBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                StringSelection selection = new StringSelection(tokenText);
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
-                JOptionPane.showMessageDialog(null, "Token was copied successfully");
-            }
+        copyBtn.addActionListener(e -> {
+            StringSelection selection = new StringSelection(tokenText);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+            JOptionPane.showMessageDialog(null, Translations.get("copy_id") + "!");
         });
         
-        historyBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                TransactionHistoryForElectricityPage AquaVoltSA = new TransactionHistoryForElectricityPage();
-                AquaVoltSA.setVisible(true);
-                dispose();
-            }
+        historyBtn.addActionListener(e -> {
+            new TransactionHistoryForElectricityPage().setVisible(true);
+            dispose();
         });
-        
     }
-
 }

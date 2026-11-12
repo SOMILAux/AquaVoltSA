@@ -1,3 +1,4 @@
+//Final update done by Somila
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -11,10 +12,6 @@ import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
 import org.kordamp.ikonli.swing.FontIcon;
 
-/**
- *
- * @author Shuma.
- */
 public class DashboardFrame extends JFrame {
     public DashboardFrame() {
         
@@ -25,44 +22,35 @@ public class DashboardFrame extends JFrame {
         setResizable(false);
         setLayout(new BorderLayout());
 
-        //Content Panel
         JPanel contentPanel = new JPanel(new BorderLayout());
         
-        //header banner
         ImageIcon logoheader = new ImageIcon("image 8.png");
         JLabel imageHeader = new JLabel(logoheader);
         imageHeader.setHorizontalAlignment(SwingConstants.CENTER); 
         contentPanel.add(imageHeader, BorderLayout.NORTH);
        
-        //middlePanel 
         JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
         middlePanel.setBackground(Color.WHITE);
        
-        //profile
         JPanel userProfile = new JPanel(new BorderLayout());
         userProfile.setBackground(Color.WHITE);
         userProfile.setMaximumSize(new Dimension(420,50));
         userProfile.setPreferredSize(new Dimension(400,50));
         userProfile.setAlignmentX(Component.CENTER_ALIGNMENT); 
         
-        String shownName = Session.customer == null ? "Username" : Session.customer.username;
+        String shownName = Session.customer == null ? Translations.get("username") : Session.customer.username;
         JButton profileButton = new JButton(shownName);
         
-        // ==========================================
-        // LOAD CUSTOM PICTURE OR DEFAULT ICON
-        // ==========================================
         String username = Session.customer == null ? "guest" : Session.customer.username;
         ImageIcon customPic = ProfilePics.circle("c", username, 40);
         
         if (customPic != null) {
             profileButton.setIcon(customPic);
         } else {
-            // Default icon if no picture is saved
             FontIcon defaultIcon = FontIcon.of(FontAwesomeSolid.USER_CIRCLE, 40, Color.BLACK);
             profileButton.setIcon(defaultIcon);
         }
-        // ==========================================
 
         profileButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
         profileButton.setBorderPainted(false);
@@ -80,9 +68,7 @@ public class DashboardFrame extends JFrame {
         });
         userProfile.add(profileButton,BorderLayout.WEST);
        
-        //Notifications + Settings buttons (right side)
         FontIcon settings = FontIcon.of(Material2MZ.SETTINGS, 30, Color.BLACK);
-       
         JButton settingsButton = new JButton();
         settingsButton.setIcon(settings);
         settingsButton.setBorderPainted(false);
@@ -100,7 +86,7 @@ public class DashboardFrame extends JFrame {
         });
 
         int unread = NotificationStore.unread(Session.username());
-        JButton alertsButton = new JButton(unread > 0 ? "Alerts (" + unread + ")" : "Alerts");
+        JButton alertsButton = new JButton(unread > 0 ? Translations.get("alerts") + " (" + unread + ")" : Translations.get("alerts"));
         alertsButton.setFont(new Font("SansSerif", unread > 0 ? Font.BOLD : Font.PLAIN, 13));
         alertsButton.setForeground(unread > 0 ? new Color(211, 47, 47) : Color.DARK_GRAY);
         alertsButton.setBorderPainted(false);
@@ -117,16 +103,14 @@ public class DashboardFrame extends JFrame {
         rightButtons.add(settingsButton);
         userProfile.add(rightButtons, BorderLayout.EAST);
        
-        //Water section
         GaugePanel waterPanel = new GaugePanel(
-        "Water", new Color(0,180,90),true,
+        Translations.get("water"), new Color(0,180,90),true,
         "1. Average", " Usage",
         "2. 179L"," Used"," Today");
         waterPanel.setAlignmentX(Component.CENTER_ALIGNMENT); 
         
-        //water details
-        JPanel waterDetails = createDetailsPanel("Water Usage History", 
-        new int[]{420,510,460,620},"Pay Water Bills","Water history");
+        JPanel waterDetails = createDetailsPanel(true, Translations.get("water_hist"), 
+        new int[]{420,510,460,620}, Translations.get("pay_water"), Translations.get("water_hist_btn"));
         waterDetails.setVisible(false);
         
         waterPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -140,17 +124,14 @@ public class DashboardFrame extends JFrame {
             }
         });
       
-        //Electricity section 
         GaugePanel electricityPanel = new GaugePanel(
-        "Electricity", new Color(225,195,0), false,
+        Translations.get("electricity"), new Color(225,195,0), false,
         "1. Running"," low",
         "2. 29kWh"," Used"," today");
         electricityPanel.setAlignmentX(Component.CENTER_ALIGNMENT); 
         
-        //Electricity details
-        JPanel electricityDetails = createDetailsPanel(
-        "Electricity Usage History", new int[]{620,580,650,610},
-        "Buy Electricity","Electricity history");
+        JPanel electricityDetails = createDetailsPanel(false, Translations.get("elec_hist"), 
+        new int[]{620,580,650,610}, Translations.get("buy_elec"), Translations.get("elec_hist_btn"));
         electricityDetails.setVisible(false);
         electricityPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     
@@ -164,7 +145,7 @@ public class DashboardFrame extends JFrame {
             }
         });
  
-        JButton exitButton = new JButton("Exit");
+        JButton exitButton = new JButton(Translations.get("exit"));
         exitButton.setFont(new Font("Arial", Font.BOLD, 20));
         exitButton.setForeground(Color.WHITE);
         exitButton.setBackground(new Color(76, 153, 223));
@@ -187,7 +168,6 @@ public class DashboardFrame extends JFrame {
         middlePanel.add(exitButton);
         middlePanel.add(Box.createVerticalStrut(15));
       
-        //Scrollbarsection   
         JScrollPane scrollPane = new JScrollPane(middlePanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -211,7 +191,8 @@ public class DashboardFrame extends JFrame {
         setVisible(true);
     }
 
-    private JPanel createDetailsPanel(String chartTitle, int[]monthlyValues, String paymentButtonText, String historyButtonText){
+    // Added a boolean `isWater` to fix the logic, since button text is now translated
+    private JPanel createDetailsPanel(boolean isWater, String chartTitle, int[]monthlyValues, String paymentButtonText, String historyButtonText){
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel,BoxLayout.Y_AXIS));
         detailsPanel.setBackground(Color.WHITE);
@@ -236,10 +217,10 @@ public class DashboardFrame extends JFrame {
         paymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (paymentButtonText.equals("Pay Water Bills")) {
+                if (isWater) {
                     new buyWaterPage().setVisible(true);
                     DashboardFrame.this.dispose();
-                } else if (paymentButtonText.equals("Buy Electricity")) {
+                } else {
                     new buyElectricityPage().setVisible(true);
                     DashboardFrame.this.dispose();
                 }
@@ -253,10 +234,10 @@ public class DashboardFrame extends JFrame {
         historyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (historyButtonText.equals("Water history")) {
+                if (isWater) {
                     new TransactionHistoryForWaterPage().setVisible(true);
                     DashboardFrame.this.dispose();
-                } else if (historyButtonText.equals("Electricity history")) {
+                } else {
                     new TransactionHistoryForElectricityPage().setVisible(true);
                     DashboardFrame.this.dispose();
                 }

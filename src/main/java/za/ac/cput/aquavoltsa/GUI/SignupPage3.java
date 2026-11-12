@@ -1,12 +1,9 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
 import javax.swing.*;
 
-/**
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
- */
 public class SignupPage3 extends BasePage {
     private final Theme.HintField usernameField = new Theme.HintField("Enter Username");
     private final Theme.HintField homeAddress = new Theme.HintField("Enter Home Address");

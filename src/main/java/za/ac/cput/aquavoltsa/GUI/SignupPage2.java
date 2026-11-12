@@ -1,13 +1,10 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
 import java.util.Random;
 import javax.swing.*;
 
-/**
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
- */
 public class SignupPage2 extends BasePage {
     private static final int ID_LENGTH = 13;   // South African ID numbers have 13 digits
 

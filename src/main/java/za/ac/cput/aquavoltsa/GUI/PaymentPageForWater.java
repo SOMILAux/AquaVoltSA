@@ -1,3 +1,4 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.BorderLayout;
@@ -37,11 +38,7 @@ import za.ac.cput.aquavoltsa.DAO.DAO;
 import za.ac.cput.aquavoltsa.Domain.Payment;
 import za.ac.cput.aquavoltsa.Domain.Transaction;
 
-/**
- * Student Number: 251239853
- *
- * @author Aphelele Shange
- */
+
 public class PaymentPageForWater extends JFrame {
 
     JPanel backgroundPanel, headerPanel, centerPanel, topPanel, summaryPanel, topSummaryPanel, leftSummaryPanel, rightSummaryPanel, leftMidSummaryPanel, rightMidSummaryPanel;

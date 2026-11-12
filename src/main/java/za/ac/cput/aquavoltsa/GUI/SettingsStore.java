@@ -1,3 +1,4 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.sql.Connection;
@@ -5,14 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import za.ac.cput.aquavoltsa.DAO.Database;
+import za.ac.cput.aquavoltsa.DAO.DAO;
 
 /**
  * One small table (CUSTOMER_SETTINGS) keeps every setting of a customer as "key = value":
  * language, alert choices, notification channel, lock type, gender, date of birth ...
  * The table is created the first time it is needed.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class SettingsStore {
     private SettingsStore() { }
@@ -29,7 +28,7 @@ final class SettingsStore {
 
     static String get(String user, String key, String def) {
         if (user == null) return def;
-        try (Connection c = Database.connect()) {
+        try (Connection c = DAO.connect()) {
             ensure(c);
             try (PreparedStatement p = c.prepareStatement(
                     "SELECT setting_value FROM customer_settings WHERE customer_username = ? AND setting_key = ?")) {
@@ -40,14 +39,14 @@ final class SettingsStore {
                 }
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
         return def;
     }
 
     static void set(String user, String key, String value) {
         if (user == null) return;
-        try (Connection c = Database.connect()) {
+        try (Connection c = DAO.connect()) {
             ensure(c);
             int n;
             try (PreparedStatement p = c.prepareStatement(
@@ -67,7 +66,7 @@ final class SettingsStore {
                 }
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
     }
 }

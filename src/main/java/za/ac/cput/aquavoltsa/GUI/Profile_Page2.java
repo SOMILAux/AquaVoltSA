@@ -1,3 +1,4 @@
+//Final update done by Inathi and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import za.ac.cput.aquavoltsa.GUI.Settings_Page;
@@ -26,7 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.awt.Dimension;
-import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
+import za.ac.cput.aquavoltsa.DAO.DAO;
 
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
@@ -63,6 +64,7 @@ public class Profile_Page2 extends JFrame {
 
     private JPanel panel_1, panel_2, panel_3, panel_4,
             inner_panel, panel_another4, panel_5, panel_6;
+
     //This is my constructor 
     public Profile_Page2() {
         super("Profile_Setings");
@@ -370,7 +372,7 @@ public class Profile_Page2 extends JFrame {
             public void mouseClicked(MouseEvent e){
                 String sql = "SELECT account_status FROM user_profiles WHERE user_id = ?";
 
-                try (Connection connection = DBConnection.getConnection();
+                try (Connection connection = DAO.connect();
                         PreparedStatement statement = connection.prepareStatement(sql)){
                     statement.setInt(1, 1);
 
@@ -508,8 +510,7 @@ public class Profile_Page2 extends JFrame {
                         + "data_of_birth = VALUES(data_of_birth), "
                         + "verification_method = VALUES(verification_method)";
 
-                try (Connection connection =
-                             DBConnection.getConnection()) {
+                try (Connection connection = DAO.connect()) {
 
                     if (connection == null) {
                         JOptionPane.showMessageDialog(
@@ -625,10 +626,7 @@ public class Profile_Page2 extends JFrame {
                 + "data_of_birth, verification_method "
                 + "FROM user_profiles WHERE user_id = ?";
 
-        try (Connection connection =
-
-                DBConnection.getConnection()) {
-
+        try (Connection connection = DAO.connect()) {
 
             if (connection == null) {
                 JOptionPane.showMessageDialog(
@@ -727,5 +725,4 @@ public class Profile_Page2 extends JFrame {
                     this, "Could not load profile: " + ex.getMessage());
         }
     }
-
 }

@@ -1,10 +1,8 @@
+//Final update done by Sbahle
 package za.ac.cput.aquavoltsa.GUI;
 
 // This class manages the About page of the AquaVolt SA application.
-/**
- *
- * @author Sbahle
- */
+
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+//Final update done by Somila
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
 //import java.awt.geom.Path2D;
 import javax.swing.*;
 
-/**
- *
- * @author Shuma
- */
 public class GaugePanel extends JPanel{
 
    private final String heading;

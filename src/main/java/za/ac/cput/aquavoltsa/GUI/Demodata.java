@@ -1,18 +1,17 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
-import za.ac.cput.aquavoltsa.DAO.Database;
+import za.ac.cput.aquavoltsa.DAO.DAO;
 
 /**
  * It remembers that it did this in the table APP_META, so rows you delete in NetBeans stay deleted.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class DemoData {
     private DemoData() { }
 
     static void seed() {
-        if (Database.meta("demo_seeded") != null) return;
-        if (Database.count("customers") == 0) {   // a brand-new database; an existing one is left exactly as it is
+        if (DAO.meta("demo_seeded") != null) return;
+        if (DAO.count("customers") == 0) {   // a brand-new database; an existing one is left exactly as it is
             demo("Cheese Mokoena", "9001015800086", "Cheese", "Cheese@123", "cheese@mail.co.za", "0821234567",
                     "12 Long Street, Cape Town", "MTR-44821", "SN-77120", "WTR-1024", "ACC-9981", UserStore.VERIFIED);
             demo("Thando Nkosi", "9505055800083", "Thando", "Thando@123", "thando@gmail.com", "0735550142",
@@ -32,7 +31,7 @@ final class DemoData {
             TransactionStore.record("Cheese", "ELE-2026-10-21-14-02-41", "ELECTRICITY", "44821", 100, 2.5, "EFT", "Successful", "4821 7733 1290 6654");
             TransactionStore.record("Sipho", "ELE-2026-10-22-18-30-10", "ELECTRICITY", "88231", 150, 2.5, "Debit / Credit Card", "Successful", "9034 1187 4520 7781");
         }
-        Database.setMeta("demo_seeded", "Y");
+        DAO.setMeta("demo_seeded", "Y");
     }
 
     private static void demo(String name, String idNo, String user, String pass, String mail, String phone,

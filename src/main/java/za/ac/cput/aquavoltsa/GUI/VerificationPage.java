@@ -1,13 +1,10 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
 import java.util.Random;
 import javax.swing.*;
 
-/**
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
- */
 public class VerificationPage extends BasePage {
     private final UserStore.User user;
     private final JLabel expiryLabel = Theme.label(" ", Theme.SMALL.deriveFont(Font.BOLD), Theme.RED, SwingConstants.CENTER);

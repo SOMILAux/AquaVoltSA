@@ -1,3 +1,4 @@
+//Final update done by Sbahle and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.sql.Connection;
@@ -8,13 +9,11 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import za.ac.cput.aquavoltsa.DAO.Database;
+import za.ac.cput.aquavoltsa.DAO.DAO;
 
 /**
  * Notifications stored in the NOTIFICATIONS table. Admins send them, customers read them
  * on the NotificationPage.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public final class NotificationStore {
     public static class Note {
@@ -57,7 +56,7 @@ public final class NotificationStore {
     public static boolean send(String username, String category, String title, String message, String sentBy) {
         String sql = "INSERT INTO notifications (customer_username, category, title, message, status, sent_by) "
                 + "VALUES (?, ?, ?, ?, 'UNREAD', ?)";
-        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+        try (Connection c = DAO.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             p.setString(1, cut(username, 30));
             p.setString(2, cut(category, 20));
             p.setString(3, cut(title, 80));
@@ -65,7 +64,7 @@ public final class NotificationStore {
             p.setString(5, cut(sentBy, 40));
             return p.executeUpdate() > 0;
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
             return false;
         }
     }
@@ -83,13 +82,13 @@ public final class NotificationStore {
         List<Note> list = new ArrayList<>();
         String sql = "SELECT " + COLS + " FROM notifications WHERE LOWER(customer_username) = LOWER(?) "
                 + "ORDER BY created DESC, notif_id DESC";
-        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+        try (Connection c = DAO.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             p.setString(1, username);
             try (ResultSet r = p.executeQuery()) {
                 while (r.next()) list.add(row(r));
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
         return list;
     }
@@ -97,35 +96,35 @@ public final class NotificationStore {
     public static int unread(String username) {
         if (username == null) return 0;
         String sql = "SELECT COUNT(*) FROM notifications WHERE LOWER(customer_username) = LOWER(?) AND status = 'UNREAD'";
-        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+        try (Connection c = DAO.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             p.setString(1, username);
             try (ResultSet r = p.executeQuery()) {
                 r.next();
                 return r.getInt(1);
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
             return 0;
         }
     }
 
     public static void markRead(int id) {
-        try (Connection c = Database.connect();
+        try (Connection c = DAO.connect();
              PreparedStatement p = c.prepareStatement("UPDATE notifications SET status = 'READ' WHERE notif_id = ?")) {
             p.setInt(1, id);
             p.executeUpdate();
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
     }
 
     public static void markAllRead(String username) {
-        try (Connection c = Database.connect();
+        try (Connection c = DAO.connect();
              PreparedStatement p = c.prepareStatement("UPDATE notifications SET status = 'READ' WHERE LOWER(customer_username) = LOWER(?)")) {
             p.setString(1, username);
             p.executeUpdate();
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
     }
 }

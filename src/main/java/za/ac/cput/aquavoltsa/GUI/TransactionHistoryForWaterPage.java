@@ -1,3 +1,4 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.GUI;
 
 import com.formdev.flatlaf.*;
@@ -43,11 +44,7 @@ import org.kordamp.ikonli.material2.Material2MZ;
 import org.kordamp.ikonli.swing.FontIcon;
 import za.ac.cput.aquavoltsa.DAO.DAO;
 
-/**
- * Student Number: 251239853
- *
- * @author Aphelele Shange
- */
+
 public class TransactionHistoryForWaterPage extends JFrame {
 
     JPanel backgroundPanel, topPanel, headerPanel, centerPanel, toggleBtnPanel, searchPanel, totalPanel, totalSpentGrid, totalTransactionGrid, midPanel, historyPanel, footerPanel;

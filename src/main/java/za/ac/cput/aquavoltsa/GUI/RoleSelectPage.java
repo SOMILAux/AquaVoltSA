@@ -1,3 +1,4 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -5,8 +6,6 @@ import javax.swing.*;
 
 /**
  * Shown right after the loading page: "Are you signing up as a... Customer / Administrator".
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class RoleSelectPage extends BasePage {
 

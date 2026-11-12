@@ -1,4 +1,4 @@
-
+//Final update done by Inathi
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.sql.*;
 
-import za.ac.cput.aquavoltsa.DAO.Database;
+import za.ac.cput.aquavoltsa.DAO.DAO;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
@@ -342,7 +342,7 @@ public class Change_Password_Page extends JFrame {
 
         String newHash = UserStore.hash(newPassword);
 
-        try (Connection connection = Database.connect();
+        try (Connection connection = DAO.connect();
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE customers SET pass_hash = ? WHERE id = ?")) {
 
@@ -407,7 +407,7 @@ public class Change_Password_Page extends JFrame {
             return;
         }
 
-        try (Connection connection = Database.connect()) {
+        try (Connection connection = DAO.connect()) {
             ensureLockTable(connection);
 
             int updated;
@@ -447,7 +447,7 @@ public class Change_Password_Page extends JFrame {
             return "Password";
         }
 
-        try (Connection connection = Database.connect()) {
+        try (Connection connection = DAO.connect()) {
             ensureLockTable(connection);
 
             try (PreparedStatement statement = connection.prepareStatement(
@@ -474,6 +474,4 @@ public class Change_Password_Page extends JFrame {
         rbChange_Lock_Type.setText(
                 "Change_Lock_Type (" + getCurrentLockType() + ")");
     }
-
- 
 }

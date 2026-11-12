@@ -1,3 +1,4 @@
+//Final update done by Oyama and Buhle
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.AWTEvent;
@@ -25,8 +26,6 @@ import javax.swing.event.DocumentListener;
  *  3. buttons that had no action yet (back, home, history, copy, ...) are wired to the right page;
  *  4. the logged-in customer's details are filled into the buy pages.
  * Call AppHooks.install() once at start-up (LoginSignupPage.main does this).
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public final class AppHooks {
     static final int W = 425, H = 917;

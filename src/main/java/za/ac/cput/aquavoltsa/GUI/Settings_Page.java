@@ -1,4 +1,4 @@
-
+//Final update done by Inathi
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
@@ -20,7 +20,6 @@ public class Settings_Page extends JFrame implements ActionListener {
     public Settings_Page() {
         super("Settings");
 
-        // 1. Initialize all panels to prevent the NullPointerException
         panel_1 = new JPanel();
         panel_2 = new JPanel();
         panel_3 = new JPanel();
@@ -28,20 +27,20 @@ public class Settings_Page extends JFrame implements ActionListener {
         panel_5 = new JPanel();
         inner_panel = new JPanel();
 
-        lbSettings = new JLabel("Settings");
-        lbAccount = new JLabel("Account");
-        btProfile_Settings = new JButton("Profile Settings");
-        btTerms_Conditions = new JButton("Terms & Conditions");
-        lbNotifications = new JLabel("Notifications");
+        lbSettings = new JLabel();
+        lbAccount = new JLabel();
+        btProfile_Settings = new JButton();
+        btTerms_Conditions = new JButton();
+        lbNotifications = new JLabel();
         lbBlank = new JLabel("");
-        btNotification_Preference = new JButton("Notification Preference");
-        btWater_Alerts = new JButton("Water Alerts");
-        btElectricity_Alerts = new JButton("Elelectricity Alerts");
-        lbApp_Preference = new JLabel("App Preference");
-        btLanguage = new JButton("Language");
-        btHelp_Support = new JButton("Help & Support");
-        btAbout_AquaVolt = new JButton("About AquaVolt     >");
-        btLogOut = new JButton("LogOut");
+        btNotification_Preference = new JButton();
+        btWater_Alerts = new JButton();
+        btElectricity_Alerts = new JButton();
+        lbApp_Preference = new JLabel();
+        btLanguage = new JButton();
+        btHelp_Support = new JButton();
+        btAbout_AquaVolt = new JButton();
+        btLogOut = new JButton();
         
         backIcon = FontIcon.of(FontAwesomeSolid.ARROW_LEFT, 24, Color.BLACK);
         lbBack = new JLabel();
@@ -60,10 +59,8 @@ public class Settings_Page extends JFrame implements ActionListener {
         logoutIcon = FontIcon.of(FontAwesomeSolid.SIGN_OUT_ALT, 25, Color.BLACK);
         
         logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
-        
-        //showGui();
     }
-     //In this method i am setting up my panels and thier layout
+
     public void showGui() {
         this.setLayout(new GridLayout(6, 1));
         
@@ -72,6 +69,7 @@ public class Settings_Page extends JFrame implements ActionListener {
         
         panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         lbSettings.setIcon(settingsIcon);
+        lbSettings.setText(Translations.get("settings"));
         lbSettings.setFont(new Font("Arial", Font.BOLD, 24));
         panel_1.add(lbBack);
         panel_1.add(lbSettings);
@@ -86,31 +84,39 @@ public class Settings_Page extends JFrame implements ActionListener {
         inner_panel.add(lbJust_b);
         this.add(inner_panel);
 
+        lbAccount.setText(Translations.get("account"));
         panel_2.add(lbAccount);
         lbAccount.setFont(new Font("Arial", Font.BOLD, 16));
+        
+        btProfile_Settings.setText(Translations.get("profile_settings"));
         btProfile_Settings.setIcon(profileIcon);
         btProfile_Settings.setBackground(Color.WHITE);
         btProfile_Settings.setLayout(new GridLayout(1, 2));
         panel_2.add(btProfile_Settings);
         
+        btTerms_Conditions.setText(Translations.get("terms_conditions"));
         btTerms_Conditions.setBackground(Color.WHITE);
         btTerms_Conditions.setIcon(termsIcon);
         panel_2.add(btTerms_Conditions);
         
+        lbNotifications.setText(Translations.get("notifications"));
         lbNotifications.setFont(new Font("Arial", Font.BOLD, 16));
         panel_2.add(lbNotifications);
         panel_2.setLayout(new GridLayout(4, 1));
         panel_2.setBackground(Color.WHITE);
         this.add(panel_2);
 
+        btNotification_Preference.setText(Translations.get("notif_pref"));
         btNotification_Preference.setIcon(notificationIcon);
         btNotification_Preference.setBackground(Color.WHITE);
         panel_3.add(btNotification_Preference);
         
+        btWater_Alerts.setText(Translations.get("water_alerts"));
         btWater_Alerts.setIcon(waterIcon);
         btWater_Alerts.setBackground(Color.WHITE);
         panel_3.add(btWater_Alerts);
         
+        btElectricity_Alerts.setText(Translations.get("elec_alerts"));
         btElectricity_Alerts.setIcon(electricityIcon);
         btElectricity_Alerts.setBackground(Color.WHITE);
         panel_3.add(btElectricity_Alerts);
@@ -118,17 +124,21 @@ public class Settings_Page extends JFrame implements ActionListener {
         panel_3.setLayout(new GridLayout(3, 1));
         this.add(panel_3);
 
+        lbApp_Preference.setText(Translations.get("app_pref"));
         lbApp_Preference.setFont(new Font("Arial", Font.BOLD, 16));
         panel_4.add(lbApp_Preference);
         
+        btLanguage.setText(Translations.get("language"));
         btLanguage.setIcon(languageIcon);
         btLanguage.setBackground(Color.WHITE);
         panel_4.add(btLanguage);
         
+        btHelp_Support.setText(Translations.get("help_support"));
         btHelp_Support.setIcon(help_supportIcon);
         btHelp_Support.setBackground(Color.WHITE);
         panel_4.add(btHelp_Support);
         
+        btAbout_AquaVolt.setText(Translations.get("about") + "     >");
         btAbout_AquaVolt.setIcon(aboutIcon);
         btAbout_AquaVolt.setBackground(Color.WHITE);
         panel_4.add(btAbout_AquaVolt);
@@ -137,6 +147,7 @@ public class Settings_Page extends JFrame implements ActionListener {
         panel_4.setBackground(Color.WHITE);
         this.add(panel_4);
 
+        btLogOut.setText(Translations.get("logout"));
         btLogOut.setIcon(logoutIcon);
         btLogOut.setBackground(Color.ORANGE);
         panel_5.add(btLogOut);
@@ -165,9 +176,9 @@ public class Settings_Page extends JFrame implements ActionListener {
             }
         });
     }
-    //Starting the action when the user clicks each and every button
+
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Profile Settings") || e.getSource() == btProfile_Settings) {
+        if (e.getActionCommand().equals(Translations.get("profile_settings")) || e.getSource() == btProfile_Settings) {
             Profile_Page2 profile = new Profile_Page2();
             profile.setSize(425, 917);
             profile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -175,7 +186,7 @@ public class Settings_Page extends JFrame implements ActionListener {
             profile.setVisible(true);
             this.dispose();
         }
-        if (e.getActionCommand().equals("Terms & Conditions") || e.getSource() == btTerms_Conditions) {
+        if (e.getActionCommand().equals(Translations.get("terms_conditions")) || e.getSource() == btTerms_Conditions) {
             TermsPage tm = new TermsPage();
             tm.setSize(425, 917);
             tm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -215,7 +226,7 @@ public class Settings_Page extends JFrame implements ActionListener {
             language.setVisible(true);
             this.dispose();
         }
-        if (e.getActionCommand().equals("Help & Support") || e.getSource() == btHelp_Support) {
+        if (e.getActionCommand().equals(Translations.get("help_support")) || e.getSource() == btHelp_Support) {
             Help_and_Support_Page help = new Help_and_Support_Page();
             help.setSize(425, 917);
             help.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -232,14 +243,14 @@ public class Settings_Page extends JFrame implements ActionListener {
             this.dispose();
         }
         if (e.getSource() == btLogOut) {
-            int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?", "Confirm Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int choice = JOptionPane.showConfirmDialog(this, Translations.get("confirm_logout"), Translations.get("logout"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (choice == JOptionPane.YES_OPTION) {
                 new LoginSignupPage().setVisible(true);
                 this.dispose();
             }
         }
-        
     }
+
     public static void main(String[] args){
         Settings_Page page = new Settings_Page();
         page.setSize(425,917);
@@ -247,6 +258,5 @@ public class Settings_Page extends JFrame implements ActionListener {
         page.setLocationRelativeTo(null);
         page.showGui();
         page.setVisible(true);
-        
     }
 }

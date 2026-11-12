@@ -1,3 +1,4 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -5,8 +6,6 @@ import javax.swing.*;
 
 /**
  * Small shared building blocks so every page has the same clean look (cards, round avatars, captions).
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 final class UiKit {
     private UiKit() { }

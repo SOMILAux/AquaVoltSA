@@ -1,3 +1,4 @@
+//Final update done by Oyama and Buhle
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -16,8 +17,6 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 /**
  * Admin app screen (425 x 917, like the customer app): app bar, bottom navigation
  * (Home / Customers / Admins / Activity) and card lists instead of tables.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class AdminDashboard extends JFrame {
     private static final Color GREEN = new Color(46, 125, 50), AMBER = new Color(245, 166, 0), PAGE = new Color(245, 248, 252);

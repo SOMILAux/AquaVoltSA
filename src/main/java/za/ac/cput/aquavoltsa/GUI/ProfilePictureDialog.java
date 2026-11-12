@@ -1,3 +1,4 @@
+//Final update done by Inathi and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -8,8 +9,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * "Change your picture": take a photo with the camera app, or choose one from the gallery (any folder).
  * kind = "c" for customers, "a" for admins. After it closes, check the field "changed".
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 class ProfilePictureDialog extends JDialog {
     boolean changed = false;

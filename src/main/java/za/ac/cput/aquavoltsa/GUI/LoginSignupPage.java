@@ -1,3 +1,4 @@
+//Final update done by Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -18,12 +19,9 @@ import java.util.UUID;
 import javax.swing.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.text.JTextComponent;
-import za.ac.cput.aquavoltsa.DAO.Database;
+import za.ac.cput.aquavoltsa.DAO.DAO;
  
-/**
- * @Student-Number 241028213
- * @author Oyama Sibunzi
- */ 
+
 public class LoginSignupPage extends BasePage {
     private final Theme.HintField usernameField = new Theme.HintField("Enter Username");
     private final Theme.HintPassword passwordField = new Theme.HintPassword("Password");
@@ -155,7 +153,7 @@ class SplashPage extends JFrame {
             progress++;
             bar.setValue(progress);
             status.setText(steps[Math.min(steps.length - 1, progress / 26)]);
-            if (progress == 30 && !Database.init()) {   // creates the tables on the first run
+            if (progress == 30 && !DAO.init()) {   // creates the tables on the first run
                 t.stop();
                 System.exit(0);
             }
@@ -721,23 +719,23 @@ final class UserStore {
     public static List<User> all() {
         List<User> list = new ArrayList<>();
         String sql = "SELECT " + COLS + " FROM customers ORDER BY created DESC";
-        try (Connection c = Database.connect(); Statement st = c.createStatement(); ResultSet r = st.executeQuery(sql)) {
+        try (Connection c = DAO.connect(); Statement st = c.createStatement(); ResultSet r = st.executeQuery(sql)) {
             while (r.next()) list.add(row(r));
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
         return list;
     }
 
     public static User find(String username) {
         String sql = "SELECT " + COLS + " FROM customers WHERE LOWER(username) = LOWER(?)";
-        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+        try (Connection c = DAO.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             p.setString(1, username);
             try (ResultSet r = p.executeQuery()) {
                 if (r.next()) return row(r);
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
         return null;
     }
@@ -751,27 +749,27 @@ final class UserStore {
         u.id = "U" + UUID.randomUUID().toString().substring(0, 8);
         String sql = "INSERT INTO customers (id, full_name, id_number, username, pass_hash, email, phone, address, "
                 + "meter, serial, water_meter, account_no, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+        try (Connection c = DAO.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             String[] v = {u.id, cut(u.fullName, 100), cut(u.idNumber, 20), cut(u.username, 30), u.passHash,
                 cut(u.email, 100), cut(u.phone, 20), cut(u.address, 200), cut(u.meter, 9), cut(u.serial, 30),
                 cut(u.waterMeter, 9), cut(u.accountNo, 30), u.status};
             for (int i = 0; i < v.length; i++) p.setString(i + 1, v[i]);
             p.executeUpdate();
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
     }
 
     /** NEW - Forgot Login: the customer with this ID number (the first one if there are several), or null. */
     public static User findByIdNumber(String idNumber) {
         String sql = "SELECT " + COLS + " FROM customers WHERE id_number = ? ORDER BY created";
-        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+        try (Connection c = DAO.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             p.setString(1, idNumber);
             try (ResultSet r = p.executeQuery()) {
                 if (r.next()) return row(r);
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
         }
         return null;
     }
@@ -784,7 +782,7 @@ final class UserStore {
      */
     public static String updateLogin(User account, String newUsername, String newPassHash) {
         String newName = cut(newUsername, 30);
-        try (Connection c = Database.connect()) {
+        try (Connection c = DAO.connect()) {
             c.setAutoCommit(false);
             try {
                 try (PreparedStatement p = c.prepareStatement("UPDATE customers SET username = ?, pass_hash = ? WHERE id = ?")) {
@@ -816,30 +814,30 @@ final class UserStore {
                 throw e;
             }
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
             return "Could not save the new login details. Please try again.";
         }
     }
 
     public static boolean setStatus(String id, String status) {
-        try (Connection c = Database.connect();
+        try (Connection c = DAO.connect();
              PreparedStatement p = c.prepareStatement("UPDATE customers SET status = ? WHERE id = ?")) {
             p.setString(1, status);
             p.setString(2, id);
             return p.executeUpdate() > 0;
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
             return false;
         }
     }
 
     public static boolean delete(String id) {
-        try (Connection c = Database.connect();
+        try (Connection c = DAO.connect();
              PreparedStatement p = c.prepareStatement("DELETE FROM customers WHERE id = ?")) {
             p.setString(1, id);
             return p.executeUpdate() > 0;
         } catch (SQLException e) {
-            Database.report(e);
+            DAO.report(e);
             return false;
         }
     }

@@ -1,3 +1,4 @@
+//Final update done by Oyama and Buhle
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.awt.*;
@@ -6,8 +7,6 @@ import javax.swing.*;
 
 /**
  * Admin verification: pick SMS or Email (one only), code expires after 45 seconds, 3 attempts allowed.
- * @StudentNumber 241028213
- * @author Oyama Sibunzi
  */
 public class AdminVerificationPage extends BasePage {
     private final AdminStore.Admin admin;

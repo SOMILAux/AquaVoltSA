@@ -1,13 +1,11 @@
+//Final update done by Sbahle
 package za.ac.cput.aquavoltsa.GUI;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/**
- *
- * @author Sbahle
- */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
