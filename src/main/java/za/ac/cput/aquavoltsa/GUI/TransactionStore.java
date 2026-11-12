@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import za.ac.cput.aquavoltsa.DAO.Database;
 
 /**
  * Every water / electricity payment is also saved in the TRANSACTIONS table so the admin can see it.
