@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import za.ac.cput.aquavoltsa.DAO.Database;
 
 /**
  * One small table (CUSTOMER_SETTINGS) keeps every setting of a customer as "key = value":
