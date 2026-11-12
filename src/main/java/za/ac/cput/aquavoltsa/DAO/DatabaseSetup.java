@@ -1,66 +1,18 @@
+//Final update done by Oyama, Sbahle and Aphelele
 package za.ac.cput.aquavoltsa.DAO;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 /**
- *
- * @author Sbahle
+ * Manual trigger for the database setup (Shift+F6 on this file).
+ * In normal use, SplashPage → DAO.init() already does it at startup, so
+ * you never need to run this by hand.
  */
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-
 public class DatabaseSetup {
 
     public static void main(String[] args) {
-
-        String url = "jdbc:derby:AquaVoltDB;create=true";
-
-        try {
-            Connection conn = DriverManager.getConnection(url);
-
-            System.out.println("Database connected successfully!");
-
-            Statement stmt = conn.createStatement();
-
-            // Create Settings table
-            try {
-
-                String settingsSQL =
-                        "CREATE TABLE Settings ("
-                        + "SettingsID INT PRIMARY KEY,"
-                        + "UserID INT,"
-                        + "Water_alerts VARCHAR(20),"
-                        + "Electricity_alerts VARCHAR(20),"
-                        + "Language VARCHAR(50)"
-                        + ")";
-
-                stmt.executeUpdate(settingsSQL);
-
-                System.out.println(
-                        "Settings table created successfully!"
-                );
-
-            } catch (Exception e) {
-
-                System.out.println(
-                        "Settings table already exists."
-                );
-            }
-
-            stmt.close();
-            conn.close();
-
-            System.out.println(
-                    "Database setup completed successfully!"
-            );
-
-        } catch (Exception e) {
-
-            //e.printStackTrace();
-        }
+        System.out.println("Setting up the AquaVolt database (via DAO.init())…");
+        boolean ok = DAO.init();
+        System.out.println(ok
+                ? "Database setup completed successfully!"
+                : "Database setup failed — see the pop-up for details.");
     }
 }
