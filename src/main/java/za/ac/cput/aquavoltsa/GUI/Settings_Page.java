@@ -61,7 +61,7 @@ public class Settings_Page extends JFrame implements ActionListener {
         
         logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
         
-        showGui();
+        //showGui();
     }
 
     public void showGui() {
@@ -165,7 +165,7 @@ public class Settings_Page extends JFrame implements ActionListener {
             }
         });
     }
-
+    //Starting the action when the user clicks each and every button
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Profile Settings") || e.getSource() == btProfile_Settings) {
             Profile_Page2 profile = new Profile_Page2();

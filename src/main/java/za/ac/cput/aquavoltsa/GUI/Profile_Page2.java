@@ -63,7 +63,7 @@ public class Profile_Page2 extends JFrame {
 
     private JPanel panel_1, panel_2, panel_3, panel_4,
             inner_panel, panel_another4, panel_5, panel_6;
-
+    //This is my constructor 
     public Profile_Page2() {
         super("Profile_Setings");
 
@@ -125,6 +125,8 @@ public class Profile_Page2 extends JFrame {
         txtUsername.setFont(new Font("Arial", Font.PLAIN, 16));
         txtUsername.setBackground(new Color(173, 216, 230));
         txtUsername.setVisible(false);
+        
+        //This is where the actions begin when the user clicks the label
         txtUsername.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -190,6 +192,7 @@ public class Profile_Page2 extends JFrame {
         panel_5 = new JPanel();
         panel_6 = new JPanel();
 
+        //These are my JCombo Boxes  
         String[] verification = {
             "Choose Method", "Email", "SMS", "Call"
         };
@@ -250,7 +253,7 @@ public class Profile_Page2 extends JFrame {
                 dispose();
             }
         });
-
+        //This is where i start adding my panels in the frame 
         panel_1.add(btBack);
         lbBack_Text.setFont(new Font("Arial", Font.BOLD, 16));
         panel_1.setBackground(new Color(173, 216, 230));
@@ -574,7 +577,7 @@ public class Profile_Page2 extends JFrame {
         btCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // loadProfile();
+                loadProfile();
 
                 txtFull_Name.setVisible(false);
                 txtUsername.setVisible(false);

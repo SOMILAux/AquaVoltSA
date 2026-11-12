@@ -297,7 +297,7 @@ public class Electricity_Alerts extends JFrame {
             }
 
         } catch (SQLException e) {
-            // Preferences could not be loaded.
+            JOptionPane.showMessageDialog(this,"Preferences could not be loaded");
         }
     }
 
@@ -360,13 +360,11 @@ public class Electricity_Alerts extends JFrame {
                 statement.executeBatch();
             }
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Electricity alert preferences saved successfully!");
+            JOptionPane.showMessageDialog(this,"Electricity alert preferences saved successfully!");
 
         } catch (SQLException e) {
-            // Preferences could not be saved.
-        }
+             JOptionPane.showMessageDialog(this,"Preferences could not be saved"); 
+        } 
     }
 
     private void saveOnePreference(

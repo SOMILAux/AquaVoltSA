@@ -75,7 +75,7 @@ public class Change_Password_Page extends JFrame {
         setLayout(new GridLayout(5, 1));
 
         // Large black lock icon
-        lockIcon = FontIcon.of(FontAwesomeSolid.LOCK, 82, Color.BLACK);
+        lockIcon = FontIcon.of(FontAwesomeSolid.LOCK, 78, Color.BLACK);
 
         lbJust_blank.setIcon(lockIcon);
         lbJust_blank.setHorizontalAlignment(JLabel.CENTER);
