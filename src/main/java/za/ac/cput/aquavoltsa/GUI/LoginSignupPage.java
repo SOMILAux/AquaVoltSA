@@ -753,8 +753,8 @@ final class UserStore {
                 + "meter, serial, water_meter, account_no, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
             String[] v = {u.id, cut(u.fullName, 100), cut(u.idNumber, 20), cut(u.username, 30), u.passHash,
-                cut(u.email, 100), cut(u.phone, 20), cut(u.address, 200), cut(u.meter, 30), cut(u.serial, 30),
-                cut(u.waterMeter, 30), cut(u.accountNo, 30), u.status};
+                cut(u.email, 100), cut(u.phone, 20), cut(u.address, 200), cut(u.meter, 9), cut(u.serial, 30),
+                cut(u.waterMeter, 9), cut(u.accountNo, 30), u.status};
             for (int i = 0; i < v.length; i++) p.setString(i + 1, v[i]);
             p.executeUpdate();
         } catch (SQLException e) {
