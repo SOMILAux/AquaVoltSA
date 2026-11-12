@@ -18,8 +18,20 @@ import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
  *
  * @author Oyama Sibunzi
  *
-*/
-
+ * The ADMIN / CUSTOMER side of the database, written the SAME way as DAO.java:
+ *  - every method gets its connection from DBConnection.getConnection() (the same connection class DAO.java uses),
+ *    so both codes work on the same database and NetBeans shows all of it together;
+ *  - one createXTable() method per table, with the SQL in a text block;
+ *  - createXView() methods, like DAO.createElectricityView();
+ *  - getX() methods that return a ResultSet, like DAO.getTransactionHistoryforWater().
+ *
+ * Tables made here: CUSTOMERS, ADMINS, ACTIVITY_LOG, NOTIFICATIONS, TRANSACTIONS, APP_META.
+ * (SETTINGS-type values are kept in CUSTOMER_SETTINGS, which SettingsStore creates.)
+ *
+ * To SEE what is in the database from code: run this file (Shift+F6). main() calls showAll(), which prints every
+ * table in the Output window. Nothing is cached, so rows added, changed or deleted in NetBeans show in the app
+ * the next time it reads them.
+ */
 public class Database {
 
     private static final String MAIN_ADMIN = "admin12304";   // main administrator (password admin12304)
@@ -148,6 +160,7 @@ public class Database {
         return execute(SQL);
     }
 
+    // ====================================================================== create views (like DAO.createWaterView)
     public static boolean createPendingCustomersView() {
 
         String SQL = """
@@ -171,7 +184,8 @@ public class Database {
         return execute(SQL);
     }
 
-    
+    // ====================================================================== add rows
+    /** The main administrator is always present, so the admin side can never be locked out. */
     public static void addMainAdmin() {
 
         String SQL = "INSERT INTO ADMINS (USERNAME, FULL_NAME, EMAIL, PHONE, PASS_HASH, IS_MAIN, STATUS, REQUESTED_BY) "
@@ -196,6 +210,9 @@ public class Database {
 
     }
 
+    // ====================================================================== get rows (return a ResultSet, like DAO)
+    // The caller reads the rows with rs.next() and rs.getString("COLUMN").
+
     public static ResultSet getCustomers() {
         return query("SELECT * FROM CUSTOMERS ORDER BY CREATED DESC");
     }
@@ -216,6 +233,8 @@ public class Database {
         return query("SELECT * FROM ACTIVITY_LOG ORDER BY CREATED DESC, LOG_ID DESC");
     }
 
+    // ====================================================================== start-up
+    /** Called while the loading page shows: makes any missing table / view and checks they match this code. */
     public static boolean init() {
         try {
             Connection test = connect();   // is the database reachable?
@@ -251,6 +270,8 @@ public class Database {
         }
     }
 
+    // A table with the same name may already exist from another page of the app (for example TRANSACTIONS or
+    // NOTIFICATIONS) with different columns. This finds that, so the problem is clear instead of a strange error.
     private static String findConflicts() {
         String[][] expected = {{"CUSTOMERS", "PASS_HASH"}, {"ADMINS", "IS_MAIN"}, {"ACTIVITY_LOG", "ADMIN_USERNAME"},
             {"NOTIFICATIONS", "CUSTOMER_USERNAME"}, {"TRANSACTIONS", "CUSTOMER_USERNAME"}};
@@ -273,6 +294,8 @@ public class Database {
         return sb.toString();
     }
 
+    // ====================================================================== small helpers
+    /** Number of rows in a table (what NetBeans shows under View Data). Returns -1 if it cannot be read. */
     public static int count(String table) {
         try {
             Connection con = connect();
@@ -290,6 +313,7 @@ public class Database {
         }
     }
 
+    /** A small remembered value, for example "demo data was already added". */
     public static String meta(String key) {
         try {
             Connection con = connect();
@@ -328,6 +352,7 @@ public class Database {
         }
     }
 
+    // runs one CREATE statement: true = created now, false = it was already there
     private static boolean execute(String SQL) {
         try {
             Connection con = connect();
@@ -371,6 +396,7 @@ public class Database {
     }
 
     // ====================================================================== see the database from code
+    /** Prints EVERY table of the database (this code's tables and DAO's tables) to the Output window. */
     public static void showAll() {
         try {
             Connection con = connect();
@@ -412,11 +438,13 @@ public class Database {
         }
     }
 
+    /** Run this file (Shift+F6) to see the whole database in the Output window. */
     public static void main(String[] args) {
         showAll();
         System.exit(0);
     }
 
+    /** One clear message when the database cannot be reached. */
     public static void report(SQLException e) {
         e.printStackTrace();
         if (showing) return;
