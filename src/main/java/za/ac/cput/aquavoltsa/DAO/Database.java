@@ -75,12 +75,13 @@ public class Database {
                      METER VARCHAR(30),
                      SERIAL VARCHAR(30),
                      WATER_METER VARCHAR(30),
-                     ACCOUNT_NO VARCHAR(30),
+                     ACCOUNT_NO VARCHAR(30), 
                      STATUS VARCHAR(10) NOT NULL DEFAULT 'PENDING',
                      CREATED TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
                      )
                      """;
-
+                        //ACCOUNT_NO check out
+        
         return execute(SQL);
     }
 
@@ -99,6 +100,7 @@ public class Database {
                      CREATED TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
                      )
                      """;
+        
 
         return execute(SQL);
     }
