@@ -1,4 +1,4 @@
- package za.ac.cput.aquavoltsa.GUI;
+package za.ac.cput.aquavoltsa.GUI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.*;
@@ -43,7 +43,13 @@ public class LoginSignupPage extends BasePage {
         gap(14);
 
         JButton enterBtn = put(new Theme.Btn("Enter", Theme.BLUE));
-        gap(10);
+        gap(2);
+        // NEW: "Forgot Login" opens the ForgotLoginPage (ID number -> new username and password)
+        JButton forgotBtn = put(Theme.link("Forgot Login"));
+        forgotBtn.setFont(Theme.SMALL.deriveFont(12f));
+        forgotBtn.setForeground(Theme.GREY);
+        forgotBtn.addActionListener(e -> go(new ForgotLoginPage()));
+        gap(6);
         JLabel or = new JLabel(Theme.icon("or1.png", 220, 25), SwingConstants.CENTER);
         put(or);
         JButton signupBtn = put(Theme.link("Sign Up"));
@@ -751,6 +757,65 @@ final class UserStore {
             p.executeUpdate();
         } catch (SQLException e) {
             Database.report(e);
+        }
+    }
+
+    /** NEW - Forgot Login: the customer with this ID number (the first one if there are several), or null. */
+    public static User findByIdNumber(String idNumber) {
+        String sql = "SELECT " + COLS + " FROM customers WHERE id_number = ? ORDER BY created";
+        try (Connection c = Database.connect(); PreparedStatement p = c.prepareStatement(sql)) {
+            p.setString(1, idNumber);
+            try (ResultSet r = p.executeQuery()) {
+                if (r.next()) return row(r);
+            }
+        } catch (SQLException e) {
+            Database.report(e);
+        }
+        return null;
+    }
+
+    /**
+     * NEW - Forgot Login: gives one customer a new username and password.
+     * The username is also what links the customer to their notifications and payments, so those rows are moved to
+     * the new username in the same go (all or nothing).
+     * Returns null when it worked, otherwise a message to show the customer.
+     */
+    public static String updateLogin(User account, String newUsername, String newPassHash) {
+        String newName = cut(newUsername, 30);
+        try (Connection c = Database.connect()) {
+            c.setAutoCommit(false);
+            try {
+                try (PreparedStatement p = c.prepareStatement("UPDATE customers SET username = ?, pass_hash = ? WHERE id = ?")) {
+                    p.setString(1, newName);
+                    p.setString(2, newPassHash);
+                    p.setString(3, account.id);
+                    if (p.executeUpdate() == 0) {
+                        c.rollback();
+                        return "That account could not be found any more.";
+                    }
+                }
+                if (!newName.equals(account.username)) {
+                    for (String table : new String[]{"notifications", "transactions"}) {
+                        try (PreparedStatement p = c.prepareStatement("UPDATE " + table
+                                + " SET customer_username = ? WHERE LOWER(customer_username) = LOWER(?)")) {
+                            p.setString(1, newName);
+                            p.setString(2, account.username);
+                            p.executeUpdate();
+                        }
+                    }
+                }
+                c.commit();
+                return null;
+            } catch (SQLException e) {
+                c.rollback();
+                if ("23505".equals(e.getSQLState())) {   // 23505 = the username is already used
+                    return "That username was just taken. Please choose another one.";
+                }
+                throw e;
+            }
+        } catch (SQLException e) {
+            Database.report(e);
+            return "Could not save the new login details. Please try again.";
         }
     }
 
