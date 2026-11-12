@@ -7,6 +7,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import za.ac.cput.aquavoltsa.DAO.Database;
 
 //Within Profile page (Inathi)
 
