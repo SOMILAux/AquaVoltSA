@@ -59,6 +59,8 @@ public class LoginSignupPage extends BasePage {
         roleBtn.addActionListener(e -> go(new RoleSelectPage()));
 
         getRootPane().setDefaultButton(enterBtn);
+        
+        
 
         enterBtn.addActionListener(e -> login());
 
