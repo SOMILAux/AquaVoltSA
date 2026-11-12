@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
+import za.ac.cput.aquavoltsa.DAO.Database;
+
 
 public class Profile_Page2 extends JFrame {
 
