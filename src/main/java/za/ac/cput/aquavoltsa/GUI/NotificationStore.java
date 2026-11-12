@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import za.ac.cput.aquavoltsa.DAO.Database;
 
 /**
  * Notifications stored in the NOTIFICATIONS table. Admins send them, customers read them
