@@ -1,10 +1,6 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.Domain;
 
-/**
- * Student Number: 251239853
- *
- * @author Aphelele Shange
- */
 public class Utility {
 
     int utilityID;

@@ -1,12 +1,8 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.Domain;
 
 import java.time.LocalDate;
 
-/**
- * Student Number: 251239853
- *
- * @author Aphelele Shange
- */
 public class ElectricityToken {
 
     int tokenID;

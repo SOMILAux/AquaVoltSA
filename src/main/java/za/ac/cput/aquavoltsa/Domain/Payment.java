@@ -1,13 +1,9 @@
+//Final update done by Aphelele
 package za.ac.cput.aquavoltsa.Domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/**
- * Student Number: 251239853
- *
- * @author Aphelele Shange
- */
 public class Payment {
 
     int paymentID;
