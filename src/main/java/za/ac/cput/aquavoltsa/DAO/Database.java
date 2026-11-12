@@ -17,28 +17,12 @@ import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
  * Student Number: 241028213
  *
  * @author Oyama Sibunzi
- *
- * The ADMIN / CUSTOMER side of the database, written the SAME way as DAO.java:
- *  - every method gets its connection from DBConnection.getConnection() (the same connection class DAO.java uses),
- *    so both codes work on the same database and NetBeans shows all of it together;
- *  - one createXTable() method per table, with the SQL in a text block;
- *  - createXView() methods, like DAO.createElectricityView();
- *  - getX() methods that return a ResultSet, like DAO.getTransactionHistoryforWater().
- *
- * Tables made here: CUSTOMERS, ADMINS, ACTIVITY_LOG, NOTIFICATIONS, TRANSACTIONS, APP_META.
- * (SETTINGS-type values are kept in CUSTOMER_SETTINGS, which SettingsStore creates.)
- *
- * To SEE what is in the database from code: run this file (Shift+F6). main() calls showAll(), which prints every
- * table in the Output window. Nothing is cached, so rows added, changed or deleted in NetBeans show in the app
- * the next time it reads them.
  */
 public class Database {
 
     private static final String MAIN_ADMIN = "admin12304";   // main administrator (password admin12304)
     private static boolean showing = false;
 
-    // ====================================================================== connection
-    /** Same connection as DAO.java: DBConnection.getConnection(). */
     public static Connection connect() throws SQLException {
         Connection con = DBConnection.getConnection();
         if (con == null) {
