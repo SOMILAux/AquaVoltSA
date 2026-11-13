@@ -1,728 +1,402 @@
-//Final update done by Inathi and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
-import za.ac.cput.aquavoltsa.GUI.Settings_Page;
-import za.ac.cput.aquavoltsa.GUI.Change_Password_Page;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import za.ac.cput.aquavoltsa.DAO.DAO;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
-import java.awt.Dimension;
-import za.ac.cput.aquavoltsa.DAO.DAO;
-
+import javax.swing.*;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
 public class Profile_Page2 extends JFrame {
 
-    private FontIcon profile_picture_Icon;
+    // The exact original light blue color
+    private final Color BG_COLOR = new Color(173, 216, 230);
 
+    private JLabel lbProfile_Pic, lbLogo;
     private ImageIcon logoIcon;
+    
+    // Icons
+    private FontIcon full_Name_Icon, username_Icon, email_Icon, 
+            phone_Number_Icon, change_Password_Icon, home_Adress_Icon, 
+            genderIcon, date_of_birth_Icon, account_status_Icon, backIcon;
 
-    private FontIcon full_Name_Icon, username_Icon,
-            email_Icon, phone_Number_Icon, change_Password_Icon,
-            home_Adress_Icon;
+    // UI Elements
+    private JLabel lbBack_Text;
+    private JTextField txtFull_Name, txtUsername, txtEmail, txtPhone_Number, txtHome;
+    private JLabel lbFull_Name_Val, lbUsername_Val, lbEmail_Val, lbPhone_Val, lbHome_Val;
+    
+    private JComboBox<String> cbGender, cbDay, cbMonth, cbYear, cbVerification;
 
-    private JLabel lbBack_Text, lbJust_blank, lbFull_Name, lbLogo,
-            lbUsername, lbEmail_Adress, lbPhone_Number,
-            lbChange_Password, lbHome_Adress, lbProfile_Settings;
-
-    private FontIcon backIcon, genderIcon, date_of_birth_Icon,
-            account_status_Icon;
-
-    private JLabel lbDate_of_birth, lbAccount_status, lbKeep_secure,
-            lbVerification, lbBlank, lbGender;
-
-    private JComboBox cbGender, cbDay, cbMonth, cbYear, cbG;
-
-    private JButton btSave_Changes, btCancel, btBack;
-
-    private JTextField txtFull_Name, txtUsername, txtEmail,
-            txtPhone_Number, txtHome;
-
-    private JTextArea txtHome_Adress;
-    private JRadioButton btReset;
-
-    private JPanel panel_1, panel_2, panel_3, panel_4,
-            inner_panel, panel_another4, panel_5, panel_6;
-
-    //This is my constructor 
     public Profile_Page2() {
-        super("Profile_Setings");
+        super("Profile Settings");
+        setSize(425, 917);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(BG_COLOR);
 
-        profile_picture_Icon = FontIcon.of(
-                FontAwesomeSolid.USER_CIRCLE, 100, Color.BLACK);
+        // --- INITIALIZE ICONS ---
+        full_Name_Icon = FontIcon.of(FontAwesomeSolid.USER, 20, Color.BLACK);
+        username_Icon = FontIcon.of(FontAwesomeSolid.USER_TAG, 20, Color.BLACK);
+        email_Icon = FontIcon.of(FontAwesomeSolid.ENVELOPE, 20, Color.BLACK);
+        phone_Number_Icon = FontIcon.of(FontAwesomeSolid.PHONE, 20, Color.BLACK);
+        change_Password_Icon = FontIcon.of(FontAwesomeSolid.LOCK, 20, Color.BLACK);
+        home_Adress_Icon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT, 20, Color.BLACK);
+        genderIcon = FontIcon.of(FontAwesomeSolid.VENUS_MARS, 20, Color.BLACK);
+        date_of_birth_Icon = FontIcon.of(FontAwesomeSolid.CALENDAR_ALT, 20, Color.BLACK);
+        account_status_Icon = FontIcon.of(FontAwesomeSolid.USER_CHECK, 20, Color.BLACK);
+        backIcon = FontIcon.of(FontAwesomeSolid.ARROW_LEFT, 24, Color.BLACK);
 
-        full_Name_Icon = FontIcon.of(FontAwesomeSolid.USER, 25, Color.BLACK);
-        username_Icon = FontIcon.of(FontAwesomeSolid.USER_TAG, 25, Color.BLACK);
-        email_Icon = FontIcon.of(FontAwesomeSolid.ENVELOPE, 25, Color.BLACK);
-        phone_Number_Icon = FontIcon.of(FontAwesomeSolid.PHONE, 25, Color.BLACK);
-        change_Password_Icon = FontIcon.of(FontAwesomeSolid.LOCK, 25, Color.BLACK);
-        backIcon = FontIcon.of(FontAwesomeSolid.ARROW_LEFT, 25, Color.BLACK);
-        home_Adress_Icon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT, 25, Color.BLACK);
-        genderIcon = FontIcon.of(FontAwesomeSolid.VENUS_MARS, 25, Color.BLACK);
-        date_of_birth_Icon = FontIcon.of(FontAwesomeSolid.CALENDAR_ALT, 25, Color.BLACK);
-        account_status_Icon = FontIcon.of(FontAwesomeSolid.USER_CHECK, 25, Color.BLACK);
+        logoIcon = new ImageIcon(getClass().getResource("/icons/plain_logo.png"));
 
-        logoIcon = new ImageIcon(
-                getClass().getResource("/icons/plain_logo.png"));
-
-        lbFull_Name = new JLabel("Full Name");
-        lbUsername = new JLabel("Username");
-        lbEmail_Adress = new JLabel("Email");
-        lbPhone_Number = new JLabel("Phone Number");
-        lbChange_Password = new JLabel("Change Password");
-        lbHome_Adress = new JLabel("Home Adress");
-        lbProfile_Settings = new JLabel(" .");
-        lbJust_blank = new JLabel(" .");
-        lbBack_Text = new JLabel("Profile Settings");
-        lbVerification = new JLabel("Verification Method");
-        lbDate_of_birth = new JLabel("Date of birth ");
-        lbAccount_status = new JLabel("Account Status");
-        lbKeep_secure = new JLabel(" Keep Account secured !");
-        lbBlank = new JLabel("XXXXXXXXXXXXXXXXXXXXXXXX");
-        lbGender = new JLabel("Gender");
-        lbLogo = new JLabel(" ");
-
-        btSave_Changes = new JButton("Save Changes");
-        btCancel = new JButton("Cancel");
-        btBack = new JButton(" ");
-        btReset = new JRadioButton("Reset");
-
-        txtFull_Name = new JTextField("Edit");
-        txtFull_Name.setFont(new Font("Arial", Font.PLAIN, 16));
-        txtFull_Name.setBackground(new Color(173, 216, 230));
-        txtFull_Name.setVisible(false);
-        txtFull_Name.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredName = txtFull_Name.getText();
-                if (!enteredName.trim().isEmpty()) {
-                    lbFull_Name.setText(enteredName);
-                    txtFull_Name.setVisible(false);
-                }
-            }
-        });
-
-        txtUsername = new JTextField("Edit");
-        txtUsername.setFont(new Font("Arial", Font.PLAIN, 16));
-        txtUsername.setBackground(new Color(173, 216, 230));
-        txtUsername.setVisible(false);
+        // --- TOP BAR (Back Button & Title) ---
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        topPanel.setBackground(BG_COLOR);
         
-        //This is where the actions begin when the user clicks the label
-        txtUsername.addActionListener(new ActionListener() {
+        JButton btBack = new JButton(backIcon);
+        btBack.setBorderPainted(false);
+        btBack.setContentAreaFilled(false);
+        btBack.setFocusPainted(false);
+        btBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btBack.addActionListener(e -> {
+            Settings_Page sett = new Settings_Page();
+            sett.showGui();
+            sett.setVisible(true);
+            this.dispose();
+        });
+
+        lbBack_Text = new JLabel("Profile Settings");
+        lbBack_Text.setFont(new Font("Arial", Font.BOLD, 18));
+        
+        topPanel.add(btBack);
+        topPanel.add(lbBack_Text);
+        add(topPanel, BorderLayout.NORTH);
+
+        // --- MAIN SCROLLABLE CONTENT ---
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(BG_COLOR);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+
+        // 1. Large Profile Picture (Clickable to change)
+        JPanel picPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        picPanel.setBackground(BG_COLOR);
+        
+        lbProfile_Pic = new JLabel();
+        updateProfilePicture();
+        lbProfile_Pic.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lbProfile_Pic.setToolTipText("Click to change profile picture");
+        lbProfile_Pic.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredUsername = txtUsername.getText();
-                if (!enteredUsername.trim().isEmpty()) {
-                    lbUsername.setText(enteredUsername);
-                    txtUsername.setVisible(false);
+            public void mouseClicked(MouseEvent e) {
+                if (Session.customer == null) {
+                    JOptionPane.showMessageDialog(Profile_Page2.this, "Please log in first.");
+                    return;
+                }
+                ProfilePictureDialog dialog = new ProfilePictureDialog(Profile_Page2.this, "c", Session.username(), Session.name());
+                dialog.setVisible(true);
+                if (dialog.changed) {
+                    updateProfilePicture();
                 }
             }
         });
+        
+        picPanel.add(lbProfile_Pic);
+        picPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(picPanel);
+        contentPanel.add(Box.createVerticalStrut(20));
 
-        txtEmail = new JTextField("Edit");
-        txtEmail.setFont(new Font("Arial", Font.PLAIN, 16));
-        txtEmail.setBackground(new Color(173, 216, 230));
-        txtEmail.setVisible(false);
-        txtEmail.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredEmail = txtEmail.getText();
-                if (!enteredEmail.trim().isEmpty()) {
-                    lbEmail_Adress.setText(enteredEmail);
-                    txtEmail.setVisible(false);
-                }
-            }
-        });
+        // 2. Form Rows
+        // Full Name
+        Object[] nameRow = createEditRow("Full Name", full_Name_Icon);
+        contentPanel.add((JPanel) nameRow[0]);
+        lbFull_Name_Val = (JLabel) nameRow[1];
+        txtFull_Name = (JTextField) nameRow[2];
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        txtPhone_Number = new JTextField("Edit");
-        txtPhone_Number.setFont(new Font("Arial", Font.PLAIN, 16));
-        txtPhone_Number.setBackground(new Color(173, 216, 230));
-        txtPhone_Number.setVisible(false);
-        txtPhone_Number.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredPhone = txtPhone_Number.getText();
-                if (!enteredPhone.trim().isEmpty()) {
-                    lbPhone_Number.setText(enteredPhone);
-                    txtPhone_Number.setVisible(false);
-                }
-            }
-        });
+        // Username
+        Object[] userRow = createEditRow("Username", username_Icon);
+        contentPanel.add((JPanel) userRow[0]);
+        lbUsername_Val = (JLabel) userRow[1];
+        txtUsername = (JTextField) userRow[2];
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        txtHome = new JTextField("Home Adress");
-        txtHome.setFont(new Font("Arial", Font.PLAIN, 16));
-        txtHome.setBackground(new Color(173, 216, 230));
-        txtHome.setVisible(false);
-        txtHome.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredAdress = txtHome.getText();
-                if (!enteredAdress.trim().isEmpty()) {
-                    lbHome_Adress.setText(enteredAdress);
-                    txtHome.setVisible(false);
-                }
-            }
-        });
+        // Email
+        Object[] emailRow = createEditRow("Email", email_Icon);
+        contentPanel.add((JPanel) emailRow[0]);
+        lbEmail_Val = (JLabel) emailRow[1];
+        txtEmail = (JTextField) emailRow[2];
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        panel_1 = new JPanel();
-        panel_2 = new JPanel();
-        panel_3 = new JPanel();
-        panel_4 = new JPanel();
-        inner_panel = new JPanel();
-        panel_another4 = new JPanel();
-        panel_5 = new JPanel();
-        panel_6 = new JPanel();
+        // Phone
+        Object[] phoneRow = createEditRow("Phone Number", phone_Number_Icon);
+        contentPanel.add((JPanel) phoneRow[0]);
+        lbPhone_Val = (JLabel) phoneRow[1];
+        txtPhone_Number = (JTextField) phoneRow[2];
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        //These are my JCombo Boxes  
-        String[] verification = {
-            "Choose Method", "Email", "SMS", "Call"
-        };
-        cbGender = new JComboBox(verification);
+        // Change Password (Action Row)
+        contentPanel.add(createActionRow("Change Password", change_Password_Icon, () -> {
+            Change_Password_Page change = new Change_Password_Page();
+            change.setVisible(true);
+            this.dispose();
+        }));
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        String[] Days = {
-            "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-            "10", "11", "12", "13", "14", "15", "16", "17", "18",
-            "19", "20", "21", "22", "23", "24", "25", "26", "27",
-            "28", "29", "30", "31"
-        };
-        cbDay = new JComboBox(Days);
+        // Home Address
+        Object[] addressRow = createEditRow("Home Address", home_Adress_Icon);
+        contentPanel.add((JPanel) addressRow[0]);
+        lbHome_Val = (JLabel) addressRow[1];
+        txtHome = (JTextField) addressRow[2];
+        contentPanel.add(Box.createVerticalStrut(15));
 
-        String[] Months = {
-            "Month", "January", "Febuary", "March", "April",
-            "May", "June", "July", "August", "September",
-            "October", "November", "December"
-        };
-        cbMonth = new JComboBox(Months);
+        // 3. Combo Boxes (Verification, DOB, Gender) - Rendered as clean rows
+        String[] verification = {"Choose Method", "Email", "SMS", "Call"};
+        cbVerification = new JComboBox<>(verification);
+        contentPanel.add(createComboRow("Verification Method", genderIcon, cbVerification));
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        String[] Years = {
-            "Year","1930","1931","1932","1933","1934","1935",
-            "1936","1937","1938","1939","1940","1941","1942",
-            "1943","1944","1945","1946","1947","1948","1949",
-            "1950", "1951", "1952", "1953", "1954",
-            "1955", "1956", "1957", "1958", "1959", "1960",
-            "1961", "1962", "1963", "1964", "1965", "1966",
-            "1967", "1968", "1969", "1970", "1971", "1972",
-            "1973", "1974", "1975", "1976", "1977", "1978",
-            "1979", "1980", "1981", "1982", "1983", "1984",
-            "1985", "1986", "1987", "1988", "1989", "1990",
-            "1991", "1992", "1993", "1994", "1995", "1996",
-            "1997", "1998", "1999", "2000", "2001", "2002",
-            "2003", "2004", "2005", "2006", "2007", "2008",
-            "2009", "2010", "2011", "2012", "2013", "2014",
-            "2015", "2016", "2017", "2018", "2019", "2020",
-            "2021", "2022", "2023", "2024", "2025", "2026",
-            "2027", "2028", "2029", "2030", "2031", "2032",
-            "2033", "2034", "2035", "2036", "2037", "2038",
-            "2039", "2040","2041","2042","2043","2044","2043",
-            "2044","2045", "2046","2047","2048","2049","2050",
-                
-        };
-        cbYear = new JComboBox(Years);
+        // Date of Birth
+        JPanel dobPanel = new JPanel(new BorderLayout());
+        dobPanel.setBackground(BG_COLOR);
+        JLabel dobTitle = new JLabel("Date of Birth", date_of_birth_Icon, SwingConstants.LEFT);
+        dobTitle.setFont(new Font("Arial", Font.BOLD, 14));
+        dobPanel.add(dobTitle, BorderLayout.NORTH);
+        
+        JPanel dobBoxes = new JPanel(new GridLayout(1, 3, 5, 0));
+        dobBoxes.setBackground(BG_COLOR);
+        String[] days = new String[32]; days[0] = "Day";
+        for(int i=1; i<=31; i++) days[i] = String.valueOf(i);
+        cbDay = new JComboBox<>(days);
+        
+        String[] months = {"Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        cbMonth = new JComboBox<>(months);
+        
+        String[] years = new String[100]; years[0] = "Year";
+        for(int i=1; i<100; i++) years[i] = String.valueOf(1920 + i);
+        cbYear = new JComboBox<>(years);
 
-        String[] gender = {"Gender", "Female", "Male", "Other"};
-        cbG = new JComboBox(gender);
+        dobBoxes.add(cbDay);
+        dobBoxes.add(cbMonth);
+        dobBoxes.add(cbYear);
+        dobPanel.add(dobBoxes, BorderLayout.CENTER);
+        contentPanel.add(dobPanel);
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        this.setLayout(new GridLayout(8, 1));
+        // Account Status
+        contentPanel.add(createActionRow("Account Status", account_status_Icon, () -> {
+            JOptionPane.showMessageDialog(this, "Account Status: Active");
+        }));
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        btBack.setIcon(backIcon);
-        btBack.setBackground(new Color(173, 216, 230));
+        // Gender
+        String[] genders = {"Gender", "Female", "Male", "Other"};
+        cbGender = new JComboBox<>(genders);
+        contentPanel.add(createComboRow("Gender", genderIcon, cbGender));
+        contentPanel.add(Box.createVerticalStrut(25));
 
-        btBack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Settings_Page sett = new Settings_Page();
-                sett.showGui();
-                sett.setSize(425, 917);
-                sett.setLocationRelativeTo(null);
-                sett.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                sett.setVisible(true);
-                dispose();
-            }
-        });
-        //This is where i start adding my panels in the frame 
-        panel_1.add(btBack);
-        lbBack_Text.setFont(new Font("Arial", Font.BOLD, 16));
-        panel_1.setBackground(new Color(173, 216, 230));
-        panel_1.setLayout(new GridLayout(2, 1));
-        panel_1.add(lbBack_Text);
-        panel_1.setLayout(new FlowLayout());
-        this.add(panel_1);
+        // 4. Action Buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+        buttonPanel.setBackground(BG_COLOR);
+        buttonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
 
-        lbProfile_Settings.setIcon(profile_picture_Icon);
-        panel_2.add(lbProfile_Settings);
-        panel_2.setBackground(new Color(173, 216, 230));
-        panel_2.setPreferredSize(new Dimension(425,120));
-        panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        this.add(panel_2);
+        JButton btSave = new JButton("Save Changes");
+        btSave.setBackground(Color.ORANGE);
+        btSave.setFont(new Font("Arial", Font.BOLD, 14));
+        btSave.setFocusPainted(false);
+        btSave.addActionListener(e -> saveProfile());
 
-        lbFull_Name.setIcon(full_Name_Icon);
-        lbFull_Name.setFont(new Font("Arial", Font.BOLD, 16));
-        lbFull_Name.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                txtFull_Name.setVisible(true);
-                txtFull_Name.requestFocus();
-            }
-        });
-        panel_3.add(lbFull_Name);
-        panel_3.add(txtFull_Name);
-
-        lbUsername.setIcon(username_Icon);
-        lbUsername.setFont(new Font("Arial", Font.BOLD, 16));
-        lbUsername.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                txtUsername.setVisible(true);
-                txtUsername.requestFocus();
-            }
-        });
-        panel_3.add(lbUsername);
-        panel_3.add(txtUsername);
-
-        lbEmail_Adress.setIcon(email_Icon);
-        lbEmail_Adress.setFont(new Font("Arial", Font.BOLD, 16));
-        lbEmail_Adress.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                txtEmail.setVisible(true);
-                txtEmail.requestFocus();
-            }
-        });
-        panel_3.add(lbEmail_Adress);
-        panel_3.add(txtEmail);
-
-        panel_3.setBackground(new Color(173, 216, 230));
-        panel_3.setLayout(new GridLayout(4, 2));
-        this.add(panel_3);
-
-        lbPhone_Number.setIcon(phone_Number_Icon);
-        lbPhone_Number.setFont(new Font("Arial", Font.BOLD, 16));
-        lbPhone_Number.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                txtPhone_Number.setVisible(true);
-                txtPhone_Number.requestFocus();
-            }
-        });
-        panel_4.add(lbPhone_Number);
-        panel_4.add(txtPhone_Number);
-
-        lbChange_Password.setIcon(change_Password_Icon);
-        lbChange_Password.setFont(new Font("Arial", Font.BOLD, 16));
-        lbChange_Password.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Change_Password_Page change = new Change_Password_Page();
-                change.setSize(425, 917);
-                change.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                change.setVisible(true);
-                dispose();
-            }
-        });
-        panel_4.add(lbChange_Password);
-
-        panel_4.add(lbHome_Adress);
-        lbHome_Adress.setIcon(home_Adress_Icon);
-        lbHome_Adress.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                txtHome.setVisible(true);
-                txtHome.requestFocus();
-            }
-        });
-        panel_4.add(txtHome);
-        panel_4.setLayout(new GridLayout(3, 2, 3, 2));
-        panel_4.setBackground(new Color(173, 216, 230));
-        this.add(panel_4);
-
-        lbVerification.setIcon(genderIcon);
-        lbVerification.setFont(new Font("Arial", Font.BOLD, 16));
-        panel_another4.add(lbVerification);
-        panel_another4.add(cbGender);
-
-        lbDate_of_birth.setIcon(date_of_birth_Icon);
-        lbDate_of_birth.setFont(new Font("Arial", Font.BOLD,16));
-        panel_another4.add(lbDate_of_birth);
-
-        lbAccount_status.setIcon(account_status_Icon);
-        lbAccount_status.setFont(new Font("Arial", Font.BOLD, 16));
-        lbAccount_status.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e){
-                String sql = "SELECT account_status FROM user_profiles WHERE user_id = ?";
-
-                try (Connection connection = DAO.connect();
-                        PreparedStatement statement = connection.prepareStatement(sql)){
-                    statement.setInt(1, 1);
-
-                    ResultSet result = statement.executeQuery();
-                    if (result.next()) {
-                        String status = result.getString("account_status");
-
-                        JOptionPane.showMessageDialog(Profile_Page2.this, "Account Status: " + status);
-
-                    }else{
-                        JOptionPane.showMessageDialog(Profile_Page2.this, "Account status not found.");
-                    }
-
-                }catch (SQLException ex){
-                    JOptionPane.showMessageDialog(Profile_Page2.this, "Could not load account status.");
-                }
-            }
-
-        });
-        panel_another4.add(lbAccount_status);
-        panel_another4.setLayout(new GridLayout(3, 1));
-        panel_another4.setBackground(new Color(173, 216, 230));
-        this.add(panel_another4);
-
-
-        inner_panel.add(cbDay);
-        inner_panel.add(new JLabel("   "));
-        inner_panel.add(cbMonth);
-        inner_panel.add(new JLabel("  "));
-        inner_panel.add(cbYear);
-        inner_panel.add(new JLabel("   "));
-        inner_panel.setLayout(new GridLayout(3, 2, 10, 10));
-        inner_panel.setBackground(new Color(173, 216, 230));
-        this.add(inner_panel);
-
-        btSave_Changes.setBackground(Color.orange);
-        btSave_Changes.setFont(new Font("Arial", Font.BOLD, 16));
-        lbGender.setFont(new Font("Arial", Font.BOLD, 16));
-        panel_5.add(lbGender);
-        panel_5.add(cbG);
-        panel_5.add(btSave_Changes);
-
+        JButton btCancel = new JButton("Cancel");
         btCancel.setBackground(Color.LIGHT_GRAY);
-        btCancel.setFont(new Font("Arial", Font.BOLD, 16));
-        panel_5.add(btCancel);
+        btCancel.setFont(new Font("Arial", Font.BOLD, 14));
+        btCancel.setFocusPainted(false);
+        btCancel.addActionListener(e -> {
+            loadProfile();
+            JOptionPane.showMessageDialog(this, "Changes cancelled.");
+        });
 
-        btSave_Changes.addActionListener(new ActionListener() {
+        buttonPanel.add(btSave);
+        buttonPanel.add(btCancel);
+        contentPanel.add(buttonPanel);
+        contentPanel.add(Box.createVerticalStrut(20));
+
+        // 5. Bottom Logo
+        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        logoPanel.setBackground(BG_COLOR);
+        Image image = logoIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        lbLogo = new JLabel(new ImageIcon(image));
+        logoPanel.add(lbLogo);
+        contentPanel.add(logoPanel);
+
+        // --- ADD TO SCROLL PANE ---
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Load actual data from database
+        loadProfile();
+    }
+
+    // Helper to create the clean edit rows (Label -> TextField on click)
+    private Object[] createEditRow(String title, FontIcon icon) {
+        JPanel row = new JPanel(new BorderLayout());
+        row.setBackground(BG_COLOR);
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+
+        JLabel titleLabel = new JLabel(title, icon, SwingConstants.LEFT);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        row.add(titleLabel, BorderLayout.WEST);
+
+        JPanel valuePanel = new JPanel(new CardLayout());
+        valuePanel.setBackground(BG_COLOR);
+
+        JLabel valLabel = new JLabel("Not set");
+        valLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        valLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JTextField textField = new JTextField();
+        textField.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        valuePanel.add(valLabel, "LABEL");
+        valuePanel.add(textField, "FIELD");
+
+        CardLayout cl = (CardLayout) valuePanel.getLayout();
+
+        // Click to edit
+        valLabel.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String fullName = txtFull_Name.getText().trim();
-                String username = txtUsername.getText().trim();
-                String email = txtEmail.getText().trim();
-                String phone = txtPhone_Number.getText().trim();
-                String address = txtHome.getText().trim();
-
-                String selectedGender = cbG.getSelectedItem().toString();
-                String verification = cbGender.getSelectedItem().toString();
-
-                String day = cbDay.getSelectedItem().toString();
-                String month = cbMonth.getSelectedItem().toString();
-                String year = cbYear.getSelectedItem().toString();
-
-                if (fullName.isEmpty() || fullName.equals("Edit")) {
-                    JOptionPane.showMessageDialog(Profile_Page2.this,
-                            "Please enter your full name.");
-                    return;
-                }
-
-                if (username.isEmpty() || username.equals("Edit")) {
-                    JOptionPane.showMessageDialog(Profile_Page2.this,
-                            "Please enter your username.");
-                    return;
-                }
-
-                if (email.isEmpty() || email.equals("Edit")
-                        || !email.contains("@")
-                        || !email.contains(".")) {
-                    JOptionPane.showMessageDialog(Profile_Page2.this,
-                            "Please enter a valid email address.");
-                    return;
-                }
-
-                if (selectedGender.equals("Gender")
-                        || verification.equals("Choose Method")
-                        || day.equals("Days")
-                        || month.equals("Months")
-                        || year.equals("Year")) {
-                    JOptionPane.showMessageDialog(Profile_Page2.this,
-                            "Please complete all required fields.");
-                    return;
-                }
-
-                int monthNumber;
-
-                switch (month) {
-                    case "January": monthNumber = 1; break;
-                    case "February":
-                    case "Febuary": monthNumber = 2; break;
-                    case "March": monthNumber = 3; break;
-                    case "April": monthNumber = 4; break;
-                    case "May": monthNumber = 5; break;
-                    case "June": monthNumber = 6; break;
-                    case "July": monthNumber = 7; break;
-                    case "August": monthNumber = 8; break;
-                    case "September": monthNumber = 9; break;
-                    case "October": monthNumber = 10; break;
-                    case "November": monthNumber = 11; break;
-                    case "December": monthNumber = 12; break;
-                    default:
-                        JOptionPane.showMessageDialog(Profile_Page2.this,
-                                "Please select a valid month.");
-                        return;
-                }
-
-                String dateOfBirth = String.format(
-                        "%04d-%02d-%02d",
-                        Integer.parseInt(year),
-                        monthNumber,
-                        Integer.parseInt(day));
-
-                String updateUserSql =
-                        "UPDATE users SET username = ?, email = ? "
-                        + "WHERE user_id = ?";
-
-                String profileSql = "INSERT INTO user_profiles "
-                        + "(user_id, full_name, phone_number, home_address, "
-                        + "gender, data_of_birth, verification_method) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?) "
-                        + "ON DUPLICATE KEY UPDATE "
-                        + "full_name = VALUES(full_name), "
-                        + "phone_number = VALUES(phone_number), "
-                        + "home_address = VALUES(home_address), "
-                        + "gender = VALUES(gender), "
-                        + "data_of_birth = VALUES(data_of_birth), "
-                        + "verification_method = VALUES(verification_method)";
-
-                try (Connection connection = DAO.connect()) {
-
-                    if (connection == null) {
-                        JOptionPane.showMessageDialog(
-                                Profile_Page2.this,
-                                "Database connection failed.");
-                        return;
-                    }
-
-                    connection.setAutoCommit(false);
-
-                    try {
-                        try (PreparedStatement userStatement =
-                                     connection.prepareStatement(updateUserSql)) {
-                            userStatement.setString(1, username);
-                            userStatement.setString(2, email);
-                            userStatement.setInt(3, 1);
-
-                            int userRows = userStatement.executeUpdate();
-
-                            if (userRows == 0) {
-                                throw new SQLException(
-                                        "No user found with user_id = 1.");
-                            }
-                        }
-
-                        try (PreparedStatement profileStatement =
-                                     connection.prepareStatement(profileSql)) {
-                            profileStatement.setInt(1, 1);
-                            profileStatement.setString(2, fullName);
-                            profileStatement.setString(3, phone);
-                            profileStatement.setString(4, address);
-                            profileStatement.setString(5, selectedGender);
-                            profileStatement.setDate(
-                                    6, java.sql.Date.valueOf(dateOfBirth));
-                            profileStatement.setString(7, verification);
-
-                            profileStatement.executeUpdate();
-                        }
-
-                        connection.commit();
-
-                        lbFull_Name.setText(fullName);
-                        lbUsername.setText(username);
-                        lbEmail_Adress.setText(email);
-                        lbPhone_Number.setText(phone);
-                        lbHome_Adress.setText(address);
-
-                        JOptionPane.showMessageDialog(
-                                Profile_Page2.this,
-                                "Profile saved successfully!");
-
-                    } catch (SQLException | IllegalArgumentException ex) {
-                        connection.rollback();
-
-                        JOptionPane.showMessageDialog(
-                                Profile_Page2.this,
-                                "Could not save profile: " + ex.getMessage());
-                    } finally {
-                        connection.setAutoCommit(true);
-                    }
-
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(
-                            Profile_Page2.this,
-                            "Database error: " + ex.getMessage());
-                }
+            public void mouseClicked(MouseEvent e) {
+                textField.setText(valLabel.getText().equals("Not set") ? "" : valLabel.getText());
+                cl.show(valuePanel, "FIELD");
+                textField.requestFocus();
             }
         });
 
-        btCancel.addActionListener(new ActionListener() {
+        // Enter or click away to save the edit
+        textField.addActionListener(e -> {
+            valLabel.setText(textField.getText().trim().isEmpty() ? "Not set" : textField.getText().trim());
+            cl.show(valuePanel, "LABEL");
+        });
+        textField.addFocusListener(new FocusAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                loadProfile();
-
-                txtFull_Name.setVisible(false);
-                txtUsername.setVisible(false);
-                txtEmail.setVisible(false);
-                txtPhone_Number.setVisible(false);
-                txtHome.setVisible(false);
-
-                JOptionPane.showMessageDialog(Profile_Page2.this,
-                        "Changes cancelled. Saved details restored.");
+            public void focusLost(FocusEvent e) {
+                valLabel.setText(textField.getText().trim().isEmpty() ? "Not set" : textField.getText().trim());
+                cl.show(valuePanel, "LABEL");
             }
         });
 
-        panel_5.setBackground(new Color(173, 216, 230));
-        panel_5.setLayout(new GridLayout(3, 1, 10, 10));
-        this.add(panel_5);
+        row.add(valuePanel, BorderLayout.EAST);
+        return new Object[]{row, valLabel, textField};
+    }
 
-        panel_6.setLayout(new GridLayout(1, 1));
-        lbKeep_secure.setFont(new Font("Arial", Font.BOLD, 18));
+    // Helper for rows that just open a page
+    private JPanel createActionRow(String title, FontIcon icon, Runnable onClick) {
+        JPanel row = new JPanel(new BorderLayout());
+        row.setBackground(BG_COLOR);
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 
-        Image image = logoIcon.getImage().getScaledInstance(
-                100, 100, Image.SCALE_SMOOTH);
-        lbLogo.setIcon(new ImageIcon(image));
-        lbLogo.setHorizontalAlignment(JLabel.CENTER);
-        lbLogo.setVerticalAlignment(JLabel.CENTER);
+        JLabel label = new JLabel(title + "  >", icon, SwingConstants.LEFT);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onClick.run();
+            }
+        });
 
-        this.panel_6.add(lbLogo);
-        panel_6.setBackground(new Color(173, 216, 230));
-        this.add(panel_6);
+        row.add(label, BorderLayout.WEST);
+        return row;
+    }
 
-       //loadProfile();
+    // Helper for rows with Combo Boxes
+    private JPanel createComboRow(String title, FontIcon icon, JComboBox<String> comboBox) {
+        JPanel row = new JPanel(new BorderLayout());
+        row.setBackground(BG_COLOR);
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+
+        JLabel label = new JLabel(title, icon, SwingConstants.LEFT);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        comboBox.setBackground(Color.WHITE);
+        comboBox.setPreferredSize(new Dimension(140, 25));
+
+        row.add(label, BorderLayout.WEST);
+        row.add(comboBox, BorderLayout.EAST);
+        return row;
+    }
+
+    private void updateProfilePicture() {
+        String username = Session.username();
+        if (username == null) username = "guest";
+        
+        ImageIcon customPic = ProfilePics.circle("c", username, 100);
+        if (customPic != null) {
+            lbProfile_Pic.setIcon(customPic);
+        } else {
+            lbProfile_Pic.setIcon(FontIcon.of(FontAwesomeSolid.USER_CIRCLE, 100, Color.BLACK));
+        }
     }
 
     private void loadProfile() {
+        if (Session.customer == null) return;
 
-        String userSql =
-                "SELECT username, email FROM users WHERE user_id = ?";
+        UserStore.User user = UserStore.find(Session.username());
+        if (user != null) {
+            lbFull_Name_Val.setText(user.fullName.isEmpty() ? "Not set" : user.fullName);
+            lbUsername_Val.setText(user.username.isEmpty() ? "Not set" : user.username);
+            lbEmail_Val.setText(user.email.isEmpty() ? "Not set" : user.email);
+            lbPhone_Val.setText(user.phone.isEmpty() ? "Not set" : user.phone);
+            lbHome_Val.setText(user.address.isEmpty() ? "Not set" : user.address);
+        }
+    }
 
-        String profileSql =
-                "SELECT full_name, phone_number, home_address, gender, "
-                + "data_of_birth, verification_method "
-                + "FROM user_profiles WHERE user_id = ?";
+    private void saveProfile() {
+        if (Session.customer == null) return;
 
-        try (Connection connection = DAO.connect()) {
+        // Read from visible text fields or labels
+        String newName = txtFull_Name.isShowing() ? txtFull_Name.getText().trim() : lbFull_Name_Val.getText();
+        String newUser = txtUsername.isShowing() ? txtUsername.getText().trim() : lbUsername_Val.getText();
+        String newEmail = txtEmail.isShowing() ? txtEmail.getText().trim() : lbEmail_Val.getText();
+        String newPhone = txtPhone_Number.isShowing() ? txtPhone_Number.getText().trim() : lbPhone_Val.getText();
+        String newAddress = txtHome.isShowing() ? txtHome.getText().trim() : lbHome_Val.getText();
 
-            if (connection == null) {
-                JOptionPane.showMessageDialog(
-                        this, "Database connection failed.");
-                return;
+        if (newName.equals("Not set") || newUser.equals("Not set") || newEmail.equals("Not set") || newPhone.equals("Not set")) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields (Name, Username, Email, Phone).");
+            return;
+        }
+
+        String sql = "UPDATE customers SET full_name = ?, username = ?, email = ?, phone = ?, address = ? WHERE id = ?";
+
+        try (Connection con = DAO.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, newName);
+            ps.setString(2, newUser);
+            ps.setString(3, newEmail);
+            ps.setString(4, newPhone);
+            ps.setString(5, newAddress.equals("Not set") ? "" : newAddress);
+            ps.setString(6, Session.customer.id);
+
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                // Update Session so Dashboard reflects new name instantly
+                Session.customer.fullName = newName;
+                Session.customer.username = newUser;
+                Session.customer.email = newEmail;
+                Session.customer.phone = newPhone;
+                Session.customer.address = newAddress.equals("Not set") ? "" : newAddress;
+
+                loadProfile();
+                updateProfilePicture(); 
+                JOptionPane.showMessageDialog(this, "Profile updated successfully!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Could not update profile.");
             }
-
-            try (PreparedStatement statement =
-                         connection.prepareStatement(userSql)) {
-
-                statement.setInt(1, 1);
-
-                try (ResultSet result = statement.executeQuery()) {
-                    if (result.next()) {
-                        String username = result.getString("username");
-                        String email = result.getString("email");
-
-                        txtUsername.setText(
-                                username == null ? "" : username);
-                        txtEmail.setText(email == null ? "" : email);
-
-                        lbUsername.setText(
-                                username == null ? "Username" : username);
-                        lbEmail_Adress.setText(
-                                email == null ? "Email" : email);
-                    }
-                }
-            }
-
-            try (PreparedStatement statement =
-                         connection.prepareStatement(profileSql)) {
-
-                statement.setInt(1, 1);
-
-                try (ResultSet result = statement.executeQuery()) {
-
-                    if (result.next()) {
-                        String fullName = result.getString("full_name");
-                        String phone = result.getString("phone_number");
-                        String address = result.getString("home_address");
-
-                        txtFull_Name.setText(
-                                fullName == null ? "" : fullName);
-                        txtPhone_Number.setText(
-                                phone == null ? "" : phone);
-                        txtHome.setText(
-                                address == null ? "" : address);
-
-                        lbFull_Name.setText(
-                                fullName == null ? "Full Name" : fullName);
-                        lbPhone_Number.setText(
-                                phone == null ? "Phone Number" : phone);
-                        lbHome_Adress.setText(
-                                address == null ? "Home Adress" : address);
-
-                        String gender = result.getString("gender");
-                        if (gender != null) {
-                            cbG.setSelectedItem(gender);
-                        }
-
-                        String verification =
-                                result.getString("verification_method");
-                        if (verification != null) {
-                            cbGender.setSelectedItem(verification);
-                        }
-
-                        java.sql.Date dob =
-                                result.getDate("data_of_birth");
-
-                        if (dob != null) {
-                            cbDay.setSelectedItem(
-                                    String.valueOf(
-                                            dob.toLocalDate().getDayOfMonth()));
-
-                            String monthName = dob.toLocalDate()
-                                    .getMonth()
-                                    .getDisplayName(
-                                            java.time.format.TextStyle.FULL,
-                                            java.util.Locale.ENGLISH);
-
-                            if (monthName.equals("February")) {
-                                monthName = "Febuary";
-                            }
-
-                            cbMonth.setSelectedItem(monthName);
-                            cbYear.setSelectedItem(
-                                    String.valueOf(
-                                            dob.toLocalDate().getYear()));
-                        }
-                    }
-                }
-            }
-
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(
-                    this, "Could not load profile: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
         }
     }
 }
