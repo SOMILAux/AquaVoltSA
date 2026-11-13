@@ -10,6 +10,7 @@ import za.ac.cput.aquavoltsa.DBConnection.DBConnection;
  * Debug helper — prints only the Settings table to the Output window.
  * (To see ALL tables, run DAO.java → main() → DAO.showAll().)
  */
+
 public class SettingsViewer {
 
     public static void main(String[] args) {
