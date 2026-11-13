@@ -332,12 +332,12 @@ public class Electricity_Alerts extends JFrame {
             int userId = getLoggedInUserId(connection);
 
             if (userId == -1) {
-
+                /*
                 JOptionPane.showMessageDialog(
                         this,
                         "No matching user record was found. "
                         + "Please check the users table.");
-
+                */
                 return;
             }
 
@@ -449,12 +449,12 @@ public class Electricity_Alerts extends JFrame {
             int userId = getLoggedInUserId(connection);
 
             if (userId == -1) {
-
+                /*
                 JOptionPane.showMessageDialog(
                         this,
                         "No matching user record was found. "
                         + "Your preferences were not saved.");
-
+                */
                 return;
             }
 
