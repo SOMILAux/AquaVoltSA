@@ -1,4 +1,3 @@
-//Final update done by Aphelele and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import java.sql.Connection;
@@ -12,7 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import za.ac.cput.aquavoltsa.DAO.DAO;
 
-
+/**
+ * Every water / electricity payment is also saved in the TRANSACTIONS table so the admin can see it.
+ * @StudentNumber 241028213
+ * @author Oyama Sibunzi
+ */
 public final class TransactionStore {
     public static class Txn {
         public String id = "", username = "", utility = "", meter = "", method = "", status = "", token = "", created = "";
@@ -54,25 +57,43 @@ public final class TransactionStore {
         }
     }
 
-    /** Newest payments first. */
+    /** 
+     * Newest payments first. 
+     * UPDATED: Now fetches from Aphelele's PAYMENT and PAYMENT_TRANSACTIONS tables 
+     * so the Admin Dashboard can actually see the payments made via the buy pages!
+     */
     public static List<Txn> all(int limit) {
         List<Txn> list = new ArrayList<>();
-        String sql = "SELECT txn_id, customer_username, utility, meter_no, amount, fee, method, status, token, created "
-                + "FROM transactions ORDER BY created DESC FETCH FIRST " + limit + " ROWS ONLY";
+        String sql = "SELECT T.TRANSACTION_ID, P.USER_ID, P.UTILITY_ID, P.AMOUNT, P.SERVICE_FEE, P.PAYMENT_METHOD, P.PAYMENT_DATE, P.PAYMENT_STATUS, U.UTILITY_NAME " +
+                     "FROM PAYMENT_TRANSACTIONS T " +
+                     "JOIN PAYMENT P ON T.PAYMENT_ID = P.PAYMENT_ID " +
+                     "LEFT JOIN UTILITY U ON P.UTILITY_ID = U.UTILITY_ID " +
+                     "ORDER BY P.PAYMENT_DATE DESC, P.PAYMENT_ID DESC FETCH FIRST " + limit + " ROWS ONLY";
+                     
         try (Connection c = DAO.connect(); Statement st = c.createStatement(); ResultSet r = st.executeQuery(sql)) {
             while (r.next()) {
                 Txn t = new Txn();
-                t.id = s(r.getString(1));
-                t.username = s(r.getString(2));
-                t.utility = s(r.getString(3));
-                t.meter = s(r.getString(4));
-                t.amount = r.getDouble(5);
-                t.fee = r.getDouble(6);
-                t.method = s(r.getString(7));
-                t.status = s(r.getString(8));
-                t.token = s(r.getString(9));
-                Timestamp ts = r.getTimestamp(10);
-                t.created = ts == null ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm").format(ts);
+                t.id = s(r.getString("TRANSACTION_ID"));
+                
+                // Aphelele's code hardcodes userID = 1. So we show "Customer 1"
+                t.username = "Customer " + r.getInt("USER_ID");
+                
+                // Check Utility Name, fallback to hardcoded ID if name is null
+                t.utility = s(r.getString("UTILITY_NAME"));
+                if (t.utility.isEmpty()) {
+                    t.utility = (r.getInt("UTILITY_ID") == 202) ? "Water" : "Electricity";
+                }
+                
+                t.meter = ""; // Not stored in PAYMENT table
+                t.amount = r.getDouble("AMOUNT");
+                t.fee = r.getDouble("SERVICE_FEE");
+                t.method = s(r.getString("PAYMENT_METHOD"));
+                t.status = s(r.getString("PAYMENT_STATUS"));
+                t.token = ""; // Tokens are in ELECTRICITY_TOKEN table, not joined here
+                
+                java.sql.Date date = r.getDate("PAYMENT_DATE");
+                t.created = (date == null) ? "" : date.toString();
+                
                 list.add(t);
             }
         } catch (SQLException e) {
