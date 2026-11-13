@@ -1,4 +1,4 @@
-//Final update done by Sbahle
+
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import za.ac.cput.aquavoltsa.DAO.DAO;
 
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -16,7 +17,6 @@ public class Water_Alerts extends JFrame {
 
     private final Color BLUE = new Color(173, 216, 230);
     private final Color ORANGE = new Color(255, 140, 0);
-    private final int userId = 1;
 
     private ImageIcon logoIcon;
     private JLabel lbJust_blank2;
@@ -29,6 +29,7 @@ public class Water_Alerts extends JFrame {
     private JComboBox<String> cbDeliveryMethod;
 
     public Water_Alerts() {
+
         setTitle("Water Alerts");
         setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -42,14 +43,17 @@ public class Water_Alerts extends JFrame {
 
     private void createInterface() {
 
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 15));
+        JPanel mainPanel =
+                new JPanel(new BorderLayout(10, 15));
+
         mainPanel.setBackground(BLUE);
+
         mainPanel.setBorder(
                 BorderFactory.createEmptyBorder(15, 25, 25, 25));
 
-        // TOP LEFT: Back button
-        JPanel topPanel = new JPanel(
-                new FlowLayout(FlowLayout.LEFT));
+        // BACK BUTTON
+        JPanel topPanel =
+                new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         topPanel.setBackground(BLUE);
 
@@ -63,50 +67,61 @@ public class Water_Alerts extends JFrame {
         btBack.setForeground(Color.BLACK);
 
         btBack.addActionListener(e -> {
+
             Settings_Page page = new Settings_Page();
+
             page.showGui();
             page.setSize(425, 917);
             page.setLocationRelativeTo(null);
             page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             page.setVisible(true);
+
             this.dispose();
         });
 
         topPanel.add(btBack);
+
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        // CENTER: Icon, title, checkboxes, combo box and buttons
+        // MAIN CONTENT
         JPanel contentPanel = new JPanel();
 
         contentPanel.setBackground(BLUE);
+
         contentPanel.setLayout(
                 new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-        // Large black water icon
+        // WATER ICON
         JLabel lblWaterIcon = new JLabel();
 
         FontIcon waterIcon = FontIcon.of(
                 FontAwesomeSolid.TINT, 100, Color.BLACK);
 
         lblWaterIcon.setIcon(waterIcon);
-        lblWaterIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Centered Water Alerts title
+        lblWaterIcon.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
+
+        // TITLE
         JLabel lblTitle = new JLabel("Water Alerts");
 
         lblTitle.setFont(
                 new Font("Arial", Font.BOLD, 26));
 
-        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblTitle.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
 
+        // INSTRUCTIONS
         JLabel lblInstruction = new JLabel(
                 "Which alerts to receive ?");
 
         lblInstruction.setFont(
                 new Font("Arial", Font.BOLD, 18));
 
-        lblInstruction.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblInstruction.setAlignmentX(
+                Component.LEFT_ALIGNMENT);
 
+        // WATER ALERT CHECKBOXES
         cbWaterOutages =
                 createCheckbox("Water Supply Outages");
 
@@ -119,13 +134,15 @@ public class Water_Alerts extends JFrame {
         cbLowPressure =
                 createCheckbox("Low Water Pressure Alerts");
 
+        // DELIVERY METHOD
         JLabel lblMethod = new JLabel(
                 "Receive alerts Via?");
 
         lblMethod.setFont(
                 new Font("Arial", Font.BOLD, 18));
 
-        lblMethod.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblMethod.setAlignmentX(
+                Component.LEFT_ALIGNMENT);
 
         String[] methods = {
             "Select Method",
@@ -140,27 +157,33 @@ public class Water_Alerts extends JFrame {
         cbDeliveryMethod.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, 35));
 
-        cbDeliveryMethod.setAlignmentX(Component.LEFT_ALIGNMENT);
+        cbDeliveryMethod.setAlignmentX(
+                Component.LEFT_ALIGNMENT);
 
-        // Buttons side by side under the combo box
-        JPanel buttonPanel = new JPanel(
-                new FlowLayout(FlowLayout.CENTER, 15, 5));
+        // BUTTON PANEL
+        JPanel buttonPanel =
+                new JPanel(new FlowLayout(
+                        FlowLayout.CENTER, 15, 5));
 
         buttonPanel.setBackground(BLUE);
-        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        buttonPanel.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
+
+        // SAVE BUTTON
         JButton btSave = new JButton("Save Preferences");
 
         FontIcon saveIcon = FontIcon.of(
                 FontAwesomeSolid.SAVE, 18, Color.BLACK);
 
         btSave.setIcon(saveIcon);
-        btSave.setBackground(Color.orange);
+        btSave.setBackground(ORANGE);
         btSave.setForeground(Color.BLACK);
         btSave.setFocusPainted(false);
 
         btSave.addActionListener(e -> savePreferences());
 
+        // RESET BUTTON
         JButton btReset = new JButton("Reset");
 
         FontIcon resetIcon = FontIcon.of(
@@ -172,17 +195,19 @@ public class Water_Alerts extends JFrame {
         btReset.setFocusPainted(false);
 
         btReset.addActionListener(e -> {
+
             cbWaterOutages.setSelected(false);
             cbWaterLeaks.setSelected(false);
             cbWaterUsage.setSelected(false);
             cbLowPressure.setSelected(false);
+
             cbDeliveryMethod.setSelectedIndex(0);
         });
 
         buttonPanel.add(btSave);
         buttonPanel.add(btReset);
 
-        // Assemble the content
+        // ADD CONTENT
         contentPanel.add(Box.createVerticalStrut(5));
         contentPanel.add(lblWaterIcon);
         contentPanel.add(Box.createVerticalStrut(8));
@@ -203,22 +228,34 @@ public class Water_Alerts extends JFrame {
         contentPanel.add(cbDeliveryMethod);
         contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(buttonPanel);
-
         contentPanel.add(Box.createVerticalStrut(10));
 
-        // Existing logo
-        logoIcon = new ImageIcon(
-                getClass().getResource("/icons/plain_logo.png"));
+        // LOGO
+        java.net.URL logoURL =
+                getClass().getResource("/icons/plain_logo.png");
 
-        Image logoImage = logoIcon.getImage().getScaledInstance(
-                125, 125, Image.SCALE_SMOOTH);
+        if (logoURL != null) {
 
-        lbJust_blank2.setIcon(new ImageIcon(logoImage));
+            logoIcon = new ImageIcon(logoURL);
 
-        JPanel logoPanel = new JPanel(
-                new FlowLayout(FlowLayout.CENTER));
+            Image logoImage =
+                    logoIcon.getImage().getScaledInstance(
+                            125, 125, Image.SCALE_SMOOTH);
+
+            lbJust_blank2.setIcon(
+                    new ImageIcon(logoImage));
+
+        } else {
+
+            System.out.println(
+                    "Logo not found: /icons/plain_logo.png");
+        }
+
+        JPanel logoPanel =
+                new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         logoPanel.setBackground(BLUE);
+
         logoPanel.add(lbJust_blank2);
 
         contentPanel.add(logoPanel);
@@ -228,6 +265,7 @@ public class Water_Alerts extends JFrame {
         setContentPane(mainPanel);
     }
 
+    // CREATE CHECKBOX
     private JCheckBox createCheckbox(String text) {
 
         JCheckBox checkbox = new JCheckBox(text);
@@ -237,34 +275,78 @@ public class Water_Alerts extends JFrame {
 
         checkbox.setBackground(BLUE);
         checkbox.setForeground(Color.BLACK);
-        checkbox.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        checkbox.setAlignmentX(
+                Component.LEFT_ALIGNMENT);
 
         return checkbox;
     }
 
+    // GET LOGGED-IN USER ID
+    private int getLoggedInUserId(Connection connection)
+            throws SQLException {
+
+        if (Session.customer == null) {
+            return -1;
+        }
+
+        String sql =
+                "SELECT user_id FROM users WHERE username = ?";
+
+        try (PreparedStatement statement =
+                connection.prepareStatement(sql)) {
+
+            statement.setString(1, Session.username());
+
+            try (ResultSet result = statement.executeQuery()) {
+
+                if (result.next()) {
+                    return result.getInt("user_id");
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    // LOAD WATER ALERT PREFERENCES
     private void loadPreferences() {
+
+        if (Session.customer == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please log in first.");
+
+            return;
+        }
 
         String sql =
                 "SELECT alert_type, enabled, delivery_method "
-                + "FROM alert_preferences WHERE user_id = ? "
-                + "AND alert_type IN (?, ?, ?, ?)";
+                + "FROM alert_preferences "
+                + "WHERE user_id = ?";
 
         try (Connection connection = DAO.connect()) {
 
-            if (connection == null) {
+            int userId = getLoggedInUserId(connection);
+
+            if (userId == -1) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No matching user record was found. "
+                        + "Please check the users table.");
+
                 return;
             }
 
             try (PreparedStatement statement =
-                         connection.prepareStatement(sql)) {
+                    connection.prepareStatement(sql)) {
 
                 statement.setInt(1, userId);
-                statement.setString(2, "WATER_OUTAGE");
-                statement.setString(3, "WATER_LEAK");
-                statement.setString(4, "WATER_USAGE");
-                statement.setString(5, "LOW_WATER_PRESSURE");
 
-                try (ResultSet result = statement.executeQuery()) {
+                try (ResultSet result =
+                        statement.executeQuery()) {
 
                     while (result.next()) {
 
@@ -307,6 +389,7 @@ public class Water_Alerts extends JFrame {
             }
 
         } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Could not load water preferences:\n"
@@ -314,7 +397,17 @@ public class Water_Alerts extends JFrame {
         }
     }
 
+    // SAVE WATER ALERT PREFERENCES
     private void savePreferences() {
+
+        if (Session.customer == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please log in first.");
+
+            return;
+        }
 
         boolean anySelected =
                 cbWaterOutages.isSelected()
@@ -340,43 +433,88 @@ public class Water_Alerts extends JFrame {
             method = "Email";
         }
 
-        String sql =
+        String updateSQL =
+                "UPDATE alert_preferences "
+                + "SET enabled = ?, delivery_method = ? "
+                + "WHERE user_id = ? AND alert_type = ?";
+
+        String insertSQL =
                 "INSERT INTO alert_preferences "
                 + "(user_id, alert_type, enabled, delivery_method) "
-                + "VALUES (?, ?, ?, ?) "
-                + "ON DUPLICATE KEY UPDATE "
-                + "enabled = VALUES(enabled), "
-                + "delivery_method = VALUES(delivery_method)";
+                + "VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DAO.connect()) {
 
-            if (connection == null) {
+            int userId = getLoggedInUserId(connection);
+
+            if (userId == -1) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No matching user record was found. "
+                        + "Your preferences were not saved.");
+
                 return;
             }
 
-            try (PreparedStatement statement =
-                         connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
 
-                saveOnePreference(statement, "WATER_OUTAGE",
-                        cbWaterOutages.isSelected(), method);
+            try (PreparedStatement updateStatement =
+                    connection.prepareStatement(updateSQL);
+                 PreparedStatement insertStatement =
+                    connection.prepareStatement(insertSQL)) {
 
-                saveOnePreference(statement, "WATER_LEAK",
-                        cbWaterLeaks.isSelected(), method);
+                saveOnePreference(
+                        updateStatement,
+                        insertStatement,
+                        userId,
+                        "WATER_OUTAGE",
+                        cbWaterOutages.isSelected(),
+                        method);
 
-                saveOnePreference(statement, "WATER_USAGE",
-                        cbWaterUsage.isSelected(), method);
+                saveOnePreference(
+                        updateStatement,
+                        insertStatement,
+                        userId,
+                        "WATER_LEAK",
+                        cbWaterLeaks.isSelected(),
+                        method);
 
-                saveOnePreference(statement, "LOW_WATER_PRESSURE",
-                        cbLowPressure.isSelected(), method);
+                saveOnePreference(
+                        updateStatement,
+                        insertStatement,
+                        userId,
+                        "WATER_USAGE",
+                        cbWaterUsage.isSelected(),
+                        method);
 
-                statement.executeBatch();
+                saveOnePreference(
+                        updateStatement,
+                        insertStatement,
+                        userId,
+                        "LOW_WATER_PRESSURE",
+                        cbLowPressure.isSelected(),
+                        method);
+
+                connection.commit();
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Water alert preferences saved successfully!");
+
+            } catch (SQLException e) {
+
+                connection.rollback();
+
+                throw e;
+
+            } finally {
+
+                connection.setAutoCommit(true);
             }
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Water alert preferences saved successfully!");
-
         } catch (SQLException e) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Could not save water preferences:\n"
@@ -384,17 +522,31 @@ public class Water_Alerts extends JFrame {
         }
     }
 
+    // UPDATE EXISTING PREFERENCE OR INSERT NEW ONE
     private void saveOnePreference(
-            PreparedStatement statement,
+            PreparedStatement updateStatement,
+            PreparedStatement insertStatement,
+            int userId,
             String alertType,
             boolean enabled,
             String method) throws SQLException {
 
-        statement.setInt(1, userId);
-        statement.setString(2, alertType);
-        statement.setBoolean(3, enabled);
-        statement.setString(4, method);
+        updateStatement.setBoolean(1, enabled);
+        updateStatement.setString(2, method);
+        updateStatement.setInt(3, userId);
+        updateStatement.setString(4, alertType);
 
-        statement.addBatch();
+        int rows = updateStatement.executeUpdate();
+
+        if (rows == 0) {
+
+            insertStatement.setInt(1, userId);
+            insertStatement.setString(2, alertType);
+            insertStatement.setBoolean(3, enabled);
+            insertStatement.setString(4, method);
+
+            insertStatement.executeUpdate();
+        }
     }
 }
+
