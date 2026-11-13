@@ -1,4 +1,3 @@
-//Final update done by Inathi and Oyama
 package za.ac.cput.aquavoltsa.GUI;
 
 import javax.swing.*;
@@ -9,13 +8,10 @@ public class LanguagePage extends JFrame {
 
     private JLabel titleLabel;
     private JLabel instructionLabel;
-    private JButton selectedLanguageButton;
     private JLabel confirmationLabel;
-
     private static String selectedLanguage = "English";
 
     public LanguagePage() {
-
         setTitle("Language");
         setSize(425, 917);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -26,7 +22,8 @@ public class LanguagePage extends JFrame {
             selectedLanguage = SettingsStore.get(Session.username(), "language", "English");
         }
 
-        JPanel mainPanel = new JPanel() {
+        // --- Gradient Background Panel ---
+        JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -40,80 +37,90 @@ public class LanguagePage extends JFrame {
                 g2.fillRect(0, 0, width, height);
             }
         };
+        backgroundPanel.setLayout(new BorderLayout());
 
-        mainPanel.setLayout(null);
-        mainPanel.setPreferredSize(new Dimension(400, 850));
+        // --- Main Content Panel ---
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setOpaque(false);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
 
-        // TITLE
-        titleLabel = new JLabel(Translations.get("language"));
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setBounds(90, 30, 200, 35);
-        mainPanel.add(titleLabel);
+        // Title & Instruction
+        titleLabel = new JLabel(Translations.get("language"), SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 26));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(titleLabel);
+        contentPanel.add(Box.createVerticalStrut(10));
 
-        // INSTRUCTION
-        instructionLabel = new JLabel("Choose a language you prefer:");
-        instructionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        instructionLabel.setBounds(45, 80, 300, 30);
-        mainPanel.add(instructionLabel);
+        instructionLabel = new JLabel("Choose a language you prefer:", SwingConstants.CENTER);
+        instructionLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        instructionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(instructionLabel);
+        contentPanel.add(Box.createVerticalStrut(20));
 
-        // SELECTED LANGUAGE
-        selectedLanguageButton = new JButton(selectedLanguage);
-        selectedLanguageButton.setBounds(60, 120, 160, 40);
-        selectedLanguageButton.setFocusPainted(false);
-        mainPanel.add(selectedLanguageButton);
+        // Selected Language Status
+        confirmationLabel = new JLabel("Selected: " + selectedLanguage, SwingConstants.CENTER);
+        confirmationLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        confirmationLabel.setForeground(new Color(0, 100, 0)); // Dark green
+        confirmationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(confirmationLabel);
+        contentPanel.add(Box.createVerticalStrut(20));
 
-        // CONFIRMATION LABEL
-        confirmationLabel = new JLabel("Selected: " + selectedLanguage);
-        confirmationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        confirmationLabel.setFont(new Font("Arial", Font.BOLD, 13));
-        confirmationLabel.setBounds(40, 165, 200, 30);
-        mainPanel.add(confirmationLabel);
-
-        // LANGUAGE OPTIONS
+        // Language Buttons
         String[] languages = {
             "English", "Afrikaans", "isiZulu", "isiXhosa", 
             "SeSotho", "Sepedi", "Setswana", "itsonga", "Tshivenda"
         };
 
-        int y = 210;
-
-        for (String language : languages) {
-            JButton languageButton = new JButton(language);
-            languageButton.setBounds(60, y, 160, 40);
-            languageButton.setFocusPainted(false);
-            languageButton.addActionListener(e -> selectLanguage(language));
-            mainPanel.add(languageButton);
-            y += 50;
+        for (String lang : languages) {
+            JButton btn = new JButton(lang);
+            btn.setFont(new Font("Arial", Font.BOLD, 16));
+            btn.setBackground(Color.WHITE);
+            btn.setFocusPainted(false);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            btn.setMaximumSize(new Dimension(280, 45));
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            btn.addActionListener(e -> selectLanguage(lang));
+            
+            contentPanel.add(btn);
+            contentPanel.add(Box.createVerticalStrut(10));
         }
 
-        // BACK BUTTON
-        JButton backButton = new JButton("Back");
-        backButton.setBounds(90, 680, 100, 35);
+        contentPanel.add(Box.createVerticalStrut(20));
+
+        // Back Button
+        JButton backButton = new JButton(Translations.get("back"));
+        backButton.setFont(new Font("Arial", Font.BOLD, 16));
         backButton.setBackground(Color.BLACK);
         backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
-        mainPanel.add(backButton);
+        backButton.setMaximumSize(new Dimension(140, 45));
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         backButton.addActionListener(e -> {
             Settings_Page page = new Settings_Page();
             page.showGui();
-            page.setSize(425, 917);
-            page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            page.setLocationRelativeTo(null);
             page.setVisible(true);
             this.dispose();
         });
+        contentPanel.add(backButton);
 
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        add(scrollPane);
+        // --- Add to Scroll Pane ---
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
+        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
+        add(backgroundPanel);
         setVisible(true);
     }
 
     private void selectLanguage(String language) {
         selectedLanguage = language;
-        selectedLanguageButton.setText(language);
         confirmationLabel.setText("Selected: " + language);
 
         // Save to database for this specific user
