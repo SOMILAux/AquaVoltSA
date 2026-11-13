@@ -331,12 +331,13 @@ public class Water_Alerts extends JFrame {
             int userId = getLoggedInUserId(connection);
 
             if (userId == -1) {
-
+                /*
                 JOptionPane.showMessageDialog(
+                        
                         this,
                         "No matching user record was found. "
                         + "Please check the users table.");
-
+                        */
                 return;
             }
 
@@ -448,12 +449,12 @@ public class Water_Alerts extends JFrame {
             int userId = getLoggedInUserId(connection);
 
             if (userId == -1) {
-
+                /*
                 JOptionPane.showMessageDialog(
                         this,
                         "No matching user record was found. "
                         + "Your preferences were not saved.");
-
+                */
                 return;
             }
 
@@ -514,7 +515,7 @@ public class Water_Alerts extends JFrame {
             }
 
         } catch (SQLException e) {
-
+        
             JOptionPane.showMessageDialog(
                     this,
                     "Could not save water preferences:\n"
